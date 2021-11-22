@@ -3,9 +3,9 @@ import { Surface, Headline } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import useStyles from '../hooks/useStyles';
+import useStyles from '../../hooks/useStyles';
 
-const Startup = () => {
+const StartupComponent = () => {
   const [styles, { colors }] = useStyles(createStyles);
 
   return (
@@ -18,7 +18,7 @@ const Startup = () => {
             iterationCount="infinite"
             direction="alternate"
             useNativeDriver={true}
-            source={require('../assets/logo.png')}
+            source={require('../../assets/logo.png')}
             style={{ width: 66, height: 66 }}
           ></Animatable.Image>
           <Surface style={styles.headline}>
@@ -57,4 +57,4 @@ const createStyles = (theme) => ({
   },
 });
 
-export default Startup;
+export default StartupComponent;

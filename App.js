@@ -1,12 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useMemo } from 'react';
 import { useFonts } from 'expo-font';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
-import Startup from './screens/Startup';
+import { StartupScreen } from './screens';
+
+// Good for performance
+// https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
+enableScreens();
 
 export default function App() {
   const scheme = useColorScheme();
@@ -23,20 +28,9 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
-        <View style={styles.container}>
-          <StatusBar style="auto" />
-          <Startup />
-        </View>
+        <StatusBar style="auto" />
+        <StartupScreen />
       </NavigationContainer>
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
