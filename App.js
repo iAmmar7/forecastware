@@ -1,13 +1,13 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useMemo } from 'react';
-import { useFonts } from 'expo-font';
 import { useColorScheme } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
-import { StartupScreen } from './screens';
+import AppNavigator from './navigation/AppNavigator';
 
 // Good for performance
 // https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
@@ -26,11 +26,11 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <StatusBar style="auto" />
-        <StartupScreen />
-      </NavigationContainer>
-    </PaperProvider>
+    <>
+      <StatusBar style="auto" />
+      <PaperProvider theme={theme}>
+        <AppNavigator theme={theme} />
+      </PaperProvider>
+    </>
   );
 }

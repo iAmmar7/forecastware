@@ -6,7 +6,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import useStyles from '../../hooks/useStyles';
 
 const StartupComponent = () => {
-  const [styles, { colors }] = useStyles(createStyles);
+  const {
+    styles,
+    theme: { colors },
+  } = useStyles(createStyles);
 
   return (
     <Surface style={styles.screen}>

@@ -11,7 +11,7 @@ const StartupContainer = () => {
       if (position.status !== 'granted') return;
 
       let location = await Location.getCurrentPositionAsync({});
-      AsyncStorage.setItem('location', JSON.stringify(location));
+      await AsyncStorage.setItem('location', JSON.stringify(location));
     })();
   }, []);
 
