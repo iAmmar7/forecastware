@@ -1,26 +1,38 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Dimensions } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { HomeScreen, LocationScreen } from '../screens';
-import { Header } from '../components';
+import { TabBar } from '../components';
 
-const Stack = createNativeStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
-const StackNavigator = () => {
+const TabNavigator = () => {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       initialRouteName="Home"
-      headerMode="screen"
-      screenOptions={{
-        header: (options) => {
-          return <Header {...options} />;
-        },
-      }}
+      initialLayout={{ width: Dimensions.get('window').width }}
+      tabBar={(props) => <TabBar {...props} />}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'Home' }} />
-      <Stack.Screen name="Location" component={LocationScreen} options={{ headerTitle: 'Location' }} />
-    </Stack.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'Home' }} />
+      <Tab.Screen name="Location" component={LocationScreen} options={{ headerTitle: 'Location', title: 'Location' }} />
+      <Tab.Screen
+        name="Location2"
+        component={LocationScreen}
+        options={{ headerTitle: 'Location', title: 'Location' }}
+      />
+      <Tab.Screen
+        name="Location3"
+        component={LocationScreen}
+        options={{ headerTitle: 'Location', title: 'Location' }}
+      />
+      <Tab.Screen
+        name="Location4"
+        component={LocationScreen}
+        options={{ headerTitle: 'Location', title: 'Location' }}
+      />
+    </Tab.Navigator>
   );
 };
 
-export default StackNavigator;
+export default TabNavigator;

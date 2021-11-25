@@ -7,8 +7,6 @@ const Header = ({ options, back, navigation }) => {
   const { headerTitle } = options;
   const { styles, theme } = useStyles(createStyles);
 
-  console.log('navigation', navigation);
-
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }} style={styles.header}>
       {back && <Appbar.BackAction onPress={() => navigation.goBack()} />}
