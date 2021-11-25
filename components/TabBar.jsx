@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Appbar, Surface, Text, Title } from 'react-native-paper';
+import { Appbar, Surface, Title } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 
 import useStyles from '../hooks/useStyles';
@@ -30,8 +30,9 @@ function TabBar(props) {
             <Surface style={styles.dotContainer}>
               {routes.map((route) => (
                 <Entypo
+                  key={route.key}
                   name="dot-single"
-                  size={24}
+                  size={16}
                   color={route.name === routeNames[tabIndex] ? 'black' : 'grey'}
                   style={styles.dot}
                 />
@@ -46,11 +47,8 @@ function TabBar(props) {
   );
 }
 
-const createStyles = (theme) => ({
-  header: {
-    paddingBottom: 20,
-    height: 60,
-  },
+const createStyles = () => ({
+  header: {},
   titleStyles: {
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -67,8 +65,7 @@ const createStyles = (theme) => ({
     overflow: 'hidden',
   },
   dot: {
-    // borderWidth: 1,
-    // borderColor: 'green',
+    paddingHorizontal: 0,
   },
 });
 

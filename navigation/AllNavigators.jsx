@@ -15,22 +15,7 @@ const TabNavigator = () => {
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'Home' }} />
-      <Tab.Screen name="Location" component={LocationScreen} options={{ headerTitle: 'Location', title: 'Location' }} />
-      <Tab.Screen
-        name="Location2"
-        component={LocationScreen}
-        options={{ headerTitle: 'Location', title: 'Location' }}
-      />
-      <Tab.Screen
-        name="Location3"
-        component={LocationScreen}
-        options={{ headerTitle: 'Location', title: 'Location' }}
-      />
-      <Tab.Screen
-        name="Location4"
-        component={LocationScreen}
-        options={{ headerTitle: 'Location', title: 'Location' }}
-      />
+      <Tab.Screen name="Location" component={LocationScreen} options={{ headerTitle: 'Location' }} />
     </Tab.Navigator>
   );
 };
