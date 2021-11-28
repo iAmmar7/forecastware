@@ -9,6 +9,18 @@ export default class API {
       timeout: 20000,
     };
     this.instance = axios.create(this.config);
+
+    this.instance.interceptors.response.use(
+      (response) => {
+        if (response.status === 200 || response.status === 206) {
+          return response.data;
+        }
+        throw response;
+      },
+      async (error) => {
+        throw error;
+      }
+    );
   }
 
   get(url, id, params) {

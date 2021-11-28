@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Appbar, Surface, Title } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 
-import useStyles from '../hooks/useStyles';
+import { useStyles } from '../hooks';
 
 function TabBar(props) {
   const {

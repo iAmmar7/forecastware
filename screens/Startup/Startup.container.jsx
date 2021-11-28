@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
 
 import StartupComponent from './Startup.component';
+import { useUserContext } from '../../hooks';
 
 const StartupContainer = () => {
-  useEffect(() => {
-    (async () => {
-      let position = await Location.requestForegroundPermissionsAsync();
-      if (position.status !== 'granted') return;
+  const { askForLocation } = useUserContext();
 
-      let location = await Location.getCurrentPositionAsync({});
-      await AsyncStorage.setItem('location', JSON.stringify(location));
-    })();
+  useEffect(() => {
+    askForLocation();
   }, []);
 
   return <StartupComponent />;

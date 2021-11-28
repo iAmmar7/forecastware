@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import UserContextProvider from './contexts/UserContext';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import AppNavigator from './navigation/AppNavigator';
 
@@ -29,7 +30,9 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <PaperProvider theme={theme}>
-        <AppNavigator theme={theme} />
+        <UserContextProvider>
+          <AppNavigator theme={theme} />
+        </UserContextProvider>
       </PaperProvider>
     </>
   );

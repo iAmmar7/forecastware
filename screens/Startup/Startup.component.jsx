@@ -3,7 +3,7 @@ import { Surface, Headline } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import useStyles from '../../hooks/useStyles';
+import { useStyles } from '../../hooks';
 
 const StartupComponent = () => {
   const {

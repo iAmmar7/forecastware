@@ -1,7 +1,7 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
 
-import useStyles from '../hooks/useStyles';
+import { useStyles } from '../hooks';
 
 const Header = ({ options, back, navigation }) => {
   const { headerTitle } = options;
