@@ -13,7 +13,7 @@ const StartupComponent = () => {
 
   return (
     <Surface style={styles.screen}>
-      <LinearGradient colors={[colors.primary, colors.card, colors.accent]} style={styles.gradient}>
+      <LinearGradient colors={[colors.primary, colors.surface, colors.accent]} style={styles.gradient}>
         <Surface style={styles.container}>
           <Animatable.Image
             animation="slideInRight"

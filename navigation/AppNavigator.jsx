@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AllNavigators from './AllNavigators';
 import { StartupScreen } from '../screens';
-import { isEmpty } from '../utils/functions';
+import { isEmpty } from '../utils/helpers';
 
 const AppNavigator = ({ theme }) => {
   const [location, setLocation] = useState(null);
