@@ -23,3 +23,7 @@ export const isEmpty = (arg) => {
 
   return false;
 };
+
+export const getWeatherIconUrl = (code, size = 2) => {
+  return `http://openweathermap.org/img/wn/${code}@${size}x.png`;
+};

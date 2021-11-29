@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as WebBrowser from 'expo-web-browser';
 
 import HomeComponent from './Home.component';
 import { useUserContext } from '../../hooks';
@@ -15,7 +16,11 @@ const HomeContainer = () => {
     })();
   }, [location]);
 
-  return <HomeComponent data={weather} unit={unit} />;
+  const handleExternalLink = async () => {
+    await WebBrowser.openBrowserAsync('https://weather.com/en-US');
+  };
+
+  return <HomeComponent data={weather} unit={unit} handleExternalLink={handleExternalLink} />;
 };
 
 export default HomeContainer;

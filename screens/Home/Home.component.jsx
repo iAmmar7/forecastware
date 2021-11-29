@@ -1,29 +1,33 @@
 import React from 'react';
-import { Surface, Text, Title } from 'react-native-paper';
+import { ScrollView } from 'react-native';
+import { Surface, Text } from 'react-native-paper';
 
 import { useStyles } from '../../hooks';
+import { HourlyWeatherList, WeeklyWeatherList } from '../../components';
 
 const HomeComponent = (props) => {
-  const { data, unit } = props;
+  const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
 
-  console.log('data', data);
-
   return (
-    <Surface style={styles.screen}>
-      <Surface style={styles.summary}>
-        <Surface style={styles.temperatureContainer}>
-          <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
-          <Surface style={styles.unit}>
-            <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
-            <Text style={styles.unitText}>{unit === 'Celsius' ? 'C' : 'F'}</Text>
+    <ScrollView>
+      <Surface style={styles.screen}>
+        <Surface style={styles.summary}>
+          <Surface style={styles.temperatureContainer}>
+            <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
+            <Surface style={styles.unit}>
+              <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
+              <Text style={styles.unitText}>{unit === 'Celsius' ? 'C' : 'F'}</Text>
+            </Surface>
+          </Surface>
+          <Surface>
+            <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
           </Surface>
         </Surface>
-        <Surface>
-          <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
-        </Surface>
+        <HourlyWeatherList data={data?.hourly} unit={unit} />
+        <WeeklyWeatherList data={data?.daily} unit={unit} handleExternalLink={handleExternalLink} />
       </Surface>
-    </Surface>
+    </ScrollView>
   );
 };
 
@@ -32,13 +36,11 @@ const createStyles = () => ({
     flex: 1,
   },
   summary: {
-    marginTop: 100,
-    paddingHorizontal: 10,
+    marginTop: 200,
+    paddingHorizontal: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: 'red',
   },
   temperatureContainer: {
     flexDirection: 'row',
