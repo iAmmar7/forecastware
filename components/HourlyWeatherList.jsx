@@ -39,7 +39,7 @@ const HourlyWeatherList = (props) => {
 
 const createStyles = (theme) => ({
   hourlyListContainer: {
-    paddingVertical: 20,
+    paddingVertical: 18,
   },
   hourlyList: {
     paddingVertical: 10,

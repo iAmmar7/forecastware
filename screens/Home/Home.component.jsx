@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 
 import { useStyles } from '../../hooks';
-import { HourlyWeatherList, WeeklyWeatherList } from '../../components';
+import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails } from '../../components';
 
 const HomeComponent = (props) => {
   const { data, unit, handleExternalLink } = props;
@@ -26,6 +26,7 @@ const HomeComponent = (props) => {
         </Surface>
         <HourlyWeatherList data={data?.hourly} unit={unit} />
         <WeeklyWeatherList data={data?.daily} unit={unit} handleExternalLink={handleExternalLink} />
+        <WeatherDetails data={data?.current} unit={unit} handleExternalLink={handleExternalLink} />
       </Surface>
     </ScrollView>
   );

@@ -50,13 +50,6 @@ const WeeklyWeatherList = (props) => {
 };
 
 const createStyles = (theme) => ({
-  weatherListIcon: {
-    width: 30,
-    height: 30,
-  },
-  weatherText: {
-    color: theme.colors.placeholder,
-  },
   dailyListContainer: {
     paddingHorizontal: 18,
   },
@@ -69,6 +62,13 @@ const createStyles = (theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  weatherListIcon: {
+    width: 30,
+    height: 30,
+  },
+  weatherText: {
+    color: theme.colors.placeholder,
   },
   dailyItem50: {
     width: 50,

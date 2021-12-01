@@ -27,3 +27,10 @@ export const isEmpty = (arg) => {
 export const getWeatherIconUrl = (code, size = 2) => {
   return `http://openweathermap.org/img/wn/${code}@${size}x.png`;
 };
+
+export const getUVIndex = (uv = 0) => {
+  if (uv > 4) return 'Low Risk';
+  if (uv > 5) return 'Medium Risk';
+  if (uv > 9) return 'High Risk';
+  return 'No Risk';
+};

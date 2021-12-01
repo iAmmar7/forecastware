@@ -12,12 +12,13 @@ export default class API {
 
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.status === 200 || response.status === 206) {
+        if (response.status === 200) {
           return response.data;
         }
         throw response;
       },
       async (error) => {
+        console.log('API Error', error);
         throw error;
       }
     );

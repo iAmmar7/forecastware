@@ -12,6 +12,7 @@ const HomeContainer = () => {
   useEffect(() => {
     (async () => {
       const weather = await fetchWeather(location, unit);
+      console.log('weather', weather);
       setWeather(weather);
     })();
   }, [location]);
