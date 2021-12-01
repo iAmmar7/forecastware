@@ -8,7 +8,6 @@ function TabBar(props) {
     state: { index: tabIndex, routes, routeNames },
     descriptors,
     navigation,
-    position,
   } = props;
   const { styles, theme } = useStyles(createStyles);
 
@@ -19,23 +18,30 @@ function TabBar(props) {
     return title;
   }, [routes, tabIndex]);
 
+  const handleNavigate = () => {
+    console.log('navigation', navigation);
+    navigation.navigate('City');
+  };
+
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }} style={styles.header}>
-      <Appbar.Action icon="city-variant-outline" onPress={() => {}} />
+      <Appbar.Action icon="city-variant-outline" onPress={handleNavigate} />
       <Appbar.Content
         title={
           <Surface style={styles.titleContainer}>
             <Title>{currentTabTitle}</Title>
-            <Surface style={styles.dotContainer}>
-              {routes.map((route) => (
-                <Text
-                  key={route.key}
-                  style={{ ...styles.dot, ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }) }}
-                >
-                  &#8226;
-                </Text>
-              ))}
-            </Surface>
+            {routes.length > 1 && (
+              <Surface style={styles.dotContainer}>
+                {routes.map((route) => (
+                  <Text
+                    key={route.key}
+                    style={{ ...styles.dot, ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }) }}
+                  >
+                    &#8226;
+                  </Text>
+                ))}
+              </Surface>
+            )}
           </Surface>
         }
         titleStyle={styles.titleStyles}

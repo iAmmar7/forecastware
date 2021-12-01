@@ -5,7 +5,7 @@ import { Surface, Text } from 'react-native-paper';
 import { useStyles } from '../../hooks';
 import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails } from '../../components';
 
-const HomeComponent = (props) => {
+const LocationComponent = (props) => {
   const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
 
@@ -68,4 +68,4 @@ const createStyles = () => ({
   },
 });
 
-export default HomeComponent;
+export default LocationComponent;
