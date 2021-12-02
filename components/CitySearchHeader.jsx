@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Appbar, Surface, Title, Text, TouchableRipple, Searchbar } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 
 import { useStyles } from '../hooks';
 
@@ -43,6 +44,7 @@ const Header = (props) => {
 
 const createStyles = (theme) => ({
   header: {
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.surface,
     shadowColor: 'transparent',
     width: '100%',
