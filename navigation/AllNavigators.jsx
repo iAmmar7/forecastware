@@ -3,17 +3,35 @@ import { Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
-import { LocationScreen, CityScreen } from '../screens';
-import { TabBar } from '../components';
+import { LocationScreen, CityManagementScreen, CitySearchScreen } from '../screens';
+import { CityManagementHeader, TabBar, CitySearchHeader } from '../components';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="City" component={CityScreen} options={{ ...TransitionPresets.SlideFromRightIOS }} />
+      <Stack.Screen
+        name="City"
+        component={CityManagementScreen}
+        options={{
+          ...TransitionPresets.SlideFromRightIOS,
+          header: CityManagementHeader,
+          headerTitle: 'City Management',
+        }}
+      />
+      <Stack.Screen
+        name="CitySearch"
+        component={CitySearchScreen}
+        options={{
+          header: CitySearchHeader,
+          headerTitle: 'Add City',
+          presentation: 'modal',
+          headerMode: 'screen',
+        }}
+      />
     </Stack.Navigator>
   );
 };
