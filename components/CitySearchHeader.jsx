@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Appbar, Surface, Title, Text, TouchableRipple, Searchbar } from 'react-native-paper';
+import { Appbar, Surface, Title, Text, TouchableRipple, Searchbar, Portal } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
-import { useStyles } from '../hooks';
+import { useStyles, useDebounce } from '../hooks';
 
 const Header = (props) => {
   const {
@@ -12,46 +12,44 @@ const Header = (props) => {
   } = props;
   const { styles, theme } = useStyles(createStyles);
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedValue = useDebounce(searchQuery, 5000);
+
+  // useEffect(() => {
+  //   if (debouncedValue.trim().length > 0) {
+  //   }
+  // }, [debouncedValue]);
 
   return (
-    <Appbar.Header style={{ ...styles.header, elevation: showBottomBorder === true ? 10 : 0 }}>
-      <Surface style={styles.contentContainer}>
-        <Surface style={styles.content}>
-          <Surface style={styles.cancel}>
-            <TouchableRipple onPress={() => navigation.pop()} borderless style={styles.cancelTouch}>
-              <Text style={styles.cancelText}>Cancel</Text>
-            </TouchableRipple>
-          </Surface>
-          <Surface style={styles.title}>
-            <Title style={styles.titleText}>{headerTitle}</Title>
-          </Surface>
-          <Surface style={styles.hidden}></Surface>
+    <Surface style={{ ...styles.screen, elevation: showBottomBorder === true ? 10 : 0 }}>
+      <Surface style={styles.content}>
+        <Surface style={styles.cancel}>
+          <TouchableRipple onPress={() => navigation.pop()} borderless style={styles.cancelTouch}>
+            <Text style={styles.cancelText}>Cancel</Text>
+          </TouchableRipple>
         </Surface>
-        <Surface style={styles.searchBarContainer}>
-          <Searchbar
-            placeholder="Search location"
-            onChangeText={(query) => setSearchQuery(query)}
-            value={searchQuery}
-            style={styles.searchBar}
-            inputStyle={styles.inputStyle}
-            icon={() => <MaterialIcons name="search" size={18} color={theme.colors.backdrop} />}
-          />
+        <Surface style={styles.title}>
+          <Title style={styles.titleText}>{headerTitle}</Title>
         </Surface>
+        <Surface style={styles.hidden}></Surface>
       </Surface>
-    </Appbar.Header>
+      <Surface style={styles.searchBarContainer}>
+        <Searchbar
+          placeholder="Search location"
+          onChangeText={(query) => setSearchQuery(query)}
+          value={searchQuery}
+          style={styles.searchBar}
+          inputStyle={styles.inputStyle}
+          icon={() => <MaterialIcons name="search" size={18} color={theme.colors.placeholder} />}
+        />
+      </Surface>
+    </Surface>
   );
 };
 
 const createStyles = (theme) => ({
-  header: {
-    paddingTop: Constants.statusBarHeight - 36,
-    backgroundColor: theme.colors.surface,
-    shadowColor: 'transparent',
-    width: '100%',
-    elevation: 0,
-    height: 'auto',
-  },
+  screen: {},
   content: {
+    paddingTop: Constants.statusBarHeight,
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
@@ -86,7 +84,7 @@ const createStyles = (theme) => ({
     marginVertical: 10,
     height: 32,
     elevation: 0,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.dark ? theme.colors.surface : theme.colors.background,
   },
   inputStyle: {
     fontSize: 14,

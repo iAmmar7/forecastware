@@ -26,10 +26,9 @@ const StackNavigator = () => {
         name="CitySearch"
         component={CitySearchScreen}
         options={{
+          ...TransitionPresets.ModalSlideFromBottomIOS,
           header: CitySearchHeader,
           headerTitle: 'Add City',
-          presentation: 'modal',
-          headerMode: 'screen',
         }}
       />
     </Stack.Navigator>
