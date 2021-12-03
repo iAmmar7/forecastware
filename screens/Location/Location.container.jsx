@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 import LocationComponent from './Location.component';
 import { useUserContext } from '../../hooks';
-import { fetchWeather } from './api';
+import { fetchWeather } from '../../api';
 
 const LocationContainer = () => {
   const [weather, setWeather] = useState(null);

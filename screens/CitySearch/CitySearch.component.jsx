@@ -1,13 +1,21 @@
 import React from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface, Button } from 'react-native-paper';
 
 import { useStyles } from '../../hooks';
 
-const CitySearchComponent = () => {
+const CitySearchComponent = (props) => {
+  const { navigation } = props;
   const { styles, theme } = useStyles(createStyles);
 
   return (
-    <Surface style={styles.screen}>
+    <ScrollView
+      style={styles.screen}
+      onScroll={(event) => {
+        navigation.setOptions({ showBottomBorder: event.nativeEvent.contentOffset.y > 15 });
+      }}
+      scrollEventThrottle={10}
+    >
       <Surface style={styles.container}>
         <Surface>
           <Subheading style={styles.subHeading}>Top cities</Subheading>
@@ -226,13 +234,14 @@ const CitySearchComponent = () => {
           </Surface>
         </Surface>
       </Surface>
-    </Surface>
+    </ScrollView>
   );
 };
 
-const createStyles = () => ({
+const createStyles = (theme) => ({
   screen: {
     flex: 1,
+    backgroundColor: theme.colors.surface,
   },
   container: {
     marginVertical: 20,

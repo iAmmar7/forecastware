@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL, API_KEY } from './constants';
+import { API_URL, API_KEY } from '../utils/constants';
 
 export default class API {
   constructor(baseURL) {

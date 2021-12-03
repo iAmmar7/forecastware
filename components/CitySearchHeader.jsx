@@ -7,14 +7,14 @@ import { useStyles } from '../hooks';
 
 const Header = (props) => {
   const {
-    options: { headerTitle },
+    options: { headerTitle, showBottomBorder },
     navigation,
   } = props;
   const { styles, theme } = useStyles(createStyles);
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <Appbar.Header style={styles.header}>
+    <Appbar.Header style={{ ...styles.header, elevation: showBottomBorder === true ? 10 : 0 }}>
       <Surface style={styles.contentContainer}>
         <Surface style={styles.content}>
           <Surface style={styles.cancel}>
@@ -44,7 +44,7 @@ const Header = (props) => {
 
 const createStyles = (theme) => ({
   header: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: Constants.statusBarHeight - 36,
     backgroundColor: theme.colors.surface,
     shadowColor: 'transparent',
     width: '100%',

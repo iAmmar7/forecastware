@@ -11,8 +11,6 @@ const Header = (props) => {
   } = props;
   const { styles, theme } = useStyles(createStyles);
 
-  console.log('props', props);
-
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }} style={styles.header}>
       {/* {back && <Appbar.BackAction onPress={() => navigation.goBack()} />} */}

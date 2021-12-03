@@ -1,4 +1,4 @@
-import API from '../../utils/axios';
+import API from './axios';
 
 const api = new API();
 
