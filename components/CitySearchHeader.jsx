@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Appbar, Surface, Title, Text, TouchableRipple, Searchbar, Portal } from 'react-native-paper';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Surface, Title, Text, TouchableRipple, Searchbar, Portal } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 import { useStyles, useDebounce } from '../hooks';
+import { fetchLocations } from '../api';
 
 const Header = (props) => {
   const {
@@ -12,12 +13,25 @@ const Header = (props) => {
   } = props;
   const { styles, theme } = useStyles(createStyles);
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedValue = useDebounce(searchQuery, 5000);
+  const [locations, setLocations] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const debouncedValue = useDebounce(searchQuery);
 
-  // useEffect(() => {
-  //   if (debouncedValue.trim().length > 0) {
-  //   }
-  // }, [debouncedValue]);
+  const searchLocations = useCallback(
+    async (q) => {
+      setIsSearching(true);
+      const response = await fetchLocations(q);
+      setLocations(response);
+      setIsSearching(false);
+    },
+    [isSearching]
+  );
+
+  useEffect(() => {
+    if (debouncedValue.trim().length > 0) {
+      searchLocations(debouncedValue);
+    }
+  }, [debouncedValue]);
 
   return (
     <Surface style={{ ...styles.screen, elevation: showBottomBorder === true ? 10 : 0 }}>

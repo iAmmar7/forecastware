@@ -19,7 +19,6 @@ function TabBar(props) {
   }, [routes, tabIndex]);
 
   const handleNavigate = () => {
-    console.log('navigation', navigation);
     navigation.navigate('City');
   };
 

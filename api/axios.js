@@ -15,11 +15,12 @@ export default class API {
         if (response.status === 200) {
           return response.data;
         }
+        console.log('Throwing response', response);
         throw response;
       },
-      async (error) => {
-        console.log('API Error', error);
-        throw error;
+      (error) => {
+        console.log('API Error', error.response);
+        // throw error;
       }
     );
   }

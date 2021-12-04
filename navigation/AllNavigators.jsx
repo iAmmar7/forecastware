@@ -5,6 +5,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 import { LocationScreen, CityManagementScreen, CitySearchScreen } from '../screens';
 import { CityManagementHeader, TabBar, CitySearchHeader } from '../components';
+import { useLocationContext } from '../hooks';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -36,13 +37,23 @@ const StackNavigator = () => {
 };
 
 const TabNavigator = () => {
+  const { locations } = useLocationContext();
+
   return (
     <Tab.Navigator
       initialRouteName="Location"
       initialLayout={{ width: Dimensions.get('window').width }}
       tabBar={(props) => <TabBar {...props} />}
     >
-      <Tab.Screen name="Location" component={LocationScreen} options={{ headerTitle: 'Location' }} />
+      {locations.map((loc) => (
+        <Tab.Screen
+          key={loc.name}
+          name={loc.name}
+          component={LocationScreen}
+          initialParams={{ weather: loc }}
+          options={{ headerTitle: loc.name }}
+        />
+      ))}
     </Tab.Navigator>
   );
 };

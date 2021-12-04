@@ -1,5 +1,5 @@
-import React, { useState, createContext } from 'react';
-import * as Location from 'expo-location';
+import React, { useState, useEffect, createContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserContext = createContext(null);
 
@@ -7,21 +7,29 @@ const UserContextProvider = ({ children }) => {
   const [location, setLocation] = useState(null);
   const [unit, setUnit] = useState('Celsius');
 
-  const fetchLocation = async () => {
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  };
-
-  const askForLocation = async () => {
-    let position = await Location.requestForegroundPermissionsAsync();
-    if (position.status !== 'granted') return;
-    fetchLocation();
-  };
-
   const setTemperatureUnit = (unit) => setUnit(unit);
 
+  useEffect(() => {
+    (async () => {
+      const locationFromStorage = await AsyncStorage.getItem('location');
+      setLocation(JSON.parse(locationFromStorage));
+    })();
+  }, []);
+
+  const setCurrentLocation = (location) => {
+    setLocation(location);
+    AsyncStorage.setItem('location', JSON.stringify({ location }));
+  };
+
+  const clearCurrentLocation = () => {
+    setLocation(null);
+    AsyncStorage.clear();
+  };
+
   return (
-    <UserContext.Provider value={{ location, unit, askForLocation, fetchLocation, setTemperatureUnit }}>
+    <UserContext.Provider
+      value={{ currentLocation: location, setCurrentLocation, clearCurrentLocation, unit, setTemperatureUnit }}
+    >
       {children}
     </UserContext.Provider>
   );
