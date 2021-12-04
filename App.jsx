@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useMemo } from 'react';
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
       <PaperProvider theme={theme}>
         <UserContextProvider>
           <LocationContextProvider>

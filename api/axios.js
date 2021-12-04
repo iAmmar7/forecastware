@@ -21,7 +21,7 @@ export default class API {
       (error) => {
         console.log('API Error', error.response);
         // throw error;
-      }
+      },
     );
   }
 

@@ -19,7 +19,12 @@ export const isEmpty = (arg) => {
 
   if (isArray(arg) && arg.length < 1) return true;
 
-  if (isObject(arg) && Object.keys(arg).length === 0 && Object.getPrototypeOf(arg) === Object.prototype) return true;
+  if (
+    isObject(arg) &&
+    Object.keys(arg).length === 0 &&
+    Object.getPrototypeOf(arg) === Object.prototype
+  )
+    return true;
 
   return false;
 };

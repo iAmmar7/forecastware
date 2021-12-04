@@ -32,6 +32,7 @@ export const fetchWeatherFromCoordinates = async (coords, unit) => {
     return payload;
   } catch (error) {
     console.error('Error', error);
+    return error;
   }
 };
 

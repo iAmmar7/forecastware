@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { useStyles } from '../../hooks';
 
-const StartupComponent = () => {
+function StartupComponent() {
   const {
     styles,
     theme: { colors },
@@ -13,17 +13,20 @@ const StartupComponent = () => {
 
   return (
     <Surface style={styles.screen}>
-      <LinearGradient colors={[colors.primary, colors.surface, colors.accent]} style={styles.gradient}>
+      <LinearGradient
+        colors={[colors.primary, colors.surface, colors.accent]}
+        style={styles.gradient}
+      >
         <Surface style={styles.container}>
           <Animatable.Image
-            animation="slideInRight"
+            animation='slideInRight'
             delay={100}
-            iterationCount="infinite"
-            direction="alternate"
-            useNativeDriver={true}
+            iterationCount='infinite'
+            direction='alternate'
+            useNativeDriver
             source={require('../../assets/logo.png')}
             style={{ width: 66, height: 66 }}
-          ></Animatable.Image>
+          />
           <Surface style={styles.headline}>
             <Headline style={styles.title}>Forecast</Headline>
             <Headline style={styles.subTitle}>Ware</Headline>
@@ -32,7 +35,7 @@ const StartupComponent = () => {
       </LinearGradient>
     </Surface>
   );
-};
+}
 
 const createStyles = (theme) => ({
   screen: {

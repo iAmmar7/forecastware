@@ -6,7 +6,7 @@ import { useUserContext, useLocationContext } from '../../hooks';
 import { fallBackLatitude, fallBackLongitude } from '../../utils/constants';
 import { fetchWeatherFromCoordinates } from '../../api';
 
-const StartupContainer = () => {
+function StartupContainer() {
   const [{ currentLocation, setCurrentLocation, clearCurrentLocation, unit }, { addLocation }] = [
     useUserContext(),
     useLocationContext(),
@@ -39,7 +39,7 @@ const StartupContainer = () => {
             longitude: fallBackLongitude,
             latitude: fallBackLatitude,
           },
-          unit
+          unit,
         );
         addLocation(weather);
       }
@@ -47,6 +47,6 @@ const StartupContainer = () => {
   }, []);
 
   return <StartupComponent />;
-};
+}
 
 export default StartupContainer;
