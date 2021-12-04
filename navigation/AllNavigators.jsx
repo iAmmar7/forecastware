@@ -10,12 +10,12 @@ import { useLocationContext } from '../hooks';
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
-const StackNavigator = () => {
+function StackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName='Home'>
+      <Stack.Screen name='Home' component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
-        name="City"
+        name='City'
         component={CityManagementScreen}
         options={{
           ...TransitionPresets.SlideFromRightIOS,
@@ -24,7 +24,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="CitySearch"
+        name='CitySearch'
         component={CitySearchScreen}
         options={{
           ...TransitionPresets.ModalSlideFromBottomIOS,
@@ -34,16 +34,16 @@ const StackNavigator = () => {
       />
     </Stack.Navigator>
   );
-};
+}
 
-const TabNavigator = () => {
+function TabNavigator() {
   const { locations } = useLocationContext();
 
   return (
     <Tab.Navigator
-      initialRouteName="Location"
+      initialRouteName='Location'
       initialLayout={{ width: Dimensions.get('window').width }}
-      tabBar={(props) => <TabBar {...props} />}
+      tabBar={TabBar}
     >
       {locations.map((loc) => (
         <Tab.Screen
@@ -56,6 +56,6 @@ const TabNavigator = () => {
       ))}
     </Tab.Navigator>
   );
-};
+}
 
 export default StackNavigator;

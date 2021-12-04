@@ -30,6 +30,7 @@
     "no-console": "off",
     "global-require": "off",
     "react/function-component-definition": ["error", {}],
-    "no-use-before-define": ["off", { "functions": true, "classes": true, "variables": true }]
+    "no-use-before-define": ["off", { "functions": true, "classes": true, "variables": true }],
+    "react/forbid-prop-types": ["error", { "forbid": [] }]
   }
 }

@@ -17,7 +17,10 @@ enableScreens();
 
 export default function App() {
   const scheme = useColorScheme();
-  const theme = useMemo(() => (scheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme), [scheme]);
+  const theme = useMemo(
+    () => (scheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
+    [scheme],
+  );
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),

@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface, Button } from 'react-native-paper';
 
 import { useStyles } from '../../hooks';
 
-const CitySearchComponent = (props) => {
+function CitySearchComponent(props) {
   const { navigation } = props;
   const { styles, theme } = useStyles(createStyles);
 
@@ -24,7 +25,7 @@ const CitySearchComponent = (props) => {
             <Surface style={styles.btnContainer}>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -34,7 +35,7 @@ const CitySearchComponent = (props) => {
                   Position
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -44,7 +45,7 @@ const CitySearchComponent = (props) => {
                   Islamabad
                 </Button>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -56,7 +57,7 @@ const CitySearchComponent = (props) => {
               </Surface>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -66,7 +67,7 @@ const CitySearchComponent = (props) => {
                   Lahore
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -76,7 +77,7 @@ const CitySearchComponent = (props) => {
                   Rawalpindi
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -88,7 +89,7 @@ const CitySearchComponent = (props) => {
               </Surface>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -107,7 +108,7 @@ const CitySearchComponent = (props) => {
             <Surface style={styles.btnContainer}>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -117,7 +118,7 @@ const CitySearchComponent = (props) => {
                   New York
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -127,7 +128,7 @@ const CitySearchComponent = (props) => {
                   Paris
                 </Button>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -139,7 +140,7 @@ const CitySearchComponent = (props) => {
               </Surface>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -149,7 +150,7 @@ const CitySearchComponent = (props) => {
                   Tokyo
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -159,7 +160,7 @@ const CitySearchComponent = (props) => {
                   Rome
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -171,7 +172,7 @@ const CitySearchComponent = (props) => {
               </Surface>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -181,7 +182,7 @@ const CitySearchComponent = (props) => {
                   Moscow
                 </Button>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -191,7 +192,7 @@ const CitySearchComponent = (props) => {
                   Sydney
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -203,7 +204,7 @@ const CitySearchComponent = (props) => {
               </Surface>
               <Surface style={styles.btnRow}>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -213,7 +214,7 @@ const CitySearchComponent = (props) => {
                   Singapore
                 </Button>
                 <Button
-                  mode="outlined"
+                  mode='outlined'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -223,7 +224,7 @@ const CitySearchComponent = (props) => {
                   Beijing
                 </Button>
                 <Button
-                  mode="contained"
+                  mode='contained'
                   color={theme.colors.primary}
                   uppercase={false}
                   onPress={() => console.log('Pressed')}
@@ -239,7 +240,7 @@ const CitySearchComponent = (props) => {
       </ScrollView>
     </Surface>
   );
-};
+}
 
 const createStyles = () => ({
   screen: {
@@ -271,5 +272,9 @@ const createStyles = () => ({
     fontSize: 12,
   },
 });
+
+CitySearchComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+};
 
 export default CitySearchComponent;
