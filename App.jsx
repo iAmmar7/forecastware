@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/prop-types */
 /* eslint-disable global-require */
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
@@ -15,6 +18,18 @@ import AppNavigator from './navigation/AppNavigator';
 // https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
 enableScreens();
 
+const combineProviders = (providers) =>
+  providers.reduce(
+    (Combined, { name: Provider, props = {} }) =>
+      ({ children }) =>
+        (
+          <Combined>
+            <Provider {...props}>{children}</Provider>
+          </Combined>
+        ),
+    Fragment,
+  );
+
 export default function App() {
   const scheme = useColorScheme();
   const theme = useMemo(
@@ -27,19 +42,24 @@ export default function App() {
     'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
     'open-sans-medium': require('./assets/fonts/OpenSans-Medium.ttf'),
   });
+  const Providers = useMemo(
+    () =>
+      combineProviders([
+        { name: PaperProvider, props: { theme } },
+        { name: UserContextProvider },
+        { name: LocationContextProvider },
+      ]),
+    [theme],
+  );
 
   if (!fontsLoaded) return null;
 
   return (
     <>
       <StatusBar style='auto' />
-      <PaperProvider theme={theme}>
-        <UserContextProvider>
-          <LocationContextProvider>
-            <AppNavigator theme={theme} />
-          </LocationContextProvider>
-        </UserContextProvider>
-      </PaperProvider>
+      <Providers>
+        <AppNavigator theme={theme} />
+      </Providers>
     </>
   );
 }

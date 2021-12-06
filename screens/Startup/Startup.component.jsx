@@ -1,38 +1,34 @@
 import React from 'react';
 import { Surface, Headline } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { useStyles } from '../../hooks';
 
 function StartupComponent() {
-  const {
-    styles,
-    theme: { colors },
-  } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   return (
     <Surface style={styles.screen}>
-      <LinearGradient
-        colors={[colors.primary, colors.surface, colors.accent]}
-        style={styles.gradient}
-      >
+      <Surface style={styles.wrapper}>
         <Surface style={styles.container}>
-          <Animatable.Image
-            animation='slideInRight'
-            delay={100}
-            iterationCount='infinite'
-            direction='alternate'
-            useNativeDriver
-            source={require('../../assets/logo.png')}
-            style={{ width: 66, height: 66 }}
-          />
+          <Surface style={styles.logoContainer}>
+            <Animatable.Image
+              animation='slideInRight'
+              delay={100}
+              iterationCount='infinite'
+              direction='alternate'
+              useNativeDriver
+              source={require('../../assets/logo.png')}
+              style={{ width: 66, height: 66 }}
+            />
+          </Surface>
           <Surface style={styles.headline}>
             <Headline style={styles.title}>Forecast</Headline>
             <Headline style={styles.subTitle}>Ware</Headline>
           </Surface>
         </Surface>
-      </LinearGradient>
+        <Surface style={styles.secondContainer} />
+      </Surface>
     </Surface>
   );
 }
@@ -40,26 +36,40 @@ function StartupComponent() {
 const createStyles = (theme) => ({
   screen: {
     flex: 1,
-    width: '100%',
   },
-  gradient: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  wrapper: {
     flex: 1,
+    justifyContent: 'center',
+    backgroundColor: theme.colors.accent,
   },
   container: {
-    backgroundColor: 'transparent',
+    flex: 2,
+    backgroundColor: theme.colors.surface,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+    paddingBottom: 40,
+  },
+  logoContainer: {
+    width: '42%',
+  },
+  secondContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.accent,
   },
   headline: {
     backgroundColor: 'transparent',
     flexDirection: 'row',
   },
   title: {
-    fontSize: 26,
+    fontSize: 30,
+    fontFamily: 'open-sans-medium',
   },
   subTitle: {
     color: theme.colors.primary,
-    fontSize: 26,
+    fontFamily: 'open-sans-medium',
+    fontSize: 30,
   },
 });
 
