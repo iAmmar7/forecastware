@@ -1,12 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState, useEffect, useCallback } from 'react';
-import { Surface, Title, Text, TouchableRipple, Searchbar, Portal } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { Surface, Title, Text, TouchableRipple, Searchbar, List, Card } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
+import Loader from './Loader';
 import { useStyles, useDebounce } from '../hooks';
 import { fetchLocations } from '../api';
+import { isEmpty } from '../utils/helpers';
 
-const Header = (props) => {
+function Header(props) {
   const {
     options: { headerTitle, showBottomBorder },
     navigation,
@@ -19,12 +23,11 @@ const Header = (props) => {
 
   const searchLocations = useCallback(
     async (q) => {
-      setIsSearching(true);
       const response = await fetchLocations(q);
       setLocations(response);
       setIsSearching(false);
     },
-    [isSearching]
+    [isSearching],
   );
 
   useEffect(() => {
@@ -32,6 +35,15 @@ const Header = (props) => {
       searchLocations(debouncedValue);
     }
   }, [debouncedValue]);
+
+  useEffect(() => {
+    if (searchQuery.trim().length === 0) setIsSearching(false);
+    else setIsSearching(true);
+  }, [searchQuery]);
+
+  const handleSearchQuery = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
     <Surface style={{ ...styles.screen, elevation: showBottomBorder === true ? 10 : 0 }}>
@@ -44,21 +56,41 @@ const Header = (props) => {
         <Surface style={styles.title}>
           <Title style={styles.titleText}>{headerTitle}</Title>
         </Surface>
-        <Surface style={styles.hidden}></Surface>
+        <Surface style={styles.hidden} />
       </Surface>
       <Surface style={styles.searchBarContainer}>
         <Searchbar
-          placeholder="Search location"
-          onChangeText={(query) => setSearchQuery(query)}
+          placeholder='Search location'
+          onChangeText={handleSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
           inputStyle={styles.inputStyle}
-          icon={() => <MaterialIcons name="search" size={18} color={theme.colors.placeholder} />}
+          icon={() => <MaterialIcons name='search' size={18} color={theme.colors.placeholder} />}
+          onIconPress={() => console.log('onIcon')}
         />
+        {isSearching && (
+          <Card style={styles.loader}>
+            <Loader />
+          </Card>
+        )}
+        {!isEmpty(locations) && !isEmpty(searchQuery) && (
+          <Card style={styles.list}>
+            <List.Section>
+              {locations.map((loc, index) => (
+                <List.Item
+                  key={`${loc.lat}-${loc.lon}`}
+                  title={<Text style={styles.listItemText}>{loc.name}</Text>}
+                  onPress={() => console.log('onPress')}
+                  style={index !== locations.length && styles.listItem}
+                />
+              ))}
+            </List.Section>
+          </Card>
+        )}
       </Surface>
     </Surface>
   );
-};
+}
 
 const createStyles = (theme) => ({
   screen: {},
@@ -93,6 +125,7 @@ const createStyles = (theme) => ({
   },
   searchBarContainer: {
     paddingHorizontal: 10,
+    position: 'relative',
   },
   searchBar: {
     marginVertical: 10,
@@ -105,6 +138,28 @@ const createStyles = (theme) => ({
     paddingLeft: 0,
     marginLeft: -10,
   },
+  list: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    top: 40,
+    marginHorizontal: 10,
+  },
+  listItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.border,
+  },
+  listItemText: {
+    fontSize: 14,
+  },
+  loader: {
+    height: 100,
+  },
 });
+
+Header.propTypes = {
+  options: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
 
 export default Header;

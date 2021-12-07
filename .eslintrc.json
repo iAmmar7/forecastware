@@ -32,6 +32,7 @@
     "react/function-component-definition": ["error", {}],
     "no-use-before-define": ["off", { "functions": true, "classes": true, "variables": true }],
     "react/forbid-prop-types": ["error", { "forbid": [] }],
-    "func-names": "off"
+    "func-names": "off",
+    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }]
   }
 }
