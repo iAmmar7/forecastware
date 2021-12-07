@@ -1,10 +1,11 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useMemo } from 'react';
+import PropTypes from 'prop-types';
 
-import dummyLocations from '../utils/dummy-data';
+import { dummyLocations } from '../utils/dummy-data';
 
 const LocationContext = createContext(null);
 
-const LocationContextProvider = ({ children }) => {
+function LocationContextProvider({ children }) {
   const [locations, setLocations] = useState(dummyLocations || []);
 
   const addLocation = (data) => {
@@ -21,7 +22,19 @@ const LocationContextProvider = ({ children }) => {
     setLocations((addedLocations) => [...addedLocations, data]);
   };
 
-  return <LocationContext.Provider value={{ locations, addLocation }}>{children}</LocationContext.Provider>;
+  const values = useMemo(
+    () => ({
+      locations,
+      addLocation,
+    }),
+    [locations],
+  );
+
+  return <LocationContext.Provider value={values}>{children}</LocationContext.Provider>;
+}
+
+LocationContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export { LocationContext };

@@ -1,4 +1,4 @@
-const dummyLocations = [
+export const dummyLocations = [
   {
     lat: 24.9056,
     lon: 67.0822,
@@ -1451,4 +1451,98 @@ const dummyLocations = [
   },
 ];
 
-export default dummyLocations;
+export const topCities = [
+  {
+    name: 'Islamabad',
+    lat: 33.6938118,
+    lon: 73.0651511,
+  },
+  {
+    name: 'Karachi',
+    lat: 24.8546842,
+    lon: 67.0207055,
+  },
+  {
+    name: 'Lahore',
+    lat: 31.5656822,
+    lon: 74.3141829,
+  },
+  {
+    name: 'Rawalpindi',
+    lat: 33.5914237,
+    lon: 73.0535122,
+  },
+  {
+    name: 'Multan',
+    lat: 30.1979793,
+    lon: 71.4724978,
+  },
+  {
+    name: 'Peshawar',
+    lat: 34.0123846,
+    lon: 71.5787458,
+  },
+];
+
+export const topWorldCities = [
+  {
+    name: 'New York',
+    lat: 40.7127281,
+    lon: -74.0060152,
+  },
+  {
+    name: 'Paris',
+    lat: 48.8588897,
+    lon: 2.3200410217200766,
+  },
+  {
+    name: 'Hong Kong',
+    lat: 18.3848631,
+    lon: -65.8285201,
+  },
+  {
+    name: 'Tokyo',
+    lat: 35.6828387,
+    lon: 139.7594549,
+  },
+  {
+    name: 'Rome',
+    lat: 41.8933203,
+    lon: 12.4829321,
+  },
+  {
+    name: 'Dubai',
+    lat: 25.2653471,
+    lon: 55.2924914,
+  },
+  {
+    name: 'Moscow',
+    lat: 55.7504461,
+    lon: 37.6174943,
+  },
+  {
+    name: 'Sydney',
+    lat: -33.768528,
+    lon: 150.9568559523945,
+  },
+  {
+    name: 'London',
+    lat: 51.5073219,
+    lon: -0.1276474,
+  },
+  {
+    name: 'Singapore',
+    lat: 1.2904753,
+    lon: 103.8520359,
+  },
+  {
+    name: 'Berlin',
+    lat: 52.5170365,
+    lon: 13.3888599,
+  },
+  {
+    name: 'Athens',
+    lat: 37.9839412,
+    lon: 23.7283052,
+  },
+];

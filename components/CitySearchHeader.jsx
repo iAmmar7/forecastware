@@ -21,6 +21,8 @@ function Header(props) {
   const [isSearching, setIsSearching] = useState(false);
   const debouncedValue = useDebounce(searchQuery);
 
+  console.log('locations', locations);
+
   const searchLocations = useCallback(
     async (q) => {
       const response = await fetchLocations(q);
@@ -41,9 +43,9 @@ function Header(props) {
     else setIsSearching(true);
   }, [searchQuery]);
 
-  const handleSearchQuery = (query) => {
+  const handleSearchQuery = useCallback((query) => {
     setSearchQuery(query);
-  };
+  }, []);
 
   return (
     <Surface style={{ ...styles.screen, elevation: showBottomBorder === true ? 10 : 0 }}>
@@ -73,7 +75,7 @@ function Header(props) {
             <Loader />
           </Card>
         )}
-        {!isEmpty(locations) && !isEmpty(searchQuery) && (
+        {!isSearching && !isEmpty(locations) && !isEmpty(searchQuery) && (
           <Card style={styles.list}>
             <List.Section>
               {locations.map((loc, index) => (
@@ -81,7 +83,7 @@ function Header(props) {
                   key={`${loc.lat}-${loc.lon}`}
                   title={<Text style={styles.listItemText}>{loc.name}</Text>}
                   onPress={() => console.log('onPress')}
-                  style={index !== locations.length && styles.listItem}
+                  style={index + 1 !== locations.length && styles.listItem}
                 />
               ))}
             </List.Section>

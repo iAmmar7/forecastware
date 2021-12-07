@@ -37,11 +37,14 @@ export const fetchWeatherFromCoordinates = async (coords, unit) => {
 };
 
 export const fetchLocations = async (query) => {
-  console.log('fetchLocations1', query);
-  const locations = await api.get('/geo/1.0/direct', null, {
-    q: query,
-    limit: 5,
-  });
-  console.log('fetchLocations2', locations);
-  return locations;
+  try {
+    const locations = await api.get('/geo/1.0/direct', null, {
+      q: query,
+      limit: 5,
+    });
+    return locations;
+  } catch (error) {
+    console.error('Error', error);
+    return error;
+  }
 };
