@@ -21,8 +21,6 @@ function Header(props) {
   const [isSearching, setIsSearching] = useState(false);
   const debouncedValue = useDebounce(searchQuery);
 
-  console.log('locations', locations);
-
   const searchLocations = useCallback(
     async (q) => {
       const response = await fetchLocations(q);
