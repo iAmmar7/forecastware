@@ -8,7 +8,7 @@ import { fetchWeather } from '../../api';
 function CitySearchContainer(props) {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [{ unit }, { addLocation }] = [useUserContext(), useLocationContext()];
+  const [{ unit }, { addLocation, removeLocation }] = [useUserContext(), useLocationContext()];
 
   const handleAddLocation = async (location) => {
     setIsLoading(true);
@@ -18,11 +18,18 @@ function CitySearchContainer(props) {
     navigation.navigate('Home', { screen: location.name });
   };
 
+  const handleRemoveLocation = async (location) => {
+    setIsLoading(true);
+    removeLocation(location);
+    setIsLoading(false);
+  };
+
   return (
     <CitySearchComponent
       navigation={navigation}
       loading={isLoading}
       handleAddLocation={handleAddLocation}
+      handleRemoveLocation={handleRemoveLocation}
     />
   );
 }

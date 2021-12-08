@@ -8,7 +8,7 @@ import { useStyles } from '../../hooks';
 import { topCities, topWorldCities } from '../../utils/dummy-data';
 
 function CitySearchComponent(props) {
-  const { loading, navigation, handleAddLocation } = props;
+  const { loading, navigation, handleAddLocation, handleRemoveLocation } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -22,11 +22,19 @@ function CitySearchComponent(props) {
         <Surface>
           <Surface style={styles.container}>
             <Subheading style={styles.subHeading}>Top cities</Subheading>
-            <CityList data={topCities} handleAddLocation={handleAddLocation} />
+            <CityList
+              data={topCities}
+              handleAddLocation={handleAddLocation}
+              handleRemoveLocation={handleRemoveLocation}
+            />
           </Surface>
           <Surface style={styles.container}>
             <Subheading style={styles.subHeading}>Top cities - world</Subheading>
-            <CityList data={topWorldCities} handleAddLocation={handleAddLocation} />
+            <CityList
+              data={topWorldCities}
+              handleAddLocation={handleAddLocation}
+              handleRemoveLocation={handleRemoveLocation}
+            />
           </Surface>
         </Surface>
       </ScrollView>
@@ -60,6 +68,7 @@ CitySearchComponent.propTypes = {
   loading: PropTypes.bool.isRequired,
   navigation: PropTypes.object.isRequired,
   handleAddLocation: PropTypes.func.isRequired,
+  handleRemoveLocation: PropTypes.func.isRequired,
 };
 
 export default CitySearchComponent;

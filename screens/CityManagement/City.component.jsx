@@ -10,12 +10,7 @@ import { useStyles } from '../../hooks';
 function CityComponent(props) {
   const { data, unit } = props;
   const [stateData, setStateData] = useState(data || []);
-  const {
-    styles,
-    theme: { colors },
-  } = useStyles(createStyles);
-
-  console.log('data', data, colors);
+  const { styles } = useStyles(createStyles);
 
   const handleDrag = ({ data: newData }) => {
     setStateData(newData);
