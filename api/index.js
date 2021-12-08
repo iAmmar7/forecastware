@@ -4,7 +4,7 @@ import { isEmpty } from '../utils/helpers';
 
 const api = new API();
 
-export const fetchWeatherFromCoordinates = async (coords, unit) => {
+export const fetchCurrentLocationWeather = async (coords, unit) => {
   try {
     let latitude = coords?.latitude;
     let longitude = coords?.longitude;
@@ -28,6 +28,24 @@ export const fetchWeatherFromCoordinates = async (coords, unit) => {
     });
 
     const payload = { ...weather, name: location?.[0]?.name || fallBackCity };
+
+    return payload;
+  } catch (error) {
+    console.error('Error', error);
+    return error;
+  }
+};
+
+export const fetchWeather = async (coords, unit) => {
+  try {
+    const weather = await api.get('/data/2.5/onecall', null, {
+      lat: coords.lat,
+      lon: coords.lon,
+      exclude: 'minutely,alerts',
+      ...(unit === 'Celsius' && { units: 'metric' }),
+    });
+
+    const payload = { ...weather, name: coords.name };
 
     return payload;
   } catch (error) {

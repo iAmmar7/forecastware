@@ -153,6 +153,10 @@ const createStyles = (theme) => ({
     fontSize: 14,
   },
   loader: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    top: 40,
     height: 100,
   },
 });

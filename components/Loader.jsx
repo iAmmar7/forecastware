@@ -1,15 +1,16 @@
-/* eslint-disable import/no-unresolved */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Surface, Text } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from '../hooks';
 
-function StartupComponent() {
+function Loader(props) {
+  const { style } = props;
   const { styles } = useStyles(createStyles);
 
   return (
-    <Surface style={styles.container}>
+    <Surface style={{ ...styles.container, ...style }}>
       <Animatable.Image
         animation='bounceIn'
         delay={100}
@@ -24,15 +25,25 @@ function StartupComponent() {
   );
 }
 
+Loader.propTypes = {
+  style: PropTypes.object,
+};
+
+Loader.defaultProps = {
+  style: {},
+};
+
 const createStyles = () => ({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    opacity: 0.7,
   },
   text: {
     fontSize: 12,
+    fontFamily: 'open-sans-bold',
   },
 });
 
-export default StartupComponent;
+export default Loader;

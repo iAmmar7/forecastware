@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 function StackNavigator() {
   return (
-    <Stack.Navigator initialRouteName='CitySearch'>
+    <Stack.Navigator initialRouteName='Home'>
       <Stack.Screen name='Home' component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
         name='City'

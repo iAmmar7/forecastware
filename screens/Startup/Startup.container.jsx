@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
 import { fallBackLatitude, fallBackLongitude } from '../../utils/constants';
-import { fetchWeatherFromCoordinates } from '../../api';
+import { fetchCurrentLocationWeather } from '../../api';
 
 function StartupContainer() {
   const [{ currentLocation, setCurrentLocation, clearCurrentLocation, unit }, { addLocation }] = [
@@ -27,14 +27,14 @@ function StartupContainer() {
           coordinates.latitude = location.coords.latitude;
         }
         // Fetch current location weather from the API
-        const weather = await fetchWeatherFromCoordinates(coordinates, unit);
+        const weather = await fetchCurrentLocationWeather(coordinates, unit);
         addLocation(weather);
       } else {
         // TODO: Fetch all the locations from DB
         clearCurrentLocation();
 
         // TOUNDO: Temporary fetching the weather of Karachi
-        const weather = await fetchWeatherFromCoordinates(
+        const weather = await fetchCurrentLocationWeather(
           {
             longitude: fallBackLongitude,
             latitude: fallBackLatitude,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FlatList, Image } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import dayjs from 'dayjs';
@@ -6,20 +7,23 @@ import dayjs from 'dayjs';
 import { useStyles } from '../hooks';
 import { getWeatherIconUrl } from '../utils/helpers';
 
-const HourlyWeatherList = (props) => {
-  const { data = [], unit } = props;
+function HourlyWeatherList(props) {
+  const { data, unit } = props;
   const { styles } = useStyles(createStyles);
 
   return (
     <Surface style={styles.hourlyListContainer}>
       <FlatList
         horizontal
+        showsHorizontalScrollIndicator={false}
         style={styles.hourlyList}
         data={data}
         keyExtractor={(item) => item.dt}
         renderItem={({ item }) => (
           <Surface style={styles.hourlyListItem}>
-            <Text style={styles.weatherText}>{dayjs(new Date(item.dt * 1000)).format('h:mmA')}</Text>
+            <Text style={styles.weatherText}>
+              {dayjs(new Date(item.dt * 1000)).format('h:mmA')}
+            </Text>
             <Image
               style={styles.weatherListIcon}
               source={{
@@ -35,6 +39,15 @@ const HourlyWeatherList = (props) => {
       />
     </Surface>
   );
+}
+
+HourlyWeatherList.propTypes = {
+  data: PropTypes.array,
+  unit: PropTypes.string.isRequired,
+};
+
+HourlyWeatherList.defaultProps = {
+  data: [],
 };
 
 const createStyles = (theme) => ({

@@ -11,6 +11,8 @@ function AppNavigator(props) {
   const { theme } = props;
   const { locations } = useLocationContext();
 
+  console.log('locations', locations);
+
   return (
     <NavigationContainer theme={theme}>
       {/* {!isEmpty(location) && isReady ? <AllNavigators /> : <StartupScreen />} */}

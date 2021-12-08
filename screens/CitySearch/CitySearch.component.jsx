@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface } from 'react-native-paper';
 
-import { CityList } from '../../components';
+import { CityList, Loader } from '../../components';
 import { useStyles } from '../../hooks';
 import { topCities, topWorldCities } from '../../utils/dummy-data';
 
 function CitySearchComponent(props) {
-  const { navigation } = props;
+  const { loading, navigation, handleAddLocation } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -21,19 +21,16 @@ function CitySearchComponent(props) {
       >
         <Surface>
           <Surface style={styles.container}>
-            <Surface>
-              <Subheading style={styles.subHeading}>Top cities</Subheading>
-            </Surface>
-            <CityList data={topCities} />
+            <Subheading style={styles.subHeading}>Top cities</Subheading>
+            <CityList data={topCities} handleAddLocation={handleAddLocation} />
           </Surface>
           <Surface style={styles.container}>
-            <Surface>
-              <Subheading style={styles.subHeading}>Top cities - world</Subheading>
-            </Surface>
-            <CityList data={topWorldCities} />
+            <Subheading style={styles.subHeading}>Top cities - world</Subheading>
+            <CityList data={topWorldCities} handleAddLocation={handleAddLocation} />
           </Surface>
         </Surface>
       </ScrollView>
+      {loading && <Loader style={styles.loader} />}
     </Surface>
   );
 }
@@ -41,6 +38,7 @@ function CitySearchComponent(props) {
 const createStyles = () => ({
   screen: {
     flex: 1,
+    position: 'relative',
   },
   container: {
     marginTop: 20,
@@ -51,10 +49,17 @@ const createStyles = () => ({
     fontFamily: 'open-sans-bold',
     fontSize: 14,
   },
+  loader: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+  },
 });
 
 CitySearchComponent.propTypes = {
+  loading: PropTypes.bool.isRequired,
   navigation: PropTypes.object.isRequired,
+  handleAddLocation: PropTypes.func.isRequired,
 };
 
 export default CitySearchComponent;
