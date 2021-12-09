@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ViewShot from 'react-native-view-shot';
 import { ScrollView, View } from 'react-native';
-import { FAB, Surface, Text } from 'react-native-paper';
+import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
 
-import { useStyles } from '../../hooks';
 import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails } from '../../components';
+import { useStyles } from '../../hooks';
+import { isEmpty } from '../../utils/helpers';
 
 function LocationComponent(props) {
-  const { data, unit, viewShotRef, handleExternalLink, handleFAB } = props;
-  const { styles } = useStyles(createStyles);
+  const { data, unit, viewShotRef, message, handleSnackbarDismiss, handleExternalLink, handleFAB } =
+    props;
+  const { styles, theme } = useStyles(createStyles);
 
   return (
     <View style={styles.screenWrapper}>
@@ -43,6 +45,17 @@ function LocationComponent(props) {
         </ScrollView>
       </ViewShot>
       <FAB style={styles.fab} small icon='camera' onPress={handleFAB} />
+      <Snackbar
+        visible={!isEmpty(message.type)}
+        duration={900}
+        onDismiss={handleSnackbarDismiss}
+        style={{
+          ...(message.type === 'error' && { backgroundColor: theme.colors.error }),
+          ...(message.type === 'info' && { backgroundColor: theme.colors.accent }),
+        }}
+      >
+        {message.text}
+      </Snackbar>
     </View>
   );
 }
@@ -51,6 +64,8 @@ LocationComponent.propTypes = {
   data: PropTypes.object.isRequired,
   unit: PropTypes.string.isRequired,
   viewShotRef: PropTypes.object.isRequired,
+  message: PropTypes.object.isRequired,
+  handleSnackbarDismiss: PropTypes.func.isRequired,
   handleExternalLink: PropTypes.func.isRequired,
   handleFAB: PropTypes.func.isRequired,
 };
