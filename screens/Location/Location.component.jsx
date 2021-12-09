@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View } from 'react-native';
+import { SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
 import ViewShot from 'react-native-view-shot';
 import * as Animatable from 'react-native-animatable';
 
-import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails } from '../../components';
+import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails, Loader } from '../../components';
 import { useStyles } from '../../hooks';
 import { isEmpty } from '../../utils/helpers';
 
@@ -16,6 +16,8 @@ function LocationComponent(props) {
     viewShotRef,
     animationRef,
     message,
+    refreshing,
+    handleRefresh,
     handleSnackbarDismiss,
     handleExternalLink,
     handleFAB,
@@ -23,11 +25,23 @@ function LocationComponent(props) {
   const { styles, theme } = useStyles(createStyles);
 
   return (
-    <View style={styles.screenWrapper}>
+    <SafeAreaView style={styles.screenWrapper}>
       <Animatable.View ref={animationRef}>
         <ViewShot ref={viewShotRef}>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                progressBackgroundColor='white'
+                colors={['white']}
+                progressViewOffset={-1000}
+              />
+            }
+          >
             <Surface style={styles.screen}>
+              {refreshing && <Loader style={styles.loader} label='Refreshing' />}
               <Surface style={styles.summary}>
                 <Surface style={styles.temperatureContainer}>
                   <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
@@ -67,7 +81,7 @@ function LocationComponent(props) {
       >
         {message.text}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -77,6 +91,8 @@ LocationComponent.propTypes = {
   viewShotRef: PropTypes.object.isRequired,
   animationRef: PropTypes.object.isRequired,
   message: PropTypes.object.isRequired,
+  refreshing: PropTypes.bool.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   handleSnackbarDismiss: PropTypes.func.isRequired,
   handleExternalLink: PropTypes.func.isRequired,
   handleFAB: PropTypes.func.isRequired,
@@ -88,7 +104,9 @@ const createStyles = (theme) => ({
     flex: 1,
   },
   scrollView: {},
-  screen: {},
+  screen: {
+    position: 'relative',
+  },
   summary: {
     marginTop: 200,
     paddingHorizontal: 18,
@@ -125,6 +143,11 @@ const createStyles = (theme) => ({
     bottom: 30,
     opacity: 0.5,
     backgroundColor: theme.colors.placeholder,
+  },
+  loader: {
+    position: 'absolute',
+    width: '100%',
+    height: 150,
   },
 });
 

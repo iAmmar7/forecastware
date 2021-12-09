@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "forecastware",
+    "name": "ForecastWare",
     "slug": "forecastware",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,14 +16,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "userInterfaceStyle": "automatic"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"

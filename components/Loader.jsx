@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { useStyles } from '../hooks';
 
 function Loader(props) {
-  const { style } = props;
+  const { label, style } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -20,17 +20,19 @@ function Loader(props) {
         source={require('../assets/logo.png')}
         style={{ width: 36, height: 36 }}
       />
-      <Text style={styles.text}>Loading...</Text>
+      <Text style={styles.text}>{label}</Text>
     </Surface>
   );
 }
 
 Loader.propTypes = {
   style: PropTypes.object,
+  label: PropTypes.string,
 };
 
 Loader.defaultProps = {
   style: {},
+  label: 'Loading...',
 };
 
 const createStyles = () => ({
