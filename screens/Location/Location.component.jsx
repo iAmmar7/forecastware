@@ -1,49 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ViewShot from 'react-native-view-shot';
 import { ScrollView, View } from 'react-native';
 import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
+import ViewShot from 'react-native-view-shot';
+import * as Animatable from 'react-native-animatable';
 
 import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails } from '../../components';
 import { useStyles } from '../../hooks';
 import { isEmpty } from '../../utils/helpers';
 
 function LocationComponent(props) {
-  const { data, unit, viewShotRef, message, handleSnackbarDismiss, handleExternalLink, handleFAB } =
-    props;
+  const {
+    data,
+    unit,
+    viewShotRef,
+    animationRef,
+    message,
+    handleSnackbarDismiss,
+    handleExternalLink,
+    handleFAB,
+  } = props;
   const { styles, theme } = useStyles(createStyles);
 
   return (
     <View style={styles.screenWrapper}>
-      <ViewShot ref={viewShotRef}>
-        <ScrollView style={styles.scrollView}>
-          <Surface style={styles.screen}>
-            <Surface style={styles.summary}>
-              <Surface style={styles.temperatureContainer}>
-                <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
-                <Surface style={styles.unit}>
-                  <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
-                  <Text style={styles.unitText}>{unit === 'Celsius' ? 'C' : 'F'}</Text>
+      <Animatable.View ref={animationRef}>
+        <ViewShot ref={viewShotRef}>
+          <ScrollView style={styles.scrollView}>
+            <Surface style={styles.screen}>
+              <Surface style={styles.summary}>
+                <Surface style={styles.temperatureContainer}>
+                  <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
+                  <Surface style={styles.unit}>
+                    <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
+                    <Text style={styles.unitText}>{unit === 'Celsius' ? 'C' : 'F'}</Text>
+                  </Surface>
+                </Surface>
+                <Surface>
+                  <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
                 </Surface>
               </Surface>
-              <Surface>
-                <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
-              </Surface>
+              <HourlyWeatherList data={data?.hourly} unit={unit} />
+              <WeeklyWeatherList
+                data={data?.daily}
+                unit={unit}
+                handleExternalLink={handleExternalLink}
+              />
+              <WeatherDetails
+                data={data?.current}
+                unit={unit}
+                handleExternalLink={handleExternalLink}
+              />
             </Surface>
-            <HourlyWeatherList data={data?.hourly} unit={unit} />
-            <WeeklyWeatherList
-              data={data?.daily}
-              unit={unit}
-              handleExternalLink={handleExternalLink}
-            />
-            <WeatherDetails
-              data={data?.current}
-              unit={unit}
-              handleExternalLink={handleExternalLink}
-            />
-          </Surface>
-        </ScrollView>
-      </ViewShot>
+          </ScrollView>
+        </ViewShot>
+      </Animatable.View>
       <FAB style={styles.fab} small icon='camera' onPress={handleFAB} />
       <Snackbar
         visible={!isEmpty(message.type)}
@@ -64,6 +75,7 @@ LocationComponent.propTypes = {
   data: PropTypes.object.isRequired,
   unit: PropTypes.string.isRequired,
   viewShotRef: PropTypes.object.isRequired,
+  animationRef: PropTypes.object.isRequired,
   message: PropTypes.object.isRequired,
   handleSnackbarDismiss: PropTypes.func.isRequired,
   handleExternalLink: PropTypes.func.isRequired,

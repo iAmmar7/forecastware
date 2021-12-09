@@ -13,6 +13,7 @@ function LocationContainer(props) {
   } = props;
   const { unit } = useUserContext();
   const viewShotRef = useRef();
+  const animationRef = useRef();
   const [message, setMessage] = useState({ type: null, text: null });
 
   const handleExternalLink = async () => {
@@ -20,6 +21,8 @@ function LocationContainer(props) {
   };
 
   const handleSnackbarDismiss = () => setMessage({ type: null, text: null });
+
+  const fadeAnimation = () => animationRef.current.fadeIn(1000);
 
   const handleImageSave = async (image) => {
     try {
@@ -37,6 +40,7 @@ function LocationContainer(props) {
   };
 
   const handleFAB = async () => {
+    fadeAnimation();
     captureScreen({
       format: 'jpg',
       quality: 1,
@@ -54,6 +58,7 @@ function LocationContainer(props) {
       data={weather}
       unit={unit}
       viewShotRef={viewShotRef}
+      animationRef={animationRef}
       handleExternalLink={handleExternalLink}
       handleFAB={handleFAB}
       message={message}
