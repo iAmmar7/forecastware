@@ -27,6 +27,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow ForecastWare to access your photos.",
+          "savePhotosPermission": "Allow ForecastWare to save screenshot.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
   }
 }

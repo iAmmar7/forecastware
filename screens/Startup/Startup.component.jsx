@@ -52,6 +52,7 @@ const createStyles = (theme) => ({
     paddingBottom: 40,
   },
   logoContainer: {
+    backgroundColor: theme.colors.surface,
     width: '42%',
   },
   secondContainer: {
