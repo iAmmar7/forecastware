@@ -16,6 +16,22 @@ function StartupContainer(props) {
     useLocationContext(),
   ];
 
+  useEffect(() => {
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const locationFromStorage = await AsyncStorage.getItem('location');
+      if (isEmpty(locations) && !locationFromStorage) {
+        hanldeAskLocation();
+        return;
+      }
+
+      if (!isEmpty(locations)) navigation.replace('Home');
+    })();
+  }, [locations.length]);
+
   const hanldeAskLocation = async () => {
     const position = await Location.requestForegroundPermissionsAsync();
     if (position.status !== 'granted') {
@@ -34,22 +50,6 @@ function StartupContainer(props) {
     setCurrentLocation(location);
     addLocation(weather, true);
   };
-
-  useEffect(() => {
-    fetchLocations();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const locationFromStorage = await AsyncStorage.getItem('location');
-      if (isEmpty(locations) && !locationFromStorage) {
-        hanldeAskLocation();
-        return;
-      }
-
-      if (!isEmpty(locations)) navigation.replace('Home');
-    })();
-  }, [locations.length]);
 
   const handleSnackbar = () => setPermissionDenied(false);
 
