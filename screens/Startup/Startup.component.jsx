@@ -1,34 +1,50 @@
 import React from 'react';
-import { Surface, Headline } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { Surface, Headline, Card, Snackbar } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from '../../hooks';
 
-function StartupComponent() {
-  const { styles } = useStyles(createStyles);
+function StartupComponent(props) {
+  const { snackbarVisible, handleSnackbar, hanldeAskLocation } = props;
+  const { styles, theme } = useStyles(createStyles);
 
   return (
     <Surface style={styles.screen}>
       <Surface style={styles.wrapper}>
-        <Surface style={styles.container}>
-          <Surface style={styles.logoContainer}>
-            <Animatable.Image
-              animation='slideInRight'
-              delay={100}
-              iterationCount='infinite'
-              direction='alternate'
-              useNativeDriver
-              source={require('../../assets/logo.png')}
-              style={{ width: 66, height: 66 }}
-            />
+        <Card style={styles.container}>
+          <Surface style={styles.content}>
+            <Surface style={styles.logoContainer}>
+              <Animatable.Image
+                animation='slideInRight'
+                delay={100}
+                iterationCount='infinite'
+                direction='alternate'
+                useNativeDriver
+                source={require('../../assets/logo.png')}
+                style={{ width: 66, height: 66 }}
+              />
+            </Surface>
+            <Surface style={styles.headline}>
+              <Headline style={styles.title}>Forecast</Headline>
+              <Headline style={styles.subTitle}>Ware</Headline>
+            </Surface>
           </Surface>
-          <Surface style={styles.headline}>
-            <Headline style={styles.title}>Forecast</Headline>
-            <Headline style={styles.subTitle}>Ware</Headline>
-          </Surface>
-        </Surface>
+        </Card>
         <Surface style={styles.secondContainer} />
       </Surface>
+      <Snackbar
+        visible={snackbarVisible}
+        duration={10000}
+        onDismiss={handleSnackbar}
+        action={{
+          label: 'Okay',
+          onPress: hanldeAskLocation,
+        }}
+        theme={{ colors: { onSurface: theme.colors.surface, surface: theme.colors.text } }}
+      >
+        Please allow location access to continue!
+      </Snackbar>
     </Surface>
   );
 }
@@ -45,11 +61,16 @@ const createStyles = (theme) => ({
   container: {
     flex: 2,
     backgroundColor: theme.colors.surface,
+    borderBottomLeftRadius: 120,
+    borderBottomRightRadius: 120,
+    paddingBottom: 40,
+    elevation: 10,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: 'transparent',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    borderBottomLeftRadius: 100,
-    borderBottomRightRadius: 100,
-    paddingBottom: 40,
   },
   logoContainer: {
     backgroundColor: theme.colors.surface,
@@ -73,5 +94,11 @@ const createStyles = (theme) => ({
     fontSize: 30,
   },
 });
+
+StartupComponent.propTypes = {
+  snackbarVisible: PropTypes.bool.isRequired,
+  handleSnackbar: PropTypes.func.isRequired,
+  hanldeAskLocation: PropTypes.func.isRequired,
+};
 
 export default StartupComponent;

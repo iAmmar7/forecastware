@@ -30,8 +30,6 @@ function TabBar(props) {
     return routeDetails.options.hasScrolled;
   }, [routeDetails]);
 
-  console.log('tabBar', hasScrolled);
-
   return (
     <Appbar.Header
       theme={{ colors: { primary: theme.colors.surface } }}

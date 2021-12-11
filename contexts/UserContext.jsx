@@ -1,24 +1,28 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserContext = createContext(null);
 
-const UserContextProvider = ({ children }) => {
+function UserContextProvider(props) {
+  const { children } = props;
   const [location, setLocation] = useState(null);
   const [unit, setUnit] = useState('Celsius');
 
-  const setTemperatureUnit = (unit) => setUnit(unit);
+  const setTemperatureUnit = (value) => setUnit(value);
 
   useEffect(() => {
     (async () => {
       const locationFromStorage = await AsyncStorage.getItem('location');
-      setLocation(JSON.parse(locationFromStorage));
+      const unitFromStorage = await AsyncStorage.getItem('unit');
+      setLocation(JSON.parse(locationFromStorage)?.location);
+      setUnit(unitFromStorage || 'Celsius');
     })();
   }, []);
 
-  const setCurrentLocation = (location) => {
-    setLocation(location);
-    AsyncStorage.setItem('location', JSON.stringify({ location }));
+  const setCurrentLocation = (loc) => {
+    setLocation(loc);
+    AsyncStorage.setItem('location', JSON.stringify({ location: loc }));
   };
 
   const clearCurrentLocation = () => {
@@ -26,13 +30,22 @@ const UserContextProvider = ({ children }) => {
     AsyncStorage.clear();
   };
 
-  return (
-    <UserContext.Provider
-      value={{ currentLocation: location, setCurrentLocation, clearCurrentLocation, unit, setTemperatureUnit }}
-    >
-      {children}
-    </UserContext.Provider>
+  const values = useMemo(
+    () => ({
+      currentLocation: location,
+      unit,
+      setCurrentLocation,
+      clearCurrentLocation,
+      setTemperatureUnit,
+    }),
+    [location, unit],
   );
+
+  return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
+}
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export { UserContext };

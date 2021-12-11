@@ -2,12 +2,12 @@ import React, { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { useCallback } from 'react/cjs/react.development';
-import { dummyLocations } from '../utils/dummy-data';
+// import { dummyLocations } from '../utils/dummy-data';
 
 const LocationContext = createContext(null);
 
 function LocationContextProvider({ children }) {
-  const [locations, setLocations] = useState(dummyLocations || []);
+  const [locations, setLocations] = useState([]);
 
   const addLocation = useCallback(
     (data) => {
