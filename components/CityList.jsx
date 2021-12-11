@@ -10,15 +10,15 @@ function CityList(props) {
   const { locations } = useLocationContext();
 
   const isLocationExist = useCallback(
-    (location) => locations.findIndex((loc) => loc.name === location.name) > -1,
+    (location) => locations.findIndex((loc) => loc.name === location.name),
     [locations],
   );
 
   const handleLocation = useCallback(
     (item) => () => {
       const isExist = isLocationExist(item);
-      if (isExist) {
-        handleRemoveLocation(item);
+      if (isExist > -1) {
+        handleRemoveLocation(locations[isExist]);
         return;
       }
       handleAddLocation(item);
@@ -29,7 +29,7 @@ function CityList(props) {
   return (
     <Surface style={styles.container}>
       {data.map((item) => {
-        const isExist = isLocationExist(item);
+        const isExist = isLocationExist(item) > -1;
         return (
           <TouchableRipple
             key={item.name}

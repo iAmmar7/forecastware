@@ -3,7 +3,7 @@ import React, { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { useCallback } from 'react/cjs/react.development';
-import { insertLocation, fetchAllLocations } from '../config/db';
+import { insertLocation, fetchAllLocations, deleteLocation } from '../config/db';
 
 const LocationContext = createContext(null);
 
@@ -50,10 +50,15 @@ function LocationContextProvider({ children }) {
   );
 
   const removeLocation = useCallback(
-    (data) => {
-      const newLocations = locations.filter((loc) => loc.name !== data.name);
-      setLocations(newLocations);
-      // TODO: Update the DB
+    async (data) => {
+      try {
+        const newLocations = locations.filter((loc) => loc.id !== data.id);
+        // Delete from the DB
+        await deleteLocation(data.id);
+        setLocations(newLocations);
+      } catch (error) {
+        console.log('DB Error', error);
+      }
     },
     [locations],
   );
