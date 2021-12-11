@@ -24,6 +24,7 @@
     "expo-linear-gradient": "~10.0.3",
     "expo-location": "~13.0.4",
     "expo-media-library": "~13.0.3",
+    "expo-sqlite": "~10.0.3",
     "expo-status-bar": "~1.1.0",
     "expo-web-browser": "~10.0.3",
     "prop-types": "^15.7.2",

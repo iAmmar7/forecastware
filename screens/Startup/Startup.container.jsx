@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
@@ -10,7 +11,7 @@ import { isEmpty } from '../../utils/helpers';
 function StartupContainer(props) {
   const { navigation } = props;
   const [permissionDenied, setPermissionDenied] = useState(false);
-  const [{ currentLocation, setCurrentLocation, unit }, { locations, addLocation }] = [
+  const [{ setCurrentLocation, unit }, { locations, fetchLocations, addLocation }] = [
     useUserContext(),
     useLocationContext(),
   ];
@@ -31,17 +32,24 @@ function StartupContainer(props) {
     // Fetch current location weather from the API
     const weather = await fetchCurrentLocationWeather(coordinates, unit);
     setCurrentLocation(location);
-    addLocation(weather);
-    navigation.replace('Home');
+    addLocation(weather, true);
   };
 
   useEffect(() => {
-    if (currentLocation && !isEmpty(locations)) {
-      navigation.replace('Home');
-      return;
-    }
-    hanldeAskLocation();
+    fetchLocations();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const locationFromStorage = await AsyncStorage.getItem('location');
+      if (isEmpty(locations) && !locationFromStorage) {
+        hanldeAskLocation();
+        return;
+      }
+
+      if (!isEmpty(locations)) navigation.replace('Home');
+    })();
+  }, [locations.length]);
 
   const handleSnackbar = () => setPermissionDenied(false);
 

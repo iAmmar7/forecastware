@@ -1,27 +1,50 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { useCallback } from 'react/cjs/react.development';
-// import { dummyLocations } from '../utils/dummy-data';
+import { insertLocation, fetchAllLocations } from '../config/db';
 
 const LocationContext = createContext(null);
 
 function LocationContextProvider({ children }) {
   const [locations, setLocations] = useState([]);
 
+  const fetchLocations = useCallback(async () => {
+    try {
+      const dbResponse = await fetchAllLocations();
+      const dbLocations = (dbResponse?.rows?._array || []).map((loc) => {
+        const parsedData = JSON.parse(loc?.data || {});
+        return {
+          id: loc?.id,
+          isCurrent: loc?.isCurrent === 1,
+          name: loc?.name,
+          lat: loc?.lat,
+          lon: loc?.lon,
+          ...parsedData,
+        };
+      });
+      setLocations(dbLocations);
+    } catch (error) {
+      console.log('DB Error', error);
+    }
+  }, [locations]);
+
   const addLocation = useCallback(
-    (data) => {
-      const locationIndex = locations.findIndex((loc) => loc.name === data.name);
+    async (data, isCurrent = false) => {
+      try {
+        const locationIndex = locations.findIndex((loc) => loc.name === data.name);
+        if (locationIndex > -1) return;
 
-      if (locationIndex > -1) {
-        const newLocations = { ...locations };
-        newLocations[locationIndex] = data;
-        setLocations(locations);
-        // TODO: Update the DB
-        return;
+        // Add into the DB
+        const dbResponse = await insertLocation(data, isCurrent);
+        setLocations((addedLocations) => [
+          ...addedLocations,
+          { id: dbResponse.insertId, isCurrent, ...data },
+        ]);
+      } catch (error) {
+        console.log('DB Error', error);
       }
-
-      setLocations((addedLocations) => [...addedLocations, data]);
     },
     [locations],
   );
@@ -40,6 +63,7 @@ function LocationContextProvider({ children }) {
       locations,
       addLocation,
       removeLocation,
+      fetchLocations,
     }),
     [locations],
   );

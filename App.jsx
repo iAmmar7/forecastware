@@ -13,10 +13,14 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import AppNavigator from './navigation/AppNavigator';
+import { init } from './config/db';
 
 // Good for performance
 // https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
 enableScreens();
+
+// Initialize the Database
+init();
 
 const combineProviders = (providers) =>
   providers.reduce(
