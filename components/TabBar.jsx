@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Appbar, Text, Surface, Title } from 'react-native-paper';
 
 import { useStyles } from '../hooks';
@@ -11,30 +12,49 @@ function TabBar(props) {
   } = props;
   const { styles, theme } = useStyles(createStyles);
 
-  const currentTabTitle = useMemo(() => {
+  const routeDetails = useMemo(() => {
     const routeKey = routes[tabIndex].key;
-    const title = descriptors[routeKey].options?.headerTitle;
+    return descriptors[routeKey];
+  }, [routes, tabIndex, descriptors]);
 
+  const currentTabTitle = useMemo(() => {
+    const title = routeDetails.options?.headerTitle;
     return title;
-  }, [routes, tabIndex]);
+  }, [routeDetails]);
 
   const handleNavigate = () => {
     navigation.navigate('City');
   };
 
+  const hasScrolled = useMemo(() => {
+    return routeDetails.options.hasScrolled;
+  }, [routeDetails]);
+
+  console.log('tabBar', hasScrolled);
+
   return (
-    <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }} style={styles.header}>
-      <Appbar.Action icon="city-variant-outline" onPress={handleNavigate} />
+    <Appbar.Header
+      theme={{ colors: { primary: theme.colors.surface } }}
+      style={{ ...styles.header, ...(hasScrolled && { elevation: 1 }) }}
+    >
+      <Appbar.Action
+        icon='city-variant-outline'
+        color={hasScrolled ? theme.colors.primary : theme.colors.text}
+        onPress={handleNavigate}
+      />
       <Appbar.Content
         title={
           <Surface style={styles.titleContainer}>
             <Title>{currentTabTitle}</Title>
-            {routes.length > 1 && (
+            {!hasScrolled && routes.length > 1 && (
               <Surface style={styles.dotContainer}>
                 {routes.map((route) => (
                   <Text
                     key={route.key}
-                    style={{ ...styles.dot, ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }) }}
+                    style={{
+                      ...styles.dot,
+                      ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
+                    }}
                   >
                     &#8226;
                   </Text>
@@ -45,13 +65,19 @@ function TabBar(props) {
         }
         titleStyle={styles.titleStyles}
       />
-      <Appbar.Action icon="dots-vertical" onPress={() => {}} />
+      <Appbar.Action
+        icon='dots-vertical'
+        color={hasScrolled ? theme.colors.primary : theme.colors.text}
+        onPress={() => {}}
+      />
     </Appbar.Header>
   );
 }
 
 const createStyles = (theme) => ({
-  header: {},
+  header: {
+    elevation: 0,
+  },
   titleStyles: {
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -77,5 +103,11 @@ const createStyles = (theme) => ({
     color: theme.colors.onSurface,
   },
 });
+
+TabBar.propTypes = {
+  state: PropTypes.object.isRequired,
+  descriptors: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
 
 export default TabBar;

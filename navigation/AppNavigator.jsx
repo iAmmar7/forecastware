@@ -15,8 +15,8 @@ function AppNavigator(props) {
     <NavigationContainer theme={theme}>
       {/* {!isEmpty(location) && isReady ? <AllNavigators /> : <StartupScreen />} */}
       {/* {!isEmpty(locations) ? <AllNavigators /> : <StartupScreen />} */}
-      {locations.length > 1 ? <AllNavigators /> : <StartupScreen />}
-      {/* <AllNavigators /> */}
+      {/* {locations.length > 1 ? <AllNavigators /> : <StartupScreen />} */}
+      <AllNavigators />
     </NavigationContainer>
   );
 }

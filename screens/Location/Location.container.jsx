@@ -11,10 +11,12 @@ import { fetchWeather } from '../../api';
 function LocationContainer(props) {
   const {
     route: { params: { weather = null } = {} },
+    navigation,
   } = props;
   const { unit } = useUserContext();
   const viewShotRef = useRef();
   const animationRef = useRef();
+  const scrollRef = useRef();
   const [message, setMessage] = useState({ type: null, text: null });
   const [refreshing, setRefreshing] = useState(false);
 
@@ -67,23 +69,42 @@ function LocationContainer(props) {
     );
   }, [message]);
 
+  const handleOnScroll = (e) => {
+    const offsetY = e.nativeEvent.contentOffset.y || 0;
+    if (offsetY === 0) {
+      handleRefresh();
+    }
+    if (offsetY <= 80) {
+      scrollRef.current?.scrollTo({ y: 0 });
+      navigation.setOptions({ hasScrolled: false });
+    }
+    if (offsetY > 80 && offsetY < 160) {
+      scrollRef.current?.scrollTo({ y: 200 });
+      navigation.setOptions({ hasScrolled: true });
+    }
+    console.log('navigation', navigation);
+  };
+
   return (
     <LocationComponent
       data={weather}
       unit={unit}
       viewShotRef={viewShotRef}
       animationRef={animationRef}
+      scrollRef={scrollRef}
       message={message}
       refreshing={refreshing}
       handleRefresh={handleRefresh}
       handleExternalLink={handleExternalLink}
       handleFAB={handleFAB}
       handleSnackbarDismiss={handleSnackbarDismiss}
+      handleOnScroll={handleOnScroll}
     />
   );
 }
 
 LocationContainer.propTypes = {
+  navigation: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
 };
 

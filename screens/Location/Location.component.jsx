@@ -15,12 +15,14 @@ function LocationComponent(props) {
     unit,
     viewShotRef,
     animationRef,
+    scrollRef,
     message,
     refreshing,
     handleRefresh,
     handleSnackbarDismiss,
     handleExternalLink,
     handleFAB,
+    handleOnScroll,
   } = props;
   const { styles, theme } = useStyles(createStyles);
 
@@ -30,6 +32,11 @@ function LocationComponent(props) {
         <ViewShot ref={viewShotRef}>
           <ScrollView
             style={styles.scrollView}
+            onScrollEndDrag={handleOnScroll}
+            scrollEventThrottle={100}
+            ref={scrollRef}
+            bounces
+            showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -41,7 +48,9 @@ function LocationComponent(props) {
             }
           >
             <Surface style={styles.screen}>
-              {refreshing && <Loader style={styles.loader} label='Refreshing' />}
+              <Surface style={styles.loaderContainer}>
+                {refreshing && <Loader style={styles.loader} label='Refreshing' />}
+              </Surface>
               <Surface style={styles.summary}>
                 <Surface style={styles.temperatureContainer}>
                   <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
@@ -90,12 +99,14 @@ LocationComponent.propTypes = {
   unit: PropTypes.string.isRequired,
   viewShotRef: PropTypes.object.isRequired,
   animationRef: PropTypes.object.isRequired,
+  scrollRef: PropTypes.object.isRequired,
   message: PropTypes.object.isRequired,
   refreshing: PropTypes.bool.isRequired,
   handleRefresh: PropTypes.func.isRequired,
   handleSnackbarDismiss: PropTypes.func.isRequired,
   handleExternalLink: PropTypes.func.isRequired,
   handleFAB: PropTypes.func.isRequired,
+  handleOnScroll: PropTypes.func.isRequired,
 };
 
 const createStyles = (theme) => ({
@@ -108,7 +119,7 @@ const createStyles = (theme) => ({
     position: 'relative',
   },
   summary: {
-    marginTop: 200,
+    // marginTop: 200,
     paddingHorizontal: 18,
     flexDirection: 'row',
     alignItems: 'center',
@@ -143,6 +154,9 @@ const createStyles = (theme) => ({
     bottom: 30,
     opacity: 0.5,
     backgroundColor: theme.colors.placeholder,
+  },
+  loaderContainer: {
+    height: 200,
   },
   loader: {
     position: 'absolute',
