@@ -9,3 +9,5 @@ export const dbName = 'forecastware';
 export const fallBackLongitude = 67.0822;
 export const fallBackLatitude = 24.9056;
 export const fallBackCity = 'Karachi';
+
+export const notificationDelay = 15; // 15 minutes

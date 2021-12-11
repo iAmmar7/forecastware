@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { Surface, Text } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Card, Surface, Text } from 'react-native-paper';
+// import { LinearGradient } from 'expo-linear-gradient';
 
 import { useStyles } from '../../hooks';
 
@@ -25,10 +25,11 @@ function CityComponent(props) {
         renderItem={({ item, drag, isActive }) => {
           return (
             <ScaleDecorator>
-              <LinearGradient
+              {/* <LinearGradient
                 colors={['#0288D1', '#81D4FA', '#B3E5FC', '#E1F5FE']}
                 style={styles.gradient}
-              >
+              > */}
+              <Card style={styles.gradient}>
                 <TouchableOpacity onLongPress={drag} disabled={isActive} style={styles.rowItem}>
                   <View style={styles.itemFlex}>
                     <View>
@@ -42,7 +43,8 @@ function CityComponent(props) {
                     </View>
                   </View>
                 </TouchableOpacity>
-              </LinearGradient>
+              </Card>
+              {/* </LinearGradient> */}
             </ScaleDecorator>
           );
         }}
@@ -51,7 +53,7 @@ function CityComponent(props) {
   );
 }
 
-const createStyles = () => ({
+const createStyles = (theme) => ({
   screen: {
     flex: 1,
   },
@@ -60,6 +62,8 @@ const createStyles = () => ({
     marginHorizontal: 14,
     flex: 1,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: theme.colors.background,
   },
   rowItem: {
     justifyContent: 'center',
