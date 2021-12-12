@@ -55,7 +55,7 @@ function TabNavigator() {
             key={loc.name}
             name={loc.name}
             component={LocationScreen}
-            initialParams={{ locId: loc.id }}
+            initialParams={{ locId: loc.id, isCurrent: loc.isCurrent }}
             options={{ headerTitle: loc.name }}
           />
         ))

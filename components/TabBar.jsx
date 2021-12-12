@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Appbar, Text, Surface, Title } from 'react-native-paper';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { useStyles } from '../hooks';
 
@@ -22,9 +24,9 @@ function TabBar(props) {
     return title;
   }, [routeDetails]);
 
-  const handleNavigate = () => {
+  const handleNavigate = useCallback(() => {
     navigation.navigate('City');
-  };
+  }, []);
 
   const hasScrolled = useMemo(() => {
     return routeDetails.options.hasScrolled;
@@ -46,17 +48,30 @@ function TabBar(props) {
             <Title>{currentTabTitle}</Title>
             {!hasScrolled && routes.length > 1 && (
               <Surface style={styles.dotContainer}>
-                {routes.map((route) => (
-                  <Text
-                    key={route.key}
-                    style={{
-                      ...styles.dot,
-                      ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
-                    }}
-                  >
-                    &#8226;
-                  </Text>
-                ))}
+                {routes.map((route) => {
+                  return route?.params?.isCurrent ? (
+                    <MaterialIcons
+                      key={route.key}
+                      name='location-pin'
+                      size={12}
+                      color={
+                        route.name === routeNames[tabIndex]
+                          ? theme.colors.onSurface
+                          : theme.colors.placeholder
+                      }
+                    />
+                  ) : (
+                    <Text
+                      key={route.key}
+                      style={{
+                        ...styles.dot,
+                        ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
+                      }}
+                    >
+                      &#8226;
+                    </Text>
+                  );
+                })}
               </Surface>
             )}
           </Surface>

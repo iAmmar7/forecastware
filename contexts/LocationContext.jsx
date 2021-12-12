@@ -71,7 +71,7 @@ function LocationContextProvider({ children }) {
 
         // Update the context
         const newLocations = [...locations];
-        newLocations[locationIndex] = { ...data, isCurrent: false };
+        newLocations[locationIndex] = { ...data };
         setLocations(newLocations);
       } catch (error) {
         console.log('DB Error', error);

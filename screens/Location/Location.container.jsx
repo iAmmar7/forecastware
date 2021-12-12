@@ -30,7 +30,7 @@ function LocationContainer(props) {
     const newWeather = await fetchWeather(weather, unit);
     await updateLocation(newWeather);
     setRefreshing(false);
-  }, [weather]);
+  }, [weather, locations]);
 
   const handleExternalLink = useCallback(async () => {
     await WebBrowser.openBrowserAsync('https://weather.com/en-US');
