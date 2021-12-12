@@ -13,3 +13,4 @@ export const FALLBACK_CITY = 'Karachi';
 export const LOCATION_JOB = 'location-job';
 export const LOCATION_JOB_INTERVAL = 1;
 export const NOTIFICATION_INTERVAL = 60 * 15;
+export const MINIMUM_BATTERY_LIMIT = 20;
