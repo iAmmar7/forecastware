@@ -22,6 +22,7 @@ function CitySearchContainer(props) {
     setIsLoading(true);
     removeLocation(location);
     setIsLoading(false);
+    navigation.navigate('Home');
   };
 
   return (

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
 import { fetchCurrentLocationWeather } from '../../api';
-import { isEmpty } from '../../utils/helpers';
+import { isArray, isEmpty } from '../../utils/helpers';
 
 function StartupContainer(props) {
   const { navigation } = props;
@@ -17,20 +16,17 @@ function StartupContainer(props) {
   ];
 
   useEffect(() => {
-    fetchLocations();
-  }, []);
-
-  useEffect(() => {
     (async () => {
-      const locationFromStorage = await AsyncStorage.getItem('location');
-      if (isEmpty(locations) && !locationFromStorage) {
+      const dbLocations = await fetchLocations();
+      if (isArray(dbLocations) && isEmpty(dbLocations)) {
         hanldeAskLocation();
         return;
       }
-
-      if (!isEmpty(locations)) navigation.replace('Home');
+      if (isArray(dbLocations) && !isEmpty(dbLocations)) {
+        navigation.replace('Home');
+      }
     })();
-  }, [locations.length]);
+  }, []);
 
   const hanldeAskLocation = async () => {
     const position = await Location.requestForegroundPermissionsAsync();

@@ -6,7 +6,7 @@ const db = SQLite.openDatabase('forecastware.db');
 
 export const init = () => {
   createTable()
-    //   dropTable()
+    // dropTable()
     .then(() => console.log('Database initialized'))
     .catch((err) => console.log('Failed to initialized the db', err));
 };

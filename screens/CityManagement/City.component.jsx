@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
@@ -9,8 +9,12 @@ import { useStyles } from '../../hooks';
 
 function CityComponent(props) {
   const { data, unit } = props;
-  const [stateData, setStateData] = useState(data || []);
+  const [stateData, setStateData] = useState([]);
   const { styles } = useStyles(createStyles);
+
+  useEffect(() => {
+    setStateData(data || []);
+  }, [data?.length]);
 
   const handleDrag = ({ data: newData }) => {
     setStateData(newData);

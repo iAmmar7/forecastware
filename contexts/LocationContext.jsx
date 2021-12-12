@@ -25,8 +25,10 @@ function LocationContextProvider({ children }) {
         };
       });
       setLocations(dbLocations);
+      return dbLocations;
     } catch (error) {
       console.log('DB Error', error);
+      return error;
     }
   }, [locations]);
 
