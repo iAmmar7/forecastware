@@ -18,7 +18,7 @@ function HourlyWeatherList(props) {
         showsHorizontalScrollIndicator={false}
         style={styles.hourlyList}
         data={data}
-        keyExtractor={(item) => item.dt}
+        keyExtractor={(item) => item.dt.toString()}
         renderItem={({ item }) => (
           <Surface style={styles.hourlyListItem}>
             <Text style={styles.weatherText}>

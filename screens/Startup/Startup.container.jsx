@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
 import { fetchCurrentLocationWeather } from '../../api';
+import { startLocationTracking } from '../../config';
 import { isArray, isEmpty } from '../../utils/helpers';
 
 function StartupContainer(props) {
@@ -29,9 +30,14 @@ function StartupContainer(props) {
   }, []);
 
   const hanldeAskLocation = async () => {
-    const position = await Location.requestForegroundPermissionsAsync();
-    if (position.status === 'granted') {
+    const foregroundPermission = await Location.requestForegroundPermissionsAsync();
+    if (foregroundPermission.status === 'granted') {
       setPermissionDenied(false);
+
+      const backgroundPermission = await Location.requestBackgroundPermissionsAsync();
+      if (backgroundPermission.status === 'granted') {
+        startLocationTracking();
+      }
 
       const location = await Location.getCurrentPositionAsync({});
       const coordinates = {
