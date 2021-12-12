@@ -30,22 +30,22 @@ function StartupContainer(props) {
 
   const hanldeAskLocation = async () => {
     const position = await Location.requestForegroundPermissionsAsync();
-    if (position.status !== 'granted') {
-      setPermissionDenied(true);
+    if (position.status === 'granted') {
+      setPermissionDenied(false);
+
+      const location = await Location.getCurrentPositionAsync({});
+      const coordinates = {
+        longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+      };
+      // Fetch current location weather from the API
+      const weather = await fetchCurrentLocationWeather(coordinates, unit);
+      setCurrentLocation(location);
+      addLocation(weather, true);
+      navigation.replace('Home');
       return;
     }
-    setPermissionDenied(false);
-
-    const location = await Location.getCurrentPositionAsync({});
-    const coordinates = {
-      longitude: location.coords.longitude,
-      latitude: location.coords.latitude,
-    };
-    // Fetch current location weather from the API
-    const weather = await fetchCurrentLocationWeather(coordinates, unit);
-    setCurrentLocation(location);
-    addLocation(weather, true);
-    navigation.replace('Home');
+    setPermissionDenied(true);
   };
 
   const handleSnackbar = () => setPermissionDenied(false);
