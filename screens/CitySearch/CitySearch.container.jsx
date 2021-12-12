@@ -13,14 +13,14 @@ function CitySearchContainer(props) {
   const handleAddLocation = async (location) => {
     setIsLoading(true);
     const weather = await fetchWeather(location, unit);
-    addLocation(weather);
+    await addLocation(weather);
     setIsLoading(false);
     navigation.navigate('Home', { screen: location.name });
   };
 
   const handleRemoveLocation = async (location) => {
     setIsLoading(true);
-    removeLocation(location);
+    await removeLocation(location);
     setIsLoading(false);
     navigation.navigate('Home');
   };

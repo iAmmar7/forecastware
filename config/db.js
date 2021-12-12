@@ -68,6 +68,27 @@ export const insertLocation = (location, isCurrent) => {
   return promise;
 };
 
+export const updateLocation = (location) => {
+  const { id, name, lat, lon, isCurrent, ...data } = location;
+  const strigifiedData = JSON.stringify(data);
+
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `UPDATE ${dbName} SET name = ?, lat = ?, lon = ?, data = ?, isCurrent = ? WHERE id = ?;`,
+        [name, lat, lon, strigifiedData, isCurrent, id],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        },
+      );
+    });
+  });
+  return promise;
+};
+
 export const fetchAllLocations = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {

@@ -45,7 +45,7 @@ export const fetchWeather = async (coords, unit) => {
       ...(unit === 'Celsius' && { units: 'metric' }),
     });
 
-    const payload = { ...weather, name: coords.name };
+    const payload = { ...weather, id: coords.id, name: coords.name, isCurrent: coords.isCurrent };
 
     return payload;
   } catch (error) {

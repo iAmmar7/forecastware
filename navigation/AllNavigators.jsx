@@ -55,8 +55,8 @@ function TabNavigator() {
             key={loc.name}
             name={loc.name}
             component={LocationScreen}
-            initialParams={{ weather: loc }}
-            options={{ headerTitle: loc.name, tabBarBounces: true }}
+            initialParams={{ locId: loc.id }}
+            options={{ headerTitle: loc.name }}
           />
         ))
       )}

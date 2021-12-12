@@ -1,28 +1,34 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import * as WebBrowser from 'expo-web-browser';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 
 import LocationComponent from './Location.component';
-import { useUserContext } from '../../hooks';
+import { useLocationContext, useUserContext } from '../../hooks';
 import { fetchWeather } from '../../api';
 
 function LocationContainer(props) {
   const {
-    route: { params: { weather = null } = {} },
+    route: { params: { locId = null } = {} },
     navigation,
   } = props;
-  const { unit } = useUserContext();
+  const [{ unit }, { locations, updateLocation }] = [useUserContext(), useLocationContext()];
   const viewShotRef = useRef();
   const animationRef = useRef();
   const scrollRef = useRef();
   const [message, setMessage] = useState({ type: null, text: null });
   const [refreshing, setRefreshing] = useState(false);
 
+  const weather = useMemo(
+    () => locations.find((loc) => loc.id === locId) || null,
+    [locId, locations],
+  );
+
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchWeather(weather, unit);
+    const newWeather = await fetchWeather(weather, unit);
+    await updateLocation(newWeather);
     setRefreshing(false);
   }, [weather]);
 

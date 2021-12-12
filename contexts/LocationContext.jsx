@@ -3,7 +3,12 @@ import React, { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { useCallback } from 'react/cjs/react.development';
-import { insertLocation, fetchAllLocations, deleteLocation } from '../config/db';
+import {
+  insertLocation,
+  fetchAllLocations,
+  deleteLocation,
+  updateLocation as updateLocationDB,
+} from '../config/db';
 
 const LocationContext = createContext(null);
 
@@ -24,6 +29,8 @@ function LocationContextProvider({ children }) {
           ...parsedData,
         };
       });
+
+      // Update the context
       setLocations(dbLocations);
       return dbLocations;
     } catch (error) {
@@ -40,10 +47,32 @@ function LocationContextProvider({ children }) {
 
         // Add into the DB
         const dbResponse = await insertLocation(data, isCurrent);
+
+        // Update the context
         setLocations((addedLocations) => [
           ...addedLocations,
-          { id: dbResponse.insertId, isCurrent, ...data },
+          { ...data, id: dbResponse.insertId, isCurrent },
         ]);
+      } catch (error) {
+        console.log('DB Error', error);
+      }
+    },
+    [locations],
+  );
+
+  const updateLocation = useCallback(
+    async (data) => {
+      try {
+        const locationIndex = locations.findIndex((loc) => loc.name === data.name);
+        if (locationIndex < 0) return;
+
+        // Update the DB
+        await updateLocationDB(data);
+
+        // Update the context
+        const newLocations = [...locations];
+        newLocations[locationIndex] = { ...data, isCurrent: false };
+        setLocations(newLocations);
       } catch (error) {
         console.log('DB Error', error);
       }
@@ -55,8 +84,11 @@ function LocationContextProvider({ children }) {
     async (data) => {
       try {
         const newLocations = locations.filter((loc) => loc.id !== data.id);
+
         // Delete from the DB
         await deleteLocation(data.id);
+
+        // Update the context
         setLocations(newLocations);
       } catch (error) {
         console.log('DB Error', error);
@@ -69,6 +101,7 @@ function LocationContextProvider({ children }) {
     () => ({
       locations,
       addLocation,
+      updateLocation,
       removeLocation,
       fetchLocations,
     }),

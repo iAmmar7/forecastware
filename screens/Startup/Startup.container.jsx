@@ -45,6 +45,7 @@ function StartupContainer(props) {
     const weather = await fetchCurrentLocationWeather(coordinates, unit);
     setCurrentLocation(location);
     addLocation(weather, true);
+    navigation.replace('Home');
   };
 
   const handleSnackbar = () => setPermissionDenied(false);
