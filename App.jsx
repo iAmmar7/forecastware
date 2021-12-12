@@ -13,8 +13,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import AppNavigator from './navigation/AppNavigator';
-import { init as initDB } from './config/db';
-import { init as initNotifications } from './config/notifications';
+import { initDB, initNotifications, initTasks } from './config';
 
 // Good for performance
 // https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
@@ -25,6 +24,9 @@ initDB();
 
 // Initialize notifications
 initNotifications();
+
+// Initialize background tasks
+initTasks();
 
 const combineProviders = (providers) =>
   providers.reduce(

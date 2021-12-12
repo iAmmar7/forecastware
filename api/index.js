@@ -1,5 +1,5 @@
 import API from './axios';
-import { fallBackLatitude, fallBackLongitude, fallBackCity } from '../utils/constants';
+import { FALLBACK_LATITUDE, FALLBACK_LONGITUDE, FALLBACK_CITY } from '../utils/constants';
 import { isEmpty } from '../utils/helpers';
 
 const api = new API();
@@ -16,8 +16,8 @@ export const fetchCurrentLocationWeather = async (coords, unit) => {
     });
 
     if (!location || isEmpty(location)) {
-      latitude = fallBackLatitude;
-      longitude = fallBackLongitude;
+      latitude = FALLBACK_LATITUDE;
+      longitude = FALLBACK_LONGITUDE;
     }
 
     const weather = await api.get('/data/2.5/onecall', null, {
@@ -27,7 +27,7 @@ export const fetchCurrentLocationWeather = async (coords, unit) => {
       ...(unit === 'Celsius' && { units: 'metric' }),
     });
 
-    const payload = { ...weather, name: location?.[0]?.name || fallBackCity };
+    const payload = { ...weather, name: location?.[0]?.name || FALLBACK_CITY };
 
     return payload;
   } catch (error) {

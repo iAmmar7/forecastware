@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications';
 
-import { notificationDelay } from '../utils/constants';
+import { NOTIFICATION_INTERVAL } from '../utils/constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const init = () => {
@@ -18,7 +18,7 @@ export const scheduleNotification = (content) => {
   Notifications.scheduleNotificationAsync({
     content,
     trigger: {
-      seconds: 60 * notificationDelay,
+      seconds: NOTIFICATION_INTERVAL,
       repeats: true,
     },
   });
