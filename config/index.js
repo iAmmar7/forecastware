@@ -1,3 +1,4 @@
+export { init as initApplication } from './startup';
 export {
   init as initDB,
   createTable,
@@ -8,4 +9,4 @@ export {
   deleteLocation,
 } from './db';
 export { init as initNotifications, scheduleNotification } from './notifications';
-export { init as initTasks, startLocationTracking } from './background';
+export { init as initTasks, startLocationTracking, stopLocationTracking } from './tasks';

@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable react/prop-types */
-/* eslint-disable global-require */
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { Fragment, useMemo } from 'react';
@@ -14,9 +10,9 @@ import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import AppNavigator from './navigation/AppNavigator';
 import { initDB, initNotifications, initTasks } from './config';
+import combineProviders from './combineProviders';
 
-// Good for performance
-// https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
+// Good for performance @ https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens<
 enableScreens();
 
 // Initialize the Database
@@ -27,18 +23,6 @@ initNotifications();
 
 // Initialize background tasks
 initTasks();
-
-const combineProviders = (providers) =>
-  providers.reduce(
-    (Combined, { name: Provider, props = {} }) =>
-      ({ children }) =>
-        (
-          <Combined>
-            <Provider {...props}>{children}</Provider>
-          </Combined>
-        ),
-    Fragment,
-  );
 
 export default function App() {
   const scheme = useColorScheme();
