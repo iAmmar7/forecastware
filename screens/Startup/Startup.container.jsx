@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
+import * as Notifications from 'expo-notifications';
 
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
@@ -40,6 +41,12 @@ function StartupContainer(props) {
       const backgroundPermission = await Location.requestBackgroundPermissionsAsync();
       if (backgroundPermission.status === 'granted') {
         startLocationTracking();
+      }
+
+      // Ask for Notification permission
+      const notificationPermission = await Notifications.requestPermissionsAsync();
+      if (notificationPermission.status === 'granted') {
+        // TODO: Start notification job
       }
 
       // Get and Save location to AsyncStorage
