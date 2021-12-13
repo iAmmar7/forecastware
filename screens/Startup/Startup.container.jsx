@@ -11,14 +11,26 @@ import { isArray, isEmpty } from '../../utils/helpers';
 function StartupContainer(props) {
   const { navigation } = props;
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [{ setCurrentLocation, unit }, { locations, fetchLocations, addLocation, updateLocation }] =
     [useUserContext(), useLocationContext()];
 
   useEffect(() => {
-    handleAskPermissions();
+    (async () => {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setTimeout(() => {
+          setModalVisible(true);
+        }, 1000);
+        return;
+      }
+      handleAskPermissions();
+    })();
   }, []);
 
   const handleAskPermissions = async () => {
+    setModalVisible(false);
+
     // Check and ask for Foreground location permission
     const foregroundPermission = await Location.requestForegroundPermissionsAsync();
     if (foregroundPermission.status === 'granted') {
@@ -73,6 +85,7 @@ function StartupContainer(props) {
       snackbarVisible={permissionDenied && isEmpty(locations)}
       handleSnackbar={handleSnackbar}
       handleAskPermissions={handleAskPermissions}
+      modalVisible={modalVisible}
     />
   );
 }
