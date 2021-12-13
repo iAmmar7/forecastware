@@ -11,47 +11,59 @@ import { isArray, isEmpty } from '../../utils/helpers';
 function StartupContainer(props) {
   const { navigation } = props;
   const [permissionDenied, setPermissionDenied] = useState(false);
-  const [{ setCurrentLocation, unit }, { locations, fetchLocations, addLocation }] = [
-    useUserContext(),
-    useLocationContext(),
-  ];
+  const [{ setCurrentLocation, unit }, { locations, fetchLocations, addLocation, updateLocation }] =
+    [useUserContext(), useLocationContext()];
 
   useEffect(() => {
-    (async () => {
-      const dbLocations = await fetchLocations();
-      if (isArray(dbLocations) && isEmpty(dbLocations)) {
-        hanldeAskLocation();
-        return;
-      }
-      if (isArray(dbLocations) && !isEmpty(dbLocations)) {
-        navigation.replace('Home');
-      }
-    })();
+    handleAskPermissions();
   }, []);
 
-  const hanldeAskLocation = async () => {
+  const handleAskPermissions = async () => {
+    // Check and ask for Foreground location permission
     const foregroundPermission = await Location.requestForegroundPermissionsAsync();
     if (foregroundPermission.status === 'granted') {
       setPermissionDenied(false);
 
+      // Ask for Background location permission
       const backgroundPermission = await Location.requestBackgroundPermissionsAsync();
       if (backgroundPermission.status === 'granted') {
         startLocationTracking();
       }
 
+      // Get and Save location to AsyncStorage
       const location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation(location);
+
+      // Fetch current location weather from the API
       const coordinates = {
         longitude: location.coords.longitude,
         latitude: location.coords.latitude,
       };
-      // Fetch current location weather from the API
+
+      // Fetch current location weather
       const weather = await fetchCurrentLocationWeather(coordinates, unit);
-      setCurrentLocation(location);
-      addLocation(weather, true);
+
+      // Fetch locations from the database to check if current location already exist
+      const dbLocations = await fetchLocations();
+      const currentLocationIndex = dbLocations.findIndex((loc) => loc?.isCurrent);
+
+      // If already exist then update otherwise add
+      if (currentLocationIndex > -1) {
+        await updateLocation(weather);
+      } else {
+        await addLocation(weather, true);
+      }
       navigation.replace('Home');
       return;
     }
-    setPermissionDenied(true);
+
+    // Check if the DB has locations. If no, then show snackbar and ask permissions again
+    const dbLocations = await fetchLocations();
+    if (isArray(dbLocations) && !isEmpty(dbLocations)) {
+      navigation.replace('Home');
+    } else {
+      setPermissionDenied(true);
+    }
   };
 
   const handleSnackbar = () => setPermissionDenied(false);
@@ -60,7 +72,7 @@ function StartupContainer(props) {
     <StartupComponent
       snackbarVisible={permissionDenied && isEmpty(locations)}
       handleSnackbar={handleSnackbar}
-      hanldeAskLocation={hanldeAskLocation}
+      handleAskPermissions={handleAskPermissions}
     />
   );
 }

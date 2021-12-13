@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { useStyles } from '../../hooks';
 
 function StartupComponent(props) {
-  const { snackbarVisible, handleSnackbar, hanldeAskLocation } = props;
+  const { snackbarVisible, handleSnackbar, handleAskPermissions } = props;
   const { styles, theme } = useStyles(createStyles);
 
   return (
@@ -35,11 +35,11 @@ function StartupComponent(props) {
       </Surface>
       <Snackbar
         visible={snackbarVisible}
-        duration={10000}
+        duration={50000}
         onDismiss={handleSnackbar}
         action={{
           label: 'Okay',
-          onPress: hanldeAskLocation,
+          onPress: handleAskPermissions,
         }}
         theme={{ colors: { onSurface: theme.colors.surface, surface: theme.colors.text } }}
       >
@@ -98,7 +98,7 @@ const createStyles = (theme) => ({
 StartupComponent.propTypes = {
   snackbarVisible: PropTypes.bool.isRequired,
   handleSnackbar: PropTypes.func.isRequired,
-  hanldeAskLocation: PropTypes.func.isRequired,
+  handleAskPermissions: PropTypes.func.isRequired,
 };
 
 export default StartupComponent;

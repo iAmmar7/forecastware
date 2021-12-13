@@ -1,7 +1,9 @@
+/* eslint-disable consistent-return */
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 import * as Battery from 'expo-battery';
+import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { updateCurrentLocation } from './db';
@@ -11,18 +13,19 @@ import { isEmpty } from '../utils/helpers';
 
 export const init = () => {
   TaskManager.defineTask(LOCATION_JOB, async ({ data, error }) => {
-    if (error) {
-      console.debug('LOCATION_JOB error', error);
-      return;
-    }
-
     try {
+      if (error) {
+        console.debug('LOCATION_JOB error', error);
+        return;
+      }
+
       // Check the battery status
       const batteryLevel = await Battery.getBatteryLevelAsync();
 
-      // Stop the job and remove the task if battery level is less than 20
+      // Stop the job and remove the notification if battery level is less than 20
       if (batteryLevel * 100 < MINIMUM_BATTERY_LIMIT) {
-        stopLocationTracking();
+        await Notifications.dismissAllNotificationsAsync();
+        await stopLocationTracking();
       }
 
       // Extract location data
@@ -45,24 +48,19 @@ export const init = () => {
       await updateCurrentLocation(weather);
 
       console.log('Location updated from the job!!');
+
+      return BackgroundFetch.Result.NewData;
     } catch (err) {
       console.error('LOCATION_JOB error', err);
+      return BackgroundFetch.Result.Failed;
     }
-  });
-};
-
-export const registerNotification = async () => {
-  return BackgroundFetch.registerTaskAsync(LOCATION_JOB, {
-    minimumInterval: 1, // 1 minute
-    stopOnTerminate: false, // android only,
-    startOnBoot: true, // android only
   });
 };
 
 export const startLocationTracking = async () => {
   console.log('Location tracking stared!');
   Location.startLocationUpdatesAsync(LOCATION_JOB, {
-    accuracy: Location.Accuracy.Low,
+    accuracy: Location.Accuracy.BestForNavigation,
     // timeInterval: 10000,
     distanceInterval: LOCATION_JOB_INTERVAL,
     deferredUpdatesInterval: 10000,
@@ -75,11 +73,10 @@ export const startLocationTracking = async () => {
   });
 };
 
-export const stopLocationTracking = () => {
+export const stopLocationTracking = async () => {
   console.log('Location tracking stopped!');
-  Location.hasStartedLocationUpdatesAsync(LOCATION_JOB).then((value) => {
-    if (value) {
-      Location.stopLocationUpdatesAsync(LOCATION_JOB);
-    }
-  });
+  const location = await Location.hasStartedLocationUpdatesAsync(LOCATION_JOB);
+  if (location) {
+    Location.stopLocationUpdatesAsync(LOCATION_JOB);
+  }
 };

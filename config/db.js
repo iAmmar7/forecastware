@@ -15,7 +15,7 @@ export const createTable = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS ${DB_NAME} (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, lat REAL NOT NULL, lon REAL NOT NULL, data TEXT NOT NULL, isCurrent BOOL NOT NULL);`,
+        `CREATE TABLE IF NOT EXISTS ${DB_NAME} (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL UNIQUE, lat REAL NOT NULL, lon REAL NOT NULL, data TEXT NOT NULL, isCurrent BOOL NOT NULL);`,
         [],
         () => {
           resolve();
