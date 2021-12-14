@@ -1,4 +1,3 @@
-export { init as initApplication } from './startup';
 export {
   init as initDB,
   createTable,

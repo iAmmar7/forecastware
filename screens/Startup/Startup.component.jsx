@@ -126,6 +126,7 @@ const createStyles = (theme) => ({
   title: {
     fontSize: 30,
     fontFamily: 'open-sans-medium',
+    color: theme.colors.text,
   },
   subTitle: {
     color: theme.colors.primary,
