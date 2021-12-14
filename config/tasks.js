@@ -21,6 +21,8 @@ import {
 export const init = () => {
   TaskManager.defineTask(LOCATION_JOB, async ({ data, error }) => {
     try {
+      console.log('Location job has started!');
+
       if (error) throw new Error(error);
 
       // Check the battery status
@@ -34,7 +36,7 @@ export const init = () => {
       }
 
       // Extract location data
-      const location = data?.locations?.[data.locations?.length] || null;
+      const location = data?.locations?.[(data.locations?.length || 1) - 1] || null;
       if (isEmpty(location)) return;
 
       // Set new location to Async Storage
@@ -73,36 +75,42 @@ export const init = () => {
       // Update the location in DB
       await updateCurrentLocation(weather);
 
-      console.info('Location updated from the job!!');
-
       return BackgroundFetch.Result.NewData;
     } catch (err) {
-      console.error('LOCATION_JOB error', err);
+      console.error('Location job error', err);
       return BackgroundFetch.Result.Failed;
     }
   });
 };
 
 export const startLocationTracking = async () => {
-  console.log('Location tracking stared!');
-  Location.startLocationUpdatesAsync(LOCATION_JOB, {
-    accuracy: Location.Accuracy.BestForNavigation,
-    // timeInterval: 30000,
-    distanceInterval: LOCATION_JOB_INTERVAL,
-    deferredUpdatesInterval: 10000,
+  try {
+    console.log('Location tracking started!');
+    Location.startLocationUpdatesAsync(LOCATION_JOB, {
+      accuracy: Location.Accuracy.Balanced,
+      // timeInterval: 10000,
+      distanceInterval: LOCATION_JOB_INTERVAL,
+      deferredUpdatesInterval: 10000,
 
-    // Not running in background without foregroundService
-    foregroundService: {
-      notificationTitle: `${APP_NAME} tracker`,
-      notificationBody: 'Using location service to generate weather report!',
-    },
-  });
+      // Not running in background without foregroundService
+      foregroundService: {
+        notificationTitle: `${APP_NAME} tracker`,
+        notificationBody: 'Using location service to monitor the weather!',
+      },
+    });
+  } catch (error) {
+    console.log('Error in starting the location tracker: ', error);
+  }
 };
 
 export const stopLocationTracking = async () => {
-  console.log('Location tracking stopped!');
-  const location = await Location.hasStartedLocationUpdatesAsync(LOCATION_JOB);
-  if (location) {
-    Location.stopLocationUpdatesAsync(LOCATION_JOB);
+  try {
+    console.log('Location tracking stopped!');
+    const location = await Location.hasStartedLocationUpdatesAsync(LOCATION_JOB);
+    if (location) {
+      Location.stopLocationUpdatesAsync(LOCATION_JOB);
+    }
+  } catch (error) {
+    console.log('Error in stopping the location tracker: ', error);
   }
 };
