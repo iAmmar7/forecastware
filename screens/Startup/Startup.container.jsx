@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
+import * as Battery from 'expo-battery';
 
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
 import { fetchCurrentLocationWeather } from '../../api';
 import { startLocationTracking } from '../../config';
 import { isArray, isEmpty } from '../../utils/helpers';
+import { MINIMUM_BATTERY_LIMIT } from '../../utils/constants';
 
 function StartupContainer(props) {
   const { navigation } = props;
@@ -40,7 +42,11 @@ function StartupContainer(props) {
       // Ask for Background location permission
       const backgroundPermission = await Location.requestBackgroundPermissionsAsync();
       if (backgroundPermission.status === 'granted') {
-        startLocationTracking();
+        // Start location tracking if battery level is more than the limit
+        const batteryLevel = await Battery.getBatteryLevelAsync();
+        if (batteryLevel * 100 > MINIMUM_BATTERY_LIMIT) {
+          startLocationTracking();
+        }
       }
 
       // Ask for Notification permission

@@ -39,3 +39,14 @@ export const getUVIndex = (uv = 0) => {
   if (uv > 9) return 'High Risk';
   return 'No Risk';
 };
+
+export const getTemperatureSymbol = (unit = 'Celsius') => {
+  switch (unit) {
+    case 'Fahrenheit':
+      return '\u00B0F';
+    case 'Kelvin':
+      return 'K';
+    default:
+      return '\u00B0C';
+  }
+};
