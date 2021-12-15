@@ -35,13 +35,6 @@
           "savePhotosPermission": "Allow ForecastWare to save screenshot.",
           "isAccessMediaLocationEnabled": true
         }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/logo.png",
-          "color": "#ffffff"
-        }
       ]
     ]
   }

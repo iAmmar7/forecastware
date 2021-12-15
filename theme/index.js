@@ -13,6 +13,7 @@ import colorConfig from './colors';
 
 const defaultTheme = {
   fonts: configureFonts(fontConfig),
+  // mode: 'exact',
 };
 
 const CombinedDefaultTheme = {

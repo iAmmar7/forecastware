@@ -6,7 +6,7 @@ import * as Notifications from 'expo-notifications';
 import StartupComponent from './Startup.component';
 import { useUserContext, useLocationContext } from '../../hooks';
 import { fetchCurrentLocationWeather } from '../../api';
-import { startLocationTracking } from '../../config';
+import { startLocationTracking, registerBackgroundNotification } from '../../config';
 import { isArray, isEmpty } from '../../utils/helpers';
 
 function StartupContainer(props) {
@@ -40,13 +40,13 @@ function StartupContainer(props) {
       // Ask for Background location permission
       const backgroundPermission = await Location.requestBackgroundPermissionsAsync();
       if (backgroundPermission.status === 'granted') {
-        startLocationTracking();
+        await startLocationTracking();
       }
 
       // Ask for Notification permission
       const notificationPermission = await Notifications.requestPermissionsAsync();
       if (notificationPermission.status === 'granted') {
-        // TODO: Start notification job
+        await registerBackgroundNotification();
       }
 
       // Get and Save location to AsyncStorage

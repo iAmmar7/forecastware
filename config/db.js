@@ -110,6 +110,24 @@ export const updateCurrentLocation = (location) => {
   return promise;
 };
 
+export const deleteLocation = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `DELETE FROM ${DB_NAME} WHERE id = ${id}`,
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        },
+      );
+    });
+  });
+  return promise;
+};
+
 export const fetchAllLocations = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -128,11 +146,11 @@ export const fetchAllLocations = () => {
   return promise;
 };
 
-export const deleteLocation = (id) => {
+export const fetchCurrentLocations = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `DELETE FROM ${DB_NAME} WHERE id = ${id}`,
+        `SELECT * FROM ${DB_NAME} WHERE isCurrent = 1`,
         [],
         (_, result) => {
           resolve(result);

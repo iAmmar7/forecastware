@@ -1,3 +1,4 @@
+export { default as BatteryMonitor } from './BatteryMonitor';
 export { default as CityManagementHeader } from './CityManagementHeader';
 export { default as CitySearchHeader } from './CitySearchHeader';
 export { default as TabBar } from './TabBar';
