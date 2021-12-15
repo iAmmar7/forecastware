@@ -32,6 +32,13 @@ export const init = () => {
       if (batteryLevel * 100 < MINIMUM_BATTERY_LIMIT) {
         await Notifications.dismissAllNotificationsAsync();
         await stopLocationTracking();
+        await scheduleNotification(
+          {
+            title: `${APP_NAME} tracker`,
+            body: `The app has stopped working due to low battery!`,
+          },
+          10,
+        );
         return;
       }
 
@@ -59,14 +66,16 @@ export const init = () => {
       const dbLocationData = JSON.parse(dbLocation.data);
 
       // Send a notification if the new temperature is not same as old
-      if (dbLocationData.current.temp !== weather.current.temp) {
+      const dbWeatherTemp = Math.round(dbLocationData.current.temp || 0);
+      const apiWeatherTemp = Math.round(weather.current.temp || 0);
+      if (dbWeatherTemp !== apiWeatherTemp) {
         await Notifications.dismissAllNotificationsAsync();
         await scheduleNotification(
           {
             title: APP_NAME,
-            body: `Temperature has changed: ${Math.round(
-              weather.current.temp || 0,
-            )}${getTemperatureSymbol(unitFromStorage)}!`,
+            body: `Temperature has changed: ${apiWeatherTemp}${getTemperatureSymbol(
+              unitFromStorage,
+            )}!`,
           },
           10,
         );
