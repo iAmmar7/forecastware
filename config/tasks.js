@@ -119,7 +119,7 @@ export const init = () => {
       await scheduleNotification(
         {
           title: APP_NAME,
-          body: `Temperature: ${weather.current.temp}${getTemperatureSymbol(
+          body: `Temperature: ${Math.round(weather.current.temp)}${getTemperatureSymbol(
             unitFromStorage,
           )}!, Humidity: ${weather.current.humidity}, Clouds: ${weather.current.clouds}`,
         },
