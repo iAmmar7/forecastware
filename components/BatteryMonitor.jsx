@@ -1,45 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler } from 'react-native';
+import { AppState, BackHandler } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import * as Battery from 'expo-battery';
 
 import { useStyles } from '../hooks';
 import { APP_NAME, MINIMUM_BATTERY_LIMIT } from '../utils/constants';
 
-// (async () => {
-//   const battery = await Battery.getBatteryLevelAsync();
-//   if (battery * 100 < MINIMUM_BATTERY_LIMIT) {
-//     BackHandler.exitApp();
-//   }
-// })();
-
 function BatteryMonitor() {
+  const [appStateVisible, setAppStateVisible] = useState(true);
   const [batteryLimit, setBatteryLimit] = useState(false);
   const [timer, setTimer] = useState(10);
   const { styles } = useStyles(createStyles);
 
   useEffect(() => {
-    let subscription = null;
-    (async () => {
-      const battery = await Battery.getBatteryLevelAsync();
-      if (battery * 100 < MINIMUM_BATTERY_LIMIT) {
-        setBatteryLimit(true);
-        return;
-      }
+    AppState.addEventListener('change', (nextState) => setAppStateVisible(nextState === 'active'));
 
-      subscription = Battery.addBatteryLevelListener(({ batteryLevel }) => {
-        if (batteryLevel * 100 < MINIMUM_BATTERY_LIMIT) {
-          setBatteryLimit(true);
-        } else {
-          setBatteryLimit(false);
-        }
-      });
-    })();
+    return () => {
+      AppState.removeEventListener('change', (nextState) =>
+        setAppStateVisible(nextState === 'active'),
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = Battery.addBatteryLevelListener(({ batteryLevel }) => {
+      if (batteryLevel * 100 < MINIMUM_BATTERY_LIMIT) {
+        setBatteryLimit(true);
+      } else {
+        setBatteryLimit(false);
+      }
+    });
 
     return () => {
       subscription?.remove();
     };
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (appStateVisible) {
+        const battery = await Battery.getBatteryLevelAsync();
+        if (battery * 100 < MINIMUM_BATTERY_LIMIT) {
+          setBatteryLimit(true);
+        }
+      }
+    })();
+  }, [appStateVisible]);
 
   useEffect(() => {
     let interval = null;
@@ -54,7 +60,11 @@ function BatteryMonitor() {
   }, [batteryLimit]);
 
   useEffect(() => {
-    if (timer === 0) BackHandler.exitApp();
+    if (timer === 0) {
+      setTimer(10);
+      setBatteryLimit(false);
+      BackHandler.exitApp();
+    }
   }, [timer]);
 
   if (!batteryLimit) return null;
@@ -74,7 +84,7 @@ const createStyles = (theme) => ({
     position: 'absolute',
     top: 120,
     marginHorizontal: 10,
-    backgroundColor: theme.colors.notification,
+    backgroundColor: '#EC6E4C',
     elevation: 10,
   },
   text: {
