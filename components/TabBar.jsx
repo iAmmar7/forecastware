@@ -1,8 +1,10 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Appbar, Text, Surface, Title } from 'react-native-paper';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MaterialIcons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
+import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from '../hooks';
 
@@ -12,6 +14,8 @@ function TabBar(props) {
     descriptors,
     navigation,
   } = props;
+  const titleRef = useRef();
+  const routesRef = useRef();
   const { styles, theme } = useStyles(createStyles);
 
   const routeDetails = useMemo(() => {
@@ -32,64 +36,86 @@ function TabBar(props) {
     return routeDetails.options.hasScrolled;
   }, [routeDetails]);
 
+  useEffect(() => {
+    if (hasScrolled) {
+      routesRef.current?.fadeOut(800);
+    } else {
+      titleRef.current?.fadeIn(800);
+      routesRef.current?.fadeIn(800);
+    }
+  }, [hasScrolled]);
+
   return (
-    <Appbar.Header
-      theme={{ colors: { primary: theme.colors.surface } }}
-      style={{ ...styles.header, ...(hasScrolled && { elevation: 1 }) }}
-    >
-      <Appbar.Action
-        icon='city-variant-outline'
-        color={hasScrolled ? theme.colors.primary : theme.colors.text}
-        onPress={handleNavigate}
-      />
-      <Appbar.Content
-        title={
-          <Surface style={styles.titleContainer}>
-            <Title>{currentTabTitle}</Title>
-            {!hasScrolled && routes.length > 1 && (
-              <Surface style={styles.dotContainer}>
-                {routes.map((route) => {
-                  return route?.params?.isCurrent ? (
-                    <MaterialIcons
-                      key={route.key}
-                      name='location-pin'
-                      size={12}
-                      color={
-                        route.name === routeNames[tabIndex]
-                          ? theme.colors.onSurface
-                          : theme.colors.placeholder
-                      }
-                    />
-                  ) : (
-                    <Text
-                      key={route.key}
-                      style={{
-                        ...styles.dot,
-                        ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
-                      }}
-                    >
-                      &#8226;
-                    </Text>
-                  );
-                })}
-              </Surface>
-            )}
-          </Surface>
-        }
-        titleStyle={styles.titleStyles}
-      />
-      <Appbar.Action
-        icon='dots-vertical'
-        color={hasScrolled ? theme.colors.primary : theme.colors.text}
-        onPress={() => {}}
-      />
-    </Appbar.Header>
+    <Surface>
+      <Animatable.View
+        transition={['paddingTop', 'paddingBottom']}
+        style={{
+          ...styles.header,
+          paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
+          paddingBottom: hasScrolled ? 0 : 10,
+          elevation: hasScrolled ? 1 : 0,
+          borderBottomColor: theme.colors.surface,
+        }}
+      >
+        <Appbar.Action
+          icon='city-variant-outline'
+          color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          onPress={handleNavigate}
+        />
+        <Appbar.Content
+          title={
+            <Surface style={styles.titleContainer}>
+              <Animatable.Text ref={titleRef}>
+                <Title>{currentTabTitle}</Title>
+              </Animatable.Text>
+              {!hasScrolled && routes.length > 1 && (
+                <Animatable.View ref={routesRef}>
+                  <Surface style={styles.dotContainer}>
+                    {routes.map((route) => {
+                      return route?.params?.isCurrent ? (
+                        <MaterialIcons
+                          key={route.key}
+                          name='location-pin'
+                          size={12}
+                          color={
+                            route.name === routeNames[tabIndex]
+                              ? theme.colors.onSurface
+                              : theme.colors.placeholder
+                          }
+                        />
+                      ) : (
+                        <Text
+                          key={route.key}
+                          style={{
+                            ...styles.dot,
+                            ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
+                          }}
+                        >
+                          &#8226;
+                        </Text>
+                      );
+                    })}
+                  </Surface>
+                </Animatable.View>
+              )}
+            </Surface>
+          }
+          titleStyle={styles.titleStyles}
+        />
+        <Appbar.Action
+          icon='menu'
+          color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          onPress={() => {}}
+        />
+      </Animatable.View>
+    </Surface>
   );
 }
 
 const createStyles = (theme) => ({
   header: {
-    elevation: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   titleStyles: {
     marginLeft: 'auto',

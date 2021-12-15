@@ -83,6 +83,7 @@ function LocationContainer(props) {
     if (offsetY <= 80) {
       scrollRef.current?.scrollTo({ y: 0 });
       navigation.setOptions({ hasScrolled: false });
+      return;
     }
     if (offsetY > 80 && offsetY < 160) {
       scrollRef.current?.scrollTo({ y: 200 });

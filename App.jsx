@@ -35,7 +35,7 @@ export default function App() {
   });
   const scheme = useColorScheme();
   const theme = useMemo(
-    () => (scheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
+    () => (scheme !== 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
     [scheme],
   );
   const Providers = useMemo(
@@ -53,7 +53,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar barStyle='dark-content' />
       <BatteryMonitor />
       <Providers>
         <AppNavigator theme={theme} />

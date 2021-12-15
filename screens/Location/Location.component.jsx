@@ -94,21 +94,6 @@ function LocationComponent(props) {
   );
 }
 
-LocationComponent.propTypes = {
-  data: PropTypes.object.isRequired,
-  unit: PropTypes.string.isRequired,
-  viewShotRef: PropTypes.object.isRequired,
-  animationRef: PropTypes.object.isRequired,
-  scrollRef: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
-  refreshing: PropTypes.bool.isRequired,
-  handleRefresh: PropTypes.func.isRequired,
-  handleSnackbarDismiss: PropTypes.func.isRequired,
-  handleExternalLink: PropTypes.func.isRequired,
-  handleFAB: PropTypes.func.isRequired,
-  handleOnScroll: PropTypes.func.isRequired,
-};
-
 const createStyles = (theme) => ({
   screenWrapper: {
     justifyContent: 'center',
@@ -164,5 +149,20 @@ const createStyles = (theme) => ({
     height: 150,
   },
 });
+
+LocationComponent.propTypes = {
+  data: PropTypes.object.isRequired,
+  unit: PropTypes.string.isRequired,
+  viewShotRef: PropTypes.object.isRequired,
+  animationRef: PropTypes.object.isRequired,
+  scrollRef: PropTypes.object.isRequired,
+  message: PropTypes.object.isRequired,
+  refreshing: PropTypes.bool.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
+  handleSnackbarDismiss: PropTypes.func.isRequired,
+  handleExternalLink: PropTypes.func.isRequired,
+  handleFAB: PropTypes.func.isRequired,
+  handleOnScroll: PropTypes.func.isRequired,
+};
 
 export default LocationComponent;
