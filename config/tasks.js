@@ -2,26 +2,27 @@
 /* eslint-disable consistent-return */
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
-import * as Location from 'expo-location';
 import * as Battery from 'expo-battery';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { scheduleNotification } from './notifications';
+import { scheduleNotification } from './notification';
+import { stopLocationTracking } from './location';
 import { updateCurrentLocation, fetchCurrentLocations } from './db';
 import { fetchCurrentLocationWeather } from '../api';
 import { isEmpty, getTemperatureSymbol } from '../utils/helpers';
 import {
   APP_NAME,
   LOCATION_JOB,
-  LOCATION_JOB_INTERVAL,
   MINIMUM_BATTERY_LIMIT,
+  NOTIFICATION_JOB,
 } from '../utils/constants';
 
+// eslint-disable-next-line import/prefer-default-export
 export const init = () => {
   TaskManager.defineTask(LOCATION_JOB, async ({ data, error }) => {
     try {
-      console.log('Location job has started!');
+      console.log(`${new Date().toISOString()}: Location job started!`);
 
       if (error) throw new Error(error);
 
@@ -44,7 +45,7 @@ export const init = () => {
 
       // Extract location data
       const location = data?.locations?.[(data.locations?.length || 1) - 1] || null;
-      if (isEmpty(location)) return;
+      if (isEmpty(location)) throw new Error('No locations were received!');
 
       // Set new location to Async Storage
       AsyncStorage.setItem('location', JSON.stringify({ location }));
@@ -57,7 +58,7 @@ export const init = () => {
         location.coords,
         unitFromStorage || 'Celsius',
       );
-      if (isEmpty(weather)) return;
+      if (isEmpty(weather)) throw new Error('Unable to fetch the weather!');
 
       // Fetch current location data from the database
       const dbResponse = await fetchCurrentLocations();
@@ -84,42 +85,53 @@ export const init = () => {
       // Update the location in DB
       await updateCurrentLocation(weather);
 
+      console.log(`${new Date().toISOString()}: Location job completed!`);
+
       return BackgroundFetch.Result.NewData;
     } catch (err) {
-      console.error('Location job error', err);
+      console.error(`${new Date().toISOString()}: Error in location job `, err);
       return BackgroundFetch.Result.Failed;
     }
   });
-};
 
-export const startLocationTracking = async () => {
-  try {
-    console.log('Location tracking started!');
-    Location.startLocationUpdatesAsync(LOCATION_JOB, {
-      accuracy: Location.Accuracy.Balanced,
-      // timeInterval: 10000,
-      distanceInterval: LOCATION_JOB_INTERVAL,
-      deferredUpdatesInterval: 10000,
+  TaskManager.defineTask(NOTIFICATION_JOB, async () => {
+    try {
+      console.log(`${new Date().toISOString()}: Notification job started!`);
 
-      // Not running in background without foregroundService
-      foregroundService: {
-        notificationTitle: `${APP_NAME} tracker`,
-        notificationBody: 'Using location service to monitor the weather!',
-      },
-    });
-  } catch (error) {
-    console.log('Error in starting the location tracker: ', error);
-  }
-};
+      // Get current user location
+      const locationFromStorage = await AsyncStorage.getItem('location');
+      const location = JSON.parse(locationFromStorage || {})?.location;
+      if (isEmpty(location)) throw new Error('Location not found!');
 
-export const stopLocationTracking = async () => {
-  try {
-    console.log('Location tracking stopped!');
-    const location = await Location.hasStartedLocationUpdatesAsync(LOCATION_JOB);
-    if (location) {
-      Location.stopLocationUpdatesAsync(LOCATION_JOB);
+      // Get user preferred temperature unit
+      const unitFromStorage = await AsyncStorage.getItem('unit');
+
+      // Fetch current location weather from the API
+      const weather = await fetchCurrentLocationWeather(
+        location.coords,
+        unitFromStorage || 'Celsius',
+      );
+      if (isEmpty(weather) || isEmpty(weather.current))
+        throw new Error('Unable to fetch the weather!');
+
+      // Send a notification with latest weather report
+      await Notifications.dismissAllNotificationsAsync();
+      await scheduleNotification(
+        {
+          title: APP_NAME,
+          body: `Temperature: ${weather.current.temp}${getTemperatureSymbol(
+            unitFromStorage,
+          )}!, Humidity: ${weather.current.humidity}, Clouds: ${weather.current.clouds}`,
+        },
+        5,
+      );
+
+      console.log(`${new Date().toISOString()}: Notification job completed!`);
+
+      return BackgroundFetch.Result.NoData;
+    } catch (error) {
+      console.error(`${new Date().toISOString()}: Error in notification job `, error);
+      return BackgroundFetch.Result.Failed;
     }
-  } catch (error) {
-    console.log('Error in stopping the location tracker: ', error);
-  }
+  });
 };

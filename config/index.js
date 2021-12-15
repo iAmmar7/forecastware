@@ -7,5 +7,11 @@ export {
   fetchAllLocations,
   deleteLocation,
 } from './db';
-export { init as initNotifications, scheduleNotification } from './notifications';
-export { init as initTasks, startLocationTracking, stopLocationTracking } from './tasks';
+export { init as initTasks } from './tasks';
+export {
+  init as initNotifications,
+  scheduleNotification,
+  registerBackgroundNotification,
+  unregisterBackgroundNotification,
+} from './notification';
+export { startLocationTracking, stopLocationTracking } from './location';
