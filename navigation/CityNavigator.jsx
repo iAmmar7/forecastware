@@ -1,8 +1,9 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { StartupScreen, CityManagementScreen, CitySearchScreen, OptionScreen } from '../screens';
-import { CityManagementHeader, CitySearchHeader } from '../components';
+import { Header, CitySearchHeader } from '../components';
 import LocationNavigator from './LocationNavigator';
 
 const Stack = createStackNavigator();
@@ -17,8 +18,13 @@ function CityNavigator() {
         component={CityManagementScreen}
         options={{
           ...TransitionPresets.SlideFromRightIOS,
-          header: CityManagementHeader,
+          header: Header,
           headerTitle: 'City Management',
+          rightIcon: {
+            Component: MaterialCommunityIcons,
+            name: 'plus',
+            navigateTo: 'CitySearch',
+          },
         }}
       />
       <Stack.Screen
@@ -35,7 +41,7 @@ function CityNavigator() {
         component={OptionScreen}
         options={{
           ...TransitionPresets.SlideFromRightIOS,
-          // header: CitySearchHeader,
+          header: Header,
           headerTitle: 'Settings',
         }}
       />

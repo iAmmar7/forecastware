@@ -33,6 +33,8 @@
     "no-use-before-define": ["off", { "functions": true, "classes": true, "variables": true }],
     "react/forbid-prop-types": ["error", { "forbid": [] }],
     "func-names": "off",
-    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }]
+    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
+    "react/jsx-props-no-spreading": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }

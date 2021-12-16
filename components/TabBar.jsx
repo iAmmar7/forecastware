@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Appbar, Text, Surface, Title, Button } from 'react-native-paper';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { Appbar, Text, Surface, Title } from 'react-native-paper';
 import { MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from '../hooks';
+import HeaderIcon from './HeaderIcon';
 
 function TabBar(props) {
   const {
@@ -54,19 +53,12 @@ function TabBar(props) {
           borderBottomColor: theme.colors.surface,
         }}
       >
-        <Button
-          mode='text'
-          compact
-          onPress={() => navigation.navigate('City')}
-          theme={{ colors: { primary: theme.colors.placeholder } }}
-          style={styles.btn}
-        >
-          <MaterialCommunityIcons
-            name='city-variant-outline'
-            size={22}
-            color={hasScrolled ? theme.colors.primary : theme.colors.text}
-          />
-        </Button>
+        <HeaderIcon
+          Component={MaterialCommunityIcons}
+          name='city-variant-outline'
+          handleNavigate={() => navigation.navigate('City')}
+          hasScrolled={hasScrolled}
+        />
         <Appbar.Content
           title={
             <Surface style={styles.titleContainer}>
@@ -107,19 +99,12 @@ function TabBar(props) {
           }
           titleStyle={styles.titleStyles}
         />
-        <Button
-          mode='text'
-          compact
-          onPress={() => navigation.navigate('Option')}
-          theme={{ colors: { primary: theme.colors.placeholder } }}
-          style={styles.btn}
-        >
-          <Entypo
-            name='dots-two-vertical'
-            size={22}
-            color={hasScrolled ? theme.colors.primary : theme.colors.text}
-          />
-        </Button>
+        <HeaderIcon
+          Component={Entypo}
+          name='dots-two-vertical'
+          handleNavigate={() => navigation.navigate('Option')}
+          hasScrolled={hasScrolled}
+        />
       </Animatable.View>
     </Surface>
   );
