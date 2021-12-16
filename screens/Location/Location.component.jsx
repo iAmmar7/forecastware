@@ -5,9 +5,12 @@ import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
 import ViewShot from 'react-native-view-shot';
 import * as Animatable from 'react-native-animatable';
 
-import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails, Loader } from '../../components';
-import { useStyles } from '../../hooks';
-import { isEmpty } from '../../utils/helpers';
+import { Loader } from 'forecastware/components';
+import { useStyles } from 'forecastware/hooks';
+import { isEmpty } from 'forecastware/utils/helpers';
+import HourlyWeatherList from './components/HourlyWeatherList';
+import WeeklyWeatherList from './components/WeeklyWeatherList';
+import WeatherDetails from './components/WeatherDetails';
 
 function LocationComponent(props) {
   const {

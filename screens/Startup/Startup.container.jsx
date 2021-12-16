@@ -4,10 +4,10 @@ import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
 import StartupComponent from './Startup.component';
-import { useUserContext, useLocationContext } from '../../hooks';
-import { fetchCurrentLocationWeather } from '../../api';
-import { startLocationTracking, registerBackgroundNotification } from '../../config';
-import { isArray, isEmpty } from '../../utils/helpers';
+import { useUserContext, useLocationContext } from 'forecastware/hooks';
+import { fetchCurrentLocationWeather } from 'forecastware/api';
+import { startLocationTracking, registerBackgroundNotification } from 'forecastware/config';
+import { isArray, isEmpty } from 'forecastware/utils/helpers';
 
 function StartupContainer(props) {
   const { navigation } = props;

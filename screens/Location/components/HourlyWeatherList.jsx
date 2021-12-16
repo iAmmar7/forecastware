@@ -4,8 +4,8 @@ import { FlatList, Image } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import dayjs from 'dayjs';
 
-import { useStyles } from '../hooks';
-import { getWeatherIconUrl } from '../utils/helpers';
+import { useStyles } from 'forecastware/hooks';
+import { getWeatherIconUrl } from 'forecastware/utils/helpers';
 
 function HourlyWeatherList(props) {
   const { data, unit } = props;
@@ -21,7 +21,9 @@ function HourlyWeatherList(props) {
         keyExtractor={(item) => item.dt.toString()}
         renderItem={({ item }) => (
           <Surface style={styles.hourlyListItem}>
-            <Text style={styles.weatherText}>{dayjs(new Date(item.dt * 1000)).format('h:mmA')}</Text>
+            <Text style={styles.weatherText}>
+              {dayjs(new Date(item.dt * 1000)).format('h:mmA')}
+            </Text>
             <Image
               style={styles.weatherListIcon}
               source={{
@@ -38,15 +40,6 @@ function HourlyWeatherList(props) {
     </Surface>
   );
 }
-
-HourlyWeatherList.propTypes = {
-  data: PropTypes.array,
-  unit: PropTypes.string.isRequired,
-};
-
-HourlyWeatherList.defaultProps = {
-  data: [],
-};
 
 const createStyles = (theme) => ({
   hourlyListContainer: {
@@ -71,5 +64,14 @@ const createStyles = (theme) => ({
     paddingTop: 6,
   },
 });
+
+HourlyWeatherList.propTypes = {
+  data: PropTypes.array,
+  unit: PropTypes.string.isRequired,
+};
+
+HourlyWeatherList.defaultProps = {
+  data: [],
+};
 
 export default HourlyWeatherList;

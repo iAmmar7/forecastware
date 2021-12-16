@@ -5,7 +5,7 @@ import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatli
 import { Card, Surface, Text } from 'react-native-paper';
 // import { LinearGradient } from 'expo-linear-gradient';
 
-import { useStyles } from '../../hooks';
+import { useStyles } from 'forecastware/hooks';
 
 function CityComponent(props) {
   const { data, unit } = props;

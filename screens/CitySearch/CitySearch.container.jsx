@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import CitySearchComponent from './CitySearch.component';
-import { useLocationContext, useUserContext } from '../../hooks';
-import { fetchWeather } from '../../api';
+import { useLocationContext, useUserContext } from 'forecastware/hooks';
+import { fetchWeather } from 'forecastware/api';
 
 function CitySearchContainer(props) {
   const { navigation } = props;

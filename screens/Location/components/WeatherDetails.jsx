@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
 
-import { useStyles } from '../hooks';
-import { getUVIndex } from '../utils/helpers';
+import { useStyles } from 'forecastware/hooks';
+import { getUVIndex } from 'forecastware/utils/helpers';
 
-const WeatherDetails = (props) => {
-  const { data = {}, unit, handleExternalLink } = props;
+function WeatherDetails(props) {
+  const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -22,7 +23,9 @@ const WeatherDetails = (props) => {
         <Surface style={styles.flexItem}>
           <Surface style={styles.flexItemRight}>
             <Surface style={styles.itemValue}>
-              <Text style={styles.itemValueMain}>{Math.round(data?.visibility / 1000 || 0)}</Text>
+              <Text style={styles.itemValueMain}>
+                {Math.round((data?.visibility || 0) / 1000 || 0)}
+              </Text>
               <Text style={styles.itemValueSub}>km</Text>
             </Surface>
             <Text style={styles.itemLabel}>Visibility</Text>
@@ -67,7 +70,7 @@ const WeatherDetails = (props) => {
       </Surface>
     </Surface>
   );
-};
+}
 
 const createStyles = (theme) => ({
   container: {
@@ -120,5 +123,16 @@ const createStyles = (theme) => ({
     color: theme.colors.placeholder,
   },
 });
+
+WeatherDetails.propTypes = {
+  data: PropTypes.object,
+  unit: PropTypes.string,
+  handleExternalLink: PropTypes.func.isRequired,
+};
+
+WeatherDetails.defaultProps = {
+  data: {},
+  unit: 'Celsius',
+};
 
 export default WeatherDetails;

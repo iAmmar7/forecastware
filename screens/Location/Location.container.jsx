@@ -4,9 +4,9 @@ import * as WebBrowser from 'expo-web-browser';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 
+import { useLocationContext, useUserContext } from 'forecastware/hooks';
+import { fetchWeather } from 'forecastware/api';
 import LocationComponent from './Location.component';
-import { useLocationContext, useUserContext } from '../../hooks';
-import { fetchWeather } from '../../api';
 
 function LocationContainer(props) {
   const {

@@ -13,7 +13,7 @@ import {
 } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from '../../hooks';
+import { useStyles } from 'forecastware/hooks';
 
 function StartupComponent(props) {
   const { snackbarVisible, modalVisible, handleSnackbar, handleAskPermissions } = props;
@@ -52,7 +52,7 @@ function StartupComponent(props) {
                   iterationCount='infinite'
                   direction='alternate'
                   useNativeDriver
-                  source={require('../../assets/logo.png')}
+                  source={require('forecastware/assets/logo.png')}
                   style={{ width: 66, height: 66 }}
                 />
               </Surface>
