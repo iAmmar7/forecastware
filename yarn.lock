@@ -1633,15 +1633,6 @@
     query-string "^7.0.0"
     react-is "^16.13.0"
 
-"@react-navigation/drawer@^6.1.8":
-  version "6.1.8"
-  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-6.1.8.tgz#82e2a06d17166a82dd18233678ebf63ed523aaab"
-  integrity sha512-kYE2EO5dianUuUcaYmAlYBcgtmvGm2fxWTQ5sn103cgPNidp4KBUR9ClkhF+btfRaHKq+8Ul5M6qvL0mBAv/Lg==
-  dependencies:
-    "@react-navigation/elements" "^1.2.1"
-    color "^3.1.3"
-    warn-once "^0.1.0"
-
 "@react-navigation/elements@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.2.1.tgz#86f19781c6f34a5c9dd25dca99915e0306f477d1"
@@ -5998,9 +5989,9 @@ react-native-web@^0.17.5:
     normalize-css-color "^1.0.2"
     prop-types "^15.6.0"
 
-"react-native@https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz":
+"react-native@github:expo/react-native#sdk-42.0.0":
   version "0.63.2"
-  resolved "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz#a3d42e4135c891cf15a335cf69922e96507d6b8d"
+  resolved "https://codeload.github.com/expo/react-native/tar.gz/cb242431b8ab1738fce47da45dcd68a3b9224269"
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^4.14.0"

@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Appbar, Text, Surface, Title } from 'react-native-paper';
+import { Appbar, Text, Surface, Title, Button } from 'react-native-paper';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
@@ -27,10 +28,6 @@ function TabBar(props) {
     const title = routeDetails.options?.headerTitle;
     return title;
   }, [routeDetails]);
-
-  const handleNavigate = useCallback(() => {
-    navigation.navigate('City');
-  }, []);
 
   const hasScrolled = useMemo(() => {
     return routeDetails.options.hasScrolled;
@@ -57,11 +54,19 @@ function TabBar(props) {
           borderBottomColor: theme.colors.surface,
         }}
       >
-        <Appbar.Action
-          icon='city-variant-outline'
-          color={hasScrolled ? theme.colors.primary : theme.colors.text}
-          onPress={handleNavigate}
-        />
+        <Button
+          mode='text'
+          compact
+          onPress={() => navigation.navigate('City')}
+          theme={{ colors: { primary: theme.colors.placeholder } }}
+          style={styles.btn}
+        >
+          <MaterialCommunityIcons
+            name='city-variant-outline'
+            size={22}
+            color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          />
+        </Button>
         <Appbar.Content
           title={
             <Surface style={styles.titleContainer}>
@@ -102,11 +107,19 @@ function TabBar(props) {
           }
           titleStyle={styles.titleStyles}
         />
-        <Appbar.Action
-          icon='menu'
-          color={hasScrolled ? theme.colors.primary : theme.colors.text}
-          onPress={() => {}}
-        />
+        <Button
+          mode='text'
+          compact
+          onPress={() => navigation.navigate('Option')}
+          theme={{ colors: { primary: theme.colors.placeholder } }}
+          style={styles.btn}
+        >
+          <Entypo
+            name='dots-two-vertical'
+            size={22}
+            color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          />
+        </Button>
       </Animatable.View>
     </Surface>
   );
@@ -116,6 +129,10 @@ const createStyles = (theme) => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  btn: {
+    borderRadius: 50,
   },
   titleStyles: {
     marginLeft: 'auto',

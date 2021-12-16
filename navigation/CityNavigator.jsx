@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
-import { StartupScreen, CityManagementScreen, CitySearchScreen } from '../screens';
+import { StartupScreen, CityManagementScreen, CitySearchScreen, OptionScreen } from '../screens';
 import { CityManagementHeader, CitySearchHeader } from '../components';
 import LocationNavigator from './LocationNavigator';
 
@@ -28,6 +28,15 @@ function CityNavigator() {
           ...TransitionPresets.ModalSlideFromBottomIOS,
           header: CitySearchHeader,
           headerTitle: 'Add City',
+        }}
+      />
+      <Stack.Screen
+        name='Option'
+        component={OptionScreen}
+        options={{
+          ...TransitionPresets.SlideFromRightIOS,
+          // header: CitySearchHeader,
+          headerTitle: 'Settings',
         }}
       />
     </Stack.Navigator>
