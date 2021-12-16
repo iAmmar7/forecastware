@@ -1,9 +1,9 @@
 import React from 'react';
 
-import AllNavigators from './AllNavigators';
+import CityNavigator from './CityNavigator';
 
 function AppNavigator() {
-  return <AllNavigators />;
+  return <CityNavigator />;
 }
 
 export default AppNavigator;
