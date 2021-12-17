@@ -1,4 +1,4 @@
-const fontConfig = {
+const fonts = {
   ios: {
     regular: {
       fontFamily: 'open-sans',
@@ -37,4 +37,4 @@ const fontConfig = {
   },
 };
 
-export default fontConfig;
+export default fonts;

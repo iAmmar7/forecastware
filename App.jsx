@@ -35,7 +35,7 @@ export default function App() {
   });
   const scheme = useColorScheme();
   const theme = useMemo(
-    () => (scheme !== 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
+    () => (scheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
     [scheme],
   );
   const Providers = useMemo(
