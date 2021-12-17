@@ -44,7 +44,7 @@ function Header(props) {
         {back && (
           <HeaderIcon
             Component={MaterialIcons}
-            name='keyboard-backspace'
+            name='arrow-back'
             handleNavigate={() => navigation.goBack()}
             hasScrolled={hasScrolled}
           />
