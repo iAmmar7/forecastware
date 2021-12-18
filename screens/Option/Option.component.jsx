@@ -6,20 +6,26 @@ import { useStyles, useUserContext } from 'forecastware/hooks';
 import { temperatureUnits, themeNames } from 'forecastware/utils/constants';
 import { toCapitalize } from 'forecastware/utils/helpers';
 
+const unitIcon = {
+  [temperatureUnits.CELSIUS]: 'temperature-celsius',
+  [temperatureUnits.FAHRENHEIT]: 'temperature-fahrenheit',
+  [temperatureUnits.KELVIN]: 'temperature-kelvin',
+};
+
 function OptionComponent() {
   const { styles, theme } = useStyles(createStyles);
   const { unit, setTemperatureUnit, toggleTheme } = useUserContext();
   const [stateUnit, setStateUnit] = useState(unit);
-
-  const themeName = useMemo(() => {
-    return theme.dark ? themeNames.DARK : themeNames.LIGHT;
-  }, [theme]);
 
   useEffect(() => {
     if (stateUnit !== unit) {
       setTemperatureUnit(stateUnit);
     }
   }, [stateUnit]);
+
+  const themeName = useMemo(() => {
+    return theme.dark ? themeNames.DARK : themeNames.LIGHT;
+  }, [theme]);
 
   const handleTemperatureChange = (value) => {
     setStateUnit(value);
@@ -44,7 +50,7 @@ function OptionComponent() {
               const isActive = color === '#EC6E4C';
               return (
                 <MaterialCommunityIcons
-                  name='temperature-celsius'
+                  name={unitIcon[unit]}
                   size={22}
                   style={styles.accordionIcon}
                   color={isActive ? color : theme.colors.text}
