@@ -42,7 +42,7 @@ function CityNavigator() {
         options={{
           ...TransitionPresets.SlideFromRightIOS,
           header: Header,
-          headerTitle: 'Settings',
+          headerTitle: 'Options',
         }}
       />
     </Stack.Navigator>

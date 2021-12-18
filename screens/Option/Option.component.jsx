@@ -33,6 +33,7 @@ function OptionComponent() {
   return (
     <Surface style={styles.screen}>
       <List.Section>
+        <List.Subheader>App settings</List.Subheader>
         <List.AccordionGroup>
           <List.Accordion
             id='1'
