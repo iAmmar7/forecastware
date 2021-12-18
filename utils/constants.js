@@ -16,3 +16,14 @@ export const LOCATION_JOB_INTERVAL = 1;
 export const MINIMUM_BATTERY_LIMIT = 20;
 export const NOTIFICATION_JOB = 'notification-job';
 export const NOTIFICATION_INTERVAL = 60 * 15;
+
+export const temperatureUnits = {
+  CELSIUS: 'Celsius',
+  FAHRENHEIT: 'Fahrenheit',
+  KELVIN: 'Kelvin',
+};
+
+export const themeNames = {
+  DARK: 'dark',
+  LIGHT: 'light',
+};

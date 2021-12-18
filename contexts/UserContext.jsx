@@ -5,11 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const UserContext = createContext(null);
 
 function UserContextProvider(props) {
-  const { children } = props;
+  const { children, toggleTheme } = props;
   const [location, setLocation] = useState(null);
   const [unit, setUnit] = useState('Celsius');
 
-  const setTemperatureUnit = (value) => setUnit(value);
+  const setTemperatureUnit = (value) => {
+    AsyncStorage.setItem('unit', value);
+    setUnit(value);
+  };
 
   useEffect(() => {
     (async () => {
@@ -37,6 +40,7 @@ function UserContextProvider(props) {
       setCurrentLocation,
       clearCurrentLocation,
       setTemperatureUnit,
+      toggleTheme,
     }),
     [location, unit],
   );
@@ -46,6 +50,7 @@ function UserContextProvider(props) {
 
 UserContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  toggleTheme: PropTypes.func.isRequired,
 };
 
 export { UserContext };
