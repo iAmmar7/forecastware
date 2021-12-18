@@ -30,7 +30,7 @@ function LocationContainer(props) {
     const newWeather = await fetchWeather(weather, unit);
     await updateLocation(newWeather);
     setRefreshing(false);
-  }, [weather, locations]);
+  }, [weather, locations, unit]);
 
   const handleExternalLink = useCallback(async () => {
     await WebBrowser.openBrowserAsync('https://weather.com/en-US');
@@ -41,7 +41,7 @@ function LocationContainer(props) {
     [message],
   );
 
-  const fadeAnimation = useCallback(() => animationRef.current.fadeIn(1000), [animationRef]);
+  const fadeAnimation = useCallback(() => animationRef.current.flash(1000), [animationRef]);
 
   const handleImageSave = useCallback(
     async (image) => {

@@ -12,6 +12,7 @@ import { updateCurrentLocation, fetchCurrentLocations } from './db';
 import { fetchCurrentLocationWeather } from '../api';
 import { isEmpty, getTemperatureSymbol } from '../utils/helpers';
 import {
+  temperatureUnits,
   APP_NAME,
   LOCATION_JOB,
   MINIMUM_BATTERY_LIMIT,
@@ -56,7 +57,7 @@ export const init = () => {
       // Fetch current location weather from the API
       const weather = await fetchCurrentLocationWeather(
         location.coords,
-        unitFromStorage || 'Celsius',
+        unitFromStorage || temperatureUnits.CELSIUS,
       );
       if (isEmpty(weather)) throw new Error('Unable to fetch the weather!');
 
@@ -109,7 +110,7 @@ export const init = () => {
       // Fetch current location weather from the API
       const weather = await fetchCurrentLocationWeather(
         location.coords,
-        unitFromStorage || 'Celsius',
+        unitFromStorage || temperatureUnits.CELSIUS,
       );
       if (isEmpty(weather) || isEmpty(weather.current))
         throw new Error('Unable to fetch the weather!');

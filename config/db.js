@@ -15,7 +15,7 @@ export const createTable = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS ${DB_NAME} (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL UNIQUE, lat REAL NOT NULL, lon REAL NOT NULL, data TEXT NOT NULL, isCurrent BOOL NOT NULL);`,
+        `CREATE TABLE IF NOT EXISTS ${DB_NAME} (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL UNIQUE, lat REAL NOT NULL, lon REAL NOT NULL, data TEXT NOT NULL, isCurrent BOOL NOT NULL, unit TEXT NOT NULL);`,
         [],
         () => {
           resolve();
@@ -48,14 +48,14 @@ export const dropTable = () => {
 };
 
 export const insertLocation = (location, isCurrent) => {
-  const { name, lat, lon, ...data } = location;
+  const { name, lat, lon, unit, ...data } = location;
   const strigifiedData = JSON.stringify(data);
 
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `INSERT INTO ${DB_NAME} (name, lat, lon, data, isCurrent) VALUES (?, ?, ?, ?, ?);`,
-        [name, lat, lon, strigifiedData, isCurrent],
+        `INSERT INTO ${DB_NAME} (name, lat, lon, data, isCurrent, unit) VALUES (?, ?, ?, ?, ?, ?);`,
+        [name, lat, lon, strigifiedData, isCurrent, unit],
         (_, result) => {
           resolve(result);
         },
@@ -69,14 +69,14 @@ export const insertLocation = (location, isCurrent) => {
 };
 
 export const updateLocation = (location) => {
-  const { id, name, lat, lon, isCurrent, ...data } = location;
+  const { id, name, lat, lon, isCurrent, unit, ...data } = location;
   const strigifiedData = JSON.stringify(data);
 
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `UPDATE ${DB_NAME} SET name = ?, lat = ?, lon = ?, data = ?, isCurrent = ? WHERE id = ?;`,
-        [name, lat, lon, strigifiedData, isCurrent, id],
+        `UPDATE ${DB_NAME} SET name = ?, lat = ?, lon = ?, data = ?, isCurrent = ?, unit = ? WHERE id = ?;`,
+        [name, lat, lon, strigifiedData, isCurrent, unit, id],
         (_, result) => {
           resolve(result);
         },
@@ -90,14 +90,14 @@ export const updateLocation = (location) => {
 };
 
 export const updateCurrentLocation = (location) => {
-  const { name, lat, lon, ...data } = location;
+  const { name, lat, lon, unit, ...data } = location;
   const strigifiedData = JSON.stringify(data);
 
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `UPDATE ${DB_NAME} SET name = ?, lat = ?, lon = ?, data = ?, isCurrent = ? WHERE isCurrent = ?;`,
-        [name, lat, lon, strigifiedData, true, 1],
+        `UPDATE ${DB_NAME} SET name = ?, lat = ?, lon = ?, data = ?, isCurrent = ?, unit = ? WHERE isCurrent = ?;`,
+        [name, lat, lon, strigifiedData, true, unit, 1],
         (_, result) => {
           resolve(result);
         },

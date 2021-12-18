@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CityComponent from './City.component';
 import { useLocationContext, useUserContext } from 'forecastware/hooks';
+import CityComponent from './City.component';
 
 function CityContainer() {
   const [{ unit }, { locations }] = [useUserContext(), useLocationContext()];

@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
 
 import { useStyles } from 'forecastware/hooks';
 import { getUVIndex } from 'forecastware/utils/helpers';
+import { temperatureUnits } from 'forecastware/utils/constants';
 
 function WeatherDetails(props) {
   const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
+
+  const unitRenderer = useCallback(() => {
+    const symbol = unit.charAt(0);
+    if (unit === temperatureUnits.KELVIN) {
+      return <Text style={styles.itemValueSub}>{symbol}</Text>;
+    }
+    return <Text style={styles.itemValueSub}>&deg;{symbol}</Text>;
+  }, [unit]);
 
   return (
     <Surface style={styles.container}>
@@ -16,7 +25,7 @@ function WeatherDetails(props) {
         <Surface style={styles.flexItem}>
           <Surface style={styles.itemValue}>
             <Text style={styles.itemValueMain}>{Math.round(data?.feels_like || 0)}</Text>
-            <Text style={styles.itemValueSub}>&deg;{unit === 'Celsius' ? 'C' : 'F'}</Text>
+            {unitRenderer()}
           </Surface>
           <Text style={styles.itemLabel}>Temperature Felt</Text>
         </Surface>

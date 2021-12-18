@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
@@ -7,10 +7,32 @@ import dayjs from 'dayjs';
 
 import { useStyles } from 'forecastware/hooks';
 import { getWeatherIconUrl } from 'forecastware/utils/helpers';
+import { temperatureUnits } from 'forecastware/utils/constants';
 
 function WeeklyWeatherList(props) {
   const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
+
+  const unitRenderer = useCallback(
+    (temp) => {
+      const symbol = unit.charAt(0);
+      if (unit === temperatureUnits.KELVIN) {
+        return (
+          <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
+            {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}
+            {symbol}
+          </Text>
+        );
+      }
+      return (
+        <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
+          {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}&deg;
+          {symbol}
+        </Text>
+      );
+    },
+    [unit],
+  );
 
   return (
     <Surface style={styles.dailyListContainer}>
@@ -32,10 +54,7 @@ function WeeklyWeatherList(props) {
             />
             <Text style={styles.weatherText}>{item?.weather?.[0]?.main}</Text>
           </Surface>
-          <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
-            {Math.round(item?.temp?.max || 0)}/{Math.round(item?.temp?.min || 0)}&deg;
-            {unit === 'Celsius' ? 'C' : 'F'}
-          </Text>
+          {unitRenderer(item?.temp)}
         </Surface>
       ))}
       <Surface style={styles.linkContainer}>
