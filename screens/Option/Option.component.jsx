@@ -106,9 +106,21 @@ function OptionComponent() {
         </List.AccordionGroup>
       </List.Section>
       <List.Section>
-        <List.Subheader>Some title</List.Subheader>
-        <List.Item title='First Item' left={() => <List.Icon icon='folder' />} />
-        <List.Item title='Second Item' left={() => <List.Icon color='#000' icon='folder' />} />
+        <List.Subheader>More</List.Subheader>
+        <List.Item
+          title='Weather Map'
+          left={() => <List.Icon icon='map-outline' size={22} color={theme.colors.text} />}
+          style={styles.listItem}
+          titleStyle={styles.listItemTitle}
+          onPress={() => console.log('Map')}
+        />
+        <List.Item
+          title='Weather Radar'
+          left={() => <List.Icon icon='radar' size={22} color={theme.colors.text} />}
+          style={styles.listItem}
+          titleStyle={styles.listItemTitle}
+          onPress={() => console.log('Radar')}
+        />
       </List.Section>
     </Surface>
   );
@@ -119,9 +131,8 @@ const createStyles = (theme) => ({
     flex: 1,
   },
   accordion: {
-    paddingVertical: 8,
     paddingHorizontal: 8,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.dark ? theme.colors.background : theme.colors.surface,
   },
   accordionIcon: {
     paddingHorizontal: 14,
@@ -138,6 +149,12 @@ const createStyles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  listItem: {
+    paddingVertical: 0,
+  },
+  listItemTitle: {
+    fontFamily: 'open-sans-medium',
   },
 });
 

@@ -50,7 +50,6 @@ function TabBar(props) {
           paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
           paddingBottom: hasScrolled ? 0 : 10,
           elevation: hasScrolled ? 1 : 0,
-          borderBottomColor: theme.colors.surface,
         }}
       >
         <HeaderIcon
