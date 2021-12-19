@@ -28,3 +28,11 @@ export const themeNames = {
   DARK: 'dark',
   LIGHT: 'light',
 };
+
+export const mapLayerOptions = [
+  { id: 1, label: 'Clouds', value: 'clouds_new' },
+  { id: 2, label: 'Precipitation', value: 'precipitation_new' },
+  { id: 3, label: 'Sea level pressure', value: 'pressure_new' },
+  { id: 4, label: 'Wind speed', value: 'wind_new' },
+  { id: 5, label: 'Temperature', value: 'temp_new' },
+];

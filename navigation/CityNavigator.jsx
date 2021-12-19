@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 
 function CityNavigator() {
   return (
-    <Stack.Navigator initialRouteName='Startup'>
+    <Stack.Navigator initialRouteName='Map'>
       <Stack.Screen name='Startup' component={StartupScreen} options={{ headerShown: false }} />
       <Stack.Screen name='Home' component={LocationNavigator} options={{ headerShown: false }} />
       <Stack.Screen

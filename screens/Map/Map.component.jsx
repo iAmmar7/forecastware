@@ -14,9 +14,18 @@ import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from 'forecastware/hooks';
 import Header from './components/Header';
+import Modal from './components/Modal';
 
 function MapComponent(props) {
-  const { region, urlTemplate, handleLeftIconClick } = props;
+  const {
+    region,
+    urlTemplate,
+    optionsVisible,
+    layerType,
+    toggleOptions,
+    handleBack,
+    handleChangeLayerType,
+  } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -25,14 +34,20 @@ function MapComponent(props) {
       style={styles.screen}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <MapView style={styles.map} region={region}>
+        <MapView style={styles.map} initialRegion={region}>
           <UrlTile urlTemplate={urlTemplate} flipY={false} zIndex={1} />
         </MapView>
       </TouchableWithoutFeedback>
       <Surface style={styles.overlay}>
         <Animatable.View animation='pulse'>
-          <Header handleLeftIconClick={handleLeftIconClick} />
+          <Header handleLeftIconClick={handleBack} handleRightIconClick={toggleOptions} />
         </Animatable.View>
+        <Modal
+          visible={optionsVisible}
+          toggleModal={toggleOptions}
+          selected={layerType}
+          handleChangeOptions={handleChangeLayerType}
+        />
       </Surface>
     </KeyboardAvoidingView>
   );
@@ -59,7 +74,11 @@ const createStyles = () => ({
 MapComponent.propTypes = {
   region: PropTypes.object.isRequired,
   urlTemplate: PropTypes.string.isRequired,
-  handleLeftIconClick: PropTypes.func.isRequired,
+  layerType: PropTypes.string.isRequired,
+  optionsVisible: PropTypes.bool.isRequired,
+  handleBack: PropTypes.func.isRequired,
+  toggleOptions: PropTypes.func.isRequired,
+  handleChangeLayerType: PropTypes.func.isRequired,
 };
 
 export default MapComponent;

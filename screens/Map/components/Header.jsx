@@ -10,7 +10,7 @@ import { isEmpty } from 'forecastware/utils/helpers';
 import { fetchLocations } from 'forecastware/api';
 
 function Header(props) {
-  const { handleLeftIconClick } = props;
+  const { handleLeftIconClick, handleRightIconClick } = props;
   const { styles, theme } = useStyles(createStyles);
   const [searchQuery, setSearchQuery] = useState('');
   const [locations, setLocations] = useState([]);
@@ -82,11 +82,7 @@ function Header(props) {
       {isEmpty(searchQuery) && (
         <Animatable.View animation='fadeIn'>
           <Surface style={styles.optionContainer}>
-            <TouchableRipple
-              borderless
-              onPress={() => console.log('Pressed')}
-              style={styles.optionIcon}
-            >
+            <TouchableRipple borderless onPress={handleRightIconClick} style={styles.optionIcon}>
               <Ionicons name='ios-options-outline' size={22} color={theme.colors.text} />
             </TouchableRipple>
           </Surface>
@@ -159,6 +155,7 @@ const createStyles = (theme) => ({
 
 Header.propTypes = {
   handleLeftIconClick: PropTypes.func.isRequired,
+  handleRightIconClick: PropTypes.func.isRequired,
 };
 
 export default Header;
