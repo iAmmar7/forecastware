@@ -50,3 +50,8 @@ export const getTemperatureSymbol = (unit = 'Celsius') => {
       return '\u00B0C';
   }
 };
+
+export const toCapitalize = (str) => {
+  if (typeof str !== 'string') return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface } from 'react-native-paper';
 
-import { CityList, Loader } from '../../components';
-import { useStyles } from '../../hooks';
-import { topCities, topWorldCities } from '../../utils/dummy-data';
+import CityList from './components/CityList';
+import { Loader } from 'forecastware/components';
+import { useStyles } from 'forecastware/hooks';
+import { topCities, topWorldCities } from 'forecastware/utils/dummy-data';
 
 function CitySearchComponent(props) {
   const { loading, navigation, handleAddLocation, handleRemoveLocation } = props;

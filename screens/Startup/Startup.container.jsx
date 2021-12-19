@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
+import { useUserContext, useLocationContext } from 'forecastware/hooks';
+import { fetchCurrentLocationWeather } from 'forecastware/api';
+import { startLocationTracking, registerBackgroundNotification } from 'forecastware/config';
+import { isArray, isEmpty } from 'forecastware/utils/helpers';
 import StartupComponent from './Startup.component';
-import { useUserContext, useLocationContext } from '../../hooks';
-import { fetchCurrentLocationWeather } from '../../api';
-import { startLocationTracking, registerBackgroundNotification } from '../../config';
-import { isArray, isEmpty } from '../../utils/helpers';
 
 function StartupContainer(props) {
   const { navigation } = props;
@@ -54,13 +54,7 @@ function StartupContainer(props) {
       setCurrentLocation(location);
 
       // Fetch current location weather from the API
-      const coordinates = {
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
-      };
-
-      // Fetch current location weather
-      const weather = await fetchCurrentLocationWeather(coordinates, unit);
+      const weather = await fetchCurrentLocationWeather(location.coords, unit);
 
       // Fetch locations from the database to check if current location already exist
       const dbLocations = await fetchLocations();

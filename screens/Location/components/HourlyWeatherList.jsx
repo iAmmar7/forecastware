@@ -1,15 +1,36 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, Image } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import dayjs from 'dayjs';
 
-import { useStyles } from '../hooks';
-import { getWeatherIconUrl } from '../utils/helpers';
+import { useStyles } from 'forecastware/hooks';
+import { getWeatherIconUrl } from 'forecastware/utils/helpers';
+import { temperatureUnits } from 'forecastware/utils/constants';
 
 function HourlyWeatherList(props) {
   const { data, unit } = props;
   const { styles } = useStyles(createStyles);
+
+  const unitRenderer = useCallback(
+    (temp) => {
+      const symbol = unit.charAt(0);
+      if (unit === temperatureUnits.KELVIN) {
+        return (
+          <Text style={{ ...styles.weatherText, ...styles.hourlyStatus }}>
+            {Math.round(temp || 0)}
+            {symbol}
+          </Text>
+        );
+      }
+      return (
+        <Text style={{ ...styles.weatherText, ...styles.hourlyStatus }}>
+          {Math.round(temp || 0)}&deg;{symbol}
+        </Text>
+      );
+    },
+    [unit],
+  );
 
   return (
     <Surface style={styles.hourlyListContainer}>
@@ -31,24 +52,13 @@ function HourlyWeatherList(props) {
               }}
             />
             <Text style={styles.weatherText}>{item?.weather?.[0]?.main}</Text>
-            <Text style={{ ...styles.weatherText, ...styles.hourlyStatus }}>
-              {Math.round(item?.temp || 0)}&deg;{unit === 'Celsius' ? 'C' : 'F'}
-            </Text>
+            {unitRenderer(item.temp)}
           </Surface>
         )}
       />
     </Surface>
   );
 }
-
-HourlyWeatherList.propTypes = {
-  data: PropTypes.array,
-  unit: PropTypes.string.isRequired,
-};
-
-HourlyWeatherList.defaultProps = {
-  data: [],
-};
 
 const createStyles = (theme) => ({
   hourlyListContainer: {
@@ -73,5 +83,14 @@ const createStyles = (theme) => ({
     paddingTop: 6,
   },
 });
+
+HourlyWeatherList.propTypes = {
+  data: PropTypes.array,
+  unit: PropTypes.string.isRequired,
+};
+
+HourlyWeatherList.defaultProps = {
+  data: [],
+};
 
 export default HourlyWeatherList;

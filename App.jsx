@@ -1,16 +1,18 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useColorScheme } from 'react-native';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { BatteryMonitor } from './components';
 import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import { initDB, initNotifications, initTasks } from './config';
+import { themeNames } from './utils/constants';
 import AppNavigator from './navigation/AppNavigator';
 import combineProviders from './combineProviders';
 
@@ -27,6 +29,7 @@ initNotifications();
 initTasks();
 
 export default function App() {
+  const [theme, setTheme] = useState(null);
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
@@ -34,29 +37,44 @@ export default function App() {
     'open-sans-medium': require('./assets/fonts/OpenSans-Medium.ttf'),
   });
   const scheme = useColorScheme();
-  const theme = useMemo(
-    () => (scheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme),
-    [scheme],
-  );
+
+  useEffect(() => {
+    (async () => {
+      const themeFromStorage = await AsyncStorage.getItem('theme');
+      if (themeFromStorage) {
+        setTheme(themeFromStorage === themeNames.DARK ? CombinedDarkTheme : CombinedDefaultTheme);
+        return;
+      }
+      setTheme(scheme === themeNames.DARK ? CombinedDarkTheme : CombinedDefaultTheme);
+    })();
+  }, [scheme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((currentTheme) => {
+      AsyncStorage.setItem('theme', currentTheme.dark ? themeNames.LIGHT : themeNames.DARK);
+      return currentTheme.dark ? CombinedDefaultTheme : CombinedDarkTheme;
+    });
+  }, [theme]);
+
   const Providers = useMemo(
     () =>
       combineProviders([
         { name: PaperProvider, props: { theme } },
-        { name: UserContextProvider },
+        { name: UserContextProvider, props: { toggleTheme } },
         { name: LocationContextProvider },
         { name: NavigationContainer, props: { theme } },
       ]),
     [theme],
   );
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded || !theme) return null;
 
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar barStyle='dark-content' />
       <BatteryMonitor />
       <Providers>
-        <AppNavigator theme={theme} />
+        <AppNavigator />
       </Providers>
     </>
   );

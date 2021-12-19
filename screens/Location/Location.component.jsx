@@ -5,14 +5,17 @@ import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
 import ViewShot from 'react-native-view-shot';
 import * as Animatable from 'react-native-animatable';
 
-import { HourlyWeatherList, WeeklyWeatherList, WeatherDetails, Loader } from '../../components';
-import { useStyles } from '../../hooks';
-import { isEmpty } from '../../utils/helpers';
+import { Loader } from 'forecastware/components';
+import { useStyles } from 'forecastware/hooks';
+import { isEmpty } from 'forecastware/utils/helpers';
+import { temperatureUnits } from 'forecastware/utils/constants';
+import HourlyWeatherList from './components/HourlyWeatherList';
+import WeeklyWeatherList from './components/WeeklyWeatherList';
+import WeatherDetails from './components/WeatherDetails';
 
 function LocationComponent(props) {
   const {
     data,
-    unit,
     viewShotRef,
     animationRef,
     scrollRef,
@@ -25,6 +28,18 @@ function LocationComponent(props) {
     handleOnScroll,
   } = props;
   const { styles, theme } = useStyles(createStyles);
+
+  const unitRenderer = () => {
+    const symbol = data.unit.charAt(0);
+    return (
+      <Surface style={styles.unit}>
+        {data.unit === temperatureUnits.KELVIN ? null : (
+          <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
+        )}
+        <Text style={styles.unitText}>{symbol}</Text>
+      </Surface>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.screenWrapper}>
@@ -54,24 +69,21 @@ function LocationComponent(props) {
               <Surface style={styles.summary}>
                 <Surface style={styles.temperatureContainer}>
                   <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
-                  <Surface style={styles.unit}>
-                    <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
-                    <Text style={styles.unitText}>{unit === 'Celsius' ? 'C' : 'F'}</Text>
-                  </Surface>
+                  {unitRenderer()}
                 </Surface>
                 <Surface>
                   <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
                 </Surface>
               </Surface>
-              <HourlyWeatherList data={data?.hourly} unit={unit} />
+              <HourlyWeatherList data={data?.hourly} unit={data.unit} />
               <WeeklyWeatherList
                 data={data?.daily}
-                unit={unit}
+                unit={data.unit}
                 handleExternalLink={handleExternalLink}
               />
               <WeatherDetails
                 data={data?.current}
-                unit={unit}
+                unit={data.unit}
                 handleExternalLink={handleExternalLink}
               />
             </Surface>
@@ -93,21 +105,6 @@ function LocationComponent(props) {
     </SafeAreaView>
   );
 }
-
-LocationComponent.propTypes = {
-  data: PropTypes.object.isRequired,
-  unit: PropTypes.string.isRequired,
-  viewShotRef: PropTypes.object.isRequired,
-  animationRef: PropTypes.object.isRequired,
-  scrollRef: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
-  refreshing: PropTypes.bool.isRequired,
-  handleRefresh: PropTypes.func.isRequired,
-  handleSnackbarDismiss: PropTypes.func.isRequired,
-  handleExternalLink: PropTypes.func.isRequired,
-  handleFAB: PropTypes.func.isRequired,
-  handleOnScroll: PropTypes.func.isRequired,
-};
 
 const createStyles = (theme) => ({
   screenWrapper: {
@@ -164,5 +161,20 @@ const createStyles = (theme) => ({
     height: 150,
   },
 });
+
+LocationComponent.propTypes = {
+  data: PropTypes.object.isRequired,
+  unit: PropTypes.string.isRequired,
+  viewShotRef: PropTypes.object.isRequired,
+  animationRef: PropTypes.object.isRequired,
+  scrollRef: PropTypes.object.isRequired,
+  message: PropTypes.object.isRequired,
+  refreshing: PropTypes.bool.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
+  handleSnackbarDismiss: PropTypes.func.isRequired,
+  handleExternalLink: PropTypes.func.isRequired,
+  handleFAB: PropTypes.func.isRequired,
+  handleOnScroll: PropTypes.func.isRequired,
+};
 
 export default LocationComponent;

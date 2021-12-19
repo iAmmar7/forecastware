@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
-import { useStyles } from '../hooks';
-import { getWeatherIconUrl } from '../utils/helpers';
+import { useStyles } from 'forecastware/hooks';
+import { getWeatherIconUrl } from 'forecastware/utils/helpers';
+import { temperatureUnits } from 'forecastware/utils/constants';
 
-const WeeklyWeatherList = (props) => {
-  const { data = [], unit, handleExternalLink } = props;
+function WeeklyWeatherList(props) {
+  const { data, unit, handleExternalLink } = props;
   const { styles } = useStyles(createStyles);
+
+  const unitRenderer = useCallback(
+    (temp) => {
+      const symbol = unit.charAt(0);
+      if (unit === temperatureUnits.KELVIN) {
+        return (
+          <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
+            {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}
+            {symbol}
+          </Text>
+        );
+      }
+      return (
+        <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
+          {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}&deg;
+          {symbol}
+        </Text>
+      );
+    },
+    [unit],
+  );
 
   return (
     <Surface style={styles.dailyListContainer}>
@@ -31,23 +54,20 @@ const WeeklyWeatherList = (props) => {
             />
             <Text style={styles.weatherText}>{item?.weather?.[0]?.main}</Text>
           </Surface>
-          <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
-            {Math.round(item?.temp?.max || 0)}/{Math.round(item?.temp?.min || 0)}&deg;
-            {unit === 'Celsius' ? 'C' : 'F'}
-          </Text>
+          {unitRenderer(item?.temp)}
         </Surface>
       ))}
       <Surface style={styles.linkContainer}>
         <TouchableRipple style={styles.link} onPress={handleExternalLink}>
           <>
             <Text style={styles.linkText}>15 day weather forecast</Text>
-            <AntDesign name="right" size={14} style={styles.linkIcon} />
+            <AntDesign name='right' size={14} style={styles.linkIcon} />
           </>
         </TouchableRipple>
       </Surface>
     </Surface>
   );
-};
+}
 
 const createStyles = (theme) => ({
   dailyListContainer: {
@@ -100,5 +120,16 @@ const createStyles = (theme) => ({
     paddingTop: 2,
   },
 });
+
+WeeklyWeatherList.propTypes = {
+  data: PropTypes.array,
+  unit: PropTypes.string,
+  handleExternalLink: PropTypes.func.isRequired,
+};
+
+WeeklyWeatherList.defaultProps = {
+  data: [],
+  unit: 'Celsius',
+};
 
 export default WeeklyWeatherList;

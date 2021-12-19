@@ -4,9 +4,9 @@ import * as WebBrowser from 'expo-web-browser';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 
+import { useLocationContext, useUserContext } from 'forecastware/hooks';
+import { fetchWeather } from 'forecastware/api';
 import LocationComponent from './Location.component';
-import { useLocationContext, useUserContext } from '../../hooks';
-import { fetchWeather } from '../../api';
 
 function LocationContainer(props) {
   const {
@@ -30,7 +30,7 @@ function LocationContainer(props) {
     const newWeather = await fetchWeather(weather, unit);
     await updateLocation(newWeather);
     setRefreshing(false);
-  }, [weather, locations]);
+  }, [weather, locations, unit]);
 
   const handleExternalLink = useCallback(async () => {
     await WebBrowser.openBrowserAsync('https://weather.com/en-US');
@@ -41,7 +41,7 @@ function LocationContainer(props) {
     [message],
   );
 
-  const fadeAnimation = useCallback(() => animationRef.current.fadeIn(1000), [animationRef]);
+  const fadeAnimation = useCallback(() => animationRef.current.flash(1000), [animationRef]);
 
   const handleImageSave = useCallback(
     async (image) => {
@@ -83,6 +83,7 @@ function LocationContainer(props) {
     if (offsetY <= 80) {
       scrollRef.current?.scrollTo({ y: 0 });
       navigation.setOptions({ hasScrolled: false });
+      return;
     }
     if (offsetY > 80 && offsetY < 160) {
       scrollRef.current?.scrollTo({ y: 200 });

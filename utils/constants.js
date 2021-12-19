@@ -2,6 +2,7 @@
 import Constants from 'expo-constants';
 
 export const API_URL = 'https://api.openweathermap.org';
+export const MAP_API_URL = 'https://tile.openweathermap.org';
 export const API_KEY = Constants.manifest.extra.API_KEY;
 
 export const APP_NAME = 'ForecastWare';
@@ -16,3 +17,14 @@ export const LOCATION_JOB_INTERVAL = 1;
 export const MINIMUM_BATTERY_LIMIT = 20;
 export const NOTIFICATION_JOB = 'notification-job';
 export const NOTIFICATION_INTERVAL = 60 * 15;
+
+export const temperatureUnits = {
+  CELSIUS: 'Celsius',
+  FAHRENHEIT: 'Fahrenheit',
+  KELVIN: 'Kelvin',
+};
+
+export const themeNames = {
+  DARK: 'dark',
+  LIGHT: 'light',
+};

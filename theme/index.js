@@ -8,11 +8,11 @@ import {
   configureFonts,
 } from 'react-native-paper';
 
-import fontConfig from './fonts';
-import colorConfig from './colors';
+import fonts from './fonts';
+import colors, { darkColors } from './colors';
 
 const defaultTheme = {
-  fonts: configureFonts(fontConfig),
+  fonts: configureFonts(fonts),
   // mode: 'exact',
 };
 
@@ -22,7 +22,7 @@ const CombinedDefaultTheme = {
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
-    ...colorConfig,
+    ...colors,
   },
   ...defaultTheme,
 };
@@ -33,7 +33,8 @@ const CombinedDarkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
-    ...colorConfig,
+    ...colors,
+    ...darkColors,
   },
   ...defaultTheme,
 };

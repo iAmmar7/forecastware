@@ -1,8 +1,20 @@
 import API from './axios';
-import { FALLBACK_LATITUDE, FALLBACK_LONGITUDE, FALLBACK_CITY } from '../utils/constants';
+import {
+  temperatureUnits,
+  FALLBACK_LATITUDE,
+  FALLBACK_LONGITUDE,
+  FALLBACK_CITY,
+  MAP_API_URL,
+} from '../utils/constants';
 import { isEmpty } from '../utils/helpers';
 
 const api = new API();
+
+const unitToCode = {
+  [temperatureUnits.CELSIUS]: 'metric',
+  [temperatureUnits.FAHRENHEIT]: 'imperial',
+  [temperatureUnits.KELVIN]: 'default',
+};
 
 export const fetchCurrentLocationWeather = async (coords, unit) => {
   try {
@@ -24,10 +36,10 @@ export const fetchCurrentLocationWeather = async (coords, unit) => {
       lat: latitude,
       lon: longitude,
       exclude: 'minutely,alerts',
-      ...(unit === 'Celsius' && { units: 'metric' }),
+      units: unitToCode[unit],
     });
 
-    const payload = { ...weather, name: location?.[0]?.name || FALLBACK_CITY };
+    const payload = { ...weather, name: location?.[0]?.name || FALLBACK_CITY, unit };
 
     return payload;
   } catch (error) {
@@ -42,10 +54,16 @@ export const fetchWeather = async (coords, unit) => {
       lat: coords.lat,
       lon: coords.lon,
       exclude: 'minutely,alerts',
-      ...(unit === 'Celsius' && { units: 'metric' }),
+      units: unitToCode[unit],
     });
 
-    const payload = { ...weather, id: coords.id, name: coords.name, isCurrent: coords.isCurrent };
+    const payload = {
+      ...weather,
+      id: coords.id,
+      name: coords.name,
+      isCurrent: coords.isCurrent,
+      unit,
+    };
 
     return payload;
   } catch (error) {
@@ -61,6 +79,18 @@ export const fetchLocations = async (query) => {
       limit: 5,
     });
     return locations;
+  } catch (error) {
+    console.error('Error', error);
+    return error;
+  }
+};
+
+export const fetchWeatherMap = async () => {
+  try {
+    const mapAPI = new API(MAP_API_URL);
+    const map = await mapAPI.get('/map', `clouds_new/1/1/1/`, {});
+
+    return map;
   } catch (error) {
     console.error('Error', error);
     return error;

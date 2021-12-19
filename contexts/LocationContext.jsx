@@ -26,6 +26,7 @@ function LocationContextProvider({ children }) {
           name: loc?.name,
           lat: loc?.lat,
           lon: loc?.lon,
+          unit: loc?.unit,
           ...parsedData,
         };
       });
@@ -70,9 +71,11 @@ function LocationContextProvider({ children }) {
         await updateLocationDB(data);
 
         // Update the context
-        const newLocations = [...locations];
-        newLocations[locationIndex] = { ...data };
-        setLocations(newLocations);
+        setLocations((oldLocations) => {
+          const newLocations = [...oldLocations];
+          newLocations[locationIndex] = { ...data };
+          return newLocations;
+        });
       } catch (error) {
         console.log('DB Error', error);
       }

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Surface, Title, Text, TouchableRipple, Searchbar, List, Card } from 'react-native-paper';

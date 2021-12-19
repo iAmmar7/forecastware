@@ -1,20 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { Card, Surface, Text } from 'react-native-paper';
 // import { LinearGradient } from 'expo-linear-gradient';
 
-import { useStyles } from '../../hooks';
+import { useStyles } from 'forecastware/hooks';
+import { temperatureUnits } from 'forecastware/utils/constants';
 
 function CityComponent(props) {
-  const { data, unit } = props;
+  const { data } = props;
   const [stateData, setStateData] = useState([]);
   const { styles } = useStyles(createStyles);
 
   useEffect(() => {
     setStateData(data || []);
   }, [data?.length]);
+
+  const unitRenderer = useCallback((temp, weatherUnit) => {
+    const symbol = weatherUnit.charAt(0);
+    if (weatherUnit === temperatureUnits.KELVIN) {
+      return (
+        <Text style={styles.temperature}>
+          {Math.round(temp || 0)}
+          {symbol}
+        </Text>
+      );
+    }
+    return (
+      <Text style={styles.temperature}>
+        {Math.round(temp || 0)}&deg;{symbol}
+      </Text>
+    );
+  }, []);
 
   const handleDrag = ({ data: newData }) => {
     setStateData(newData);
@@ -40,9 +58,7 @@ function CityComponent(props) {
                       <Text style={styles.locationName}>{item.name}</Text>
                     </View>
                     <View>
-                      <Text style={styles.temperature}>
-                        {Math.round(item.current.temp || 0)}&deg;{unit === 'Celsius' ? 'C' : 'F'}
-                      </Text>
+                      {unitRenderer(item.current.temp, item.unit)}
                       <Text style={styles.weather}>{item.current.weather[0].main}</Text>
                     </View>
                   </View>
@@ -93,7 +109,6 @@ const createStyles = (theme) => ({
 
 CityComponent.propTypes = {
   data: PropTypes.array.isRequired,
-  unit: PropTypes.string.isRequired,
 };
 
 export default CityComponent;
