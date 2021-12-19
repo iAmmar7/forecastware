@@ -61,7 +61,7 @@ function Header(props) {
           title={
             <Surface style={styles.titleContainer}>
               <Animatable.Text ref={titleRef}>
-                <Title style={styles.title}>{headerTitle}</Title>
+                <Title>{headerTitle}</Title>
               </Animatable.Text>
             </Surface>
           }
