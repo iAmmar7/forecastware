@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { Surface } from 'react-native-paper';
 import MapView, { UrlTile } from 'react-native-maps';
 import Constants from 'expo-constants';
+import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from 'forecastware/hooks';
 import Header from './components/Header';
@@ -29,7 +30,9 @@ function MapComponent(props) {
         </MapView>
       </TouchableWithoutFeedback>
       <Surface style={styles.overlay}>
-        <Header handleLeftIconClick={handleLeftIconClick} />
+        <Animatable.View animation='pulse'>
+          <Header handleLeftIconClick={handleLeftIconClick} />
+        </Animatable.View>
       </Surface>
     </KeyboardAvoidingView>
   );
