@@ -2,7 +2,13 @@ import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { StartupScreen, CityManagementScreen, CitySearchScreen, OptionScreen } from '../screens';
+import {
+  StartupScreen,
+  CityManagementScreen,
+  CitySearchScreen,
+  OptionScreen,
+  MapScreen,
+} from '../screens';
 import { Header, CitySearchHeader } from '../components';
 import LocationNavigator from './LocationNavigator';
 
@@ -43,6 +49,16 @@ function CityNavigator() {
           ...TransitionPresets.SlideFromRightIOS,
           header: Header,
           headerTitle: 'Options',
+        }}
+      />
+      <Stack.Screen
+        name='Map'
+        component={MapScreen}
+        options={{
+          ...TransitionPresets.SlideFromRightIOS,
+          header: Header,
+          headerTitle: 'Weather Map',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

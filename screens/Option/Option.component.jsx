@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Surface, List, RadioButton, Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useStyles, useUserContext } from 'forecastware/hooks';
@@ -12,7 +13,8 @@ const unitIcon = {
   [temperatureUnits.KELVIN]: 'temperature-kelvin',
 };
 
-function OptionComponent() {
+function OptionComponent(props) {
+  const { navigation } = props;
   const { styles, theme } = useStyles(createStyles);
   const { unit, setTemperatureUnit, toggleTheme } = useUserContext();
   const [stateUnit, setStateUnit] = useState(unit);
@@ -112,7 +114,7 @@ function OptionComponent() {
           left={() => <List.Icon icon='map-outline' size={22} color={theme.colors.text} />}
           style={styles.listItem}
           titleStyle={styles.listItemTitle}
-          onPress={() => console.log('Map')}
+          onPress={() => navigation.navigate('Map')}
         />
         <List.Item
           title='Weather Radar'
@@ -157,5 +159,9 @@ const createStyles = (theme) => ({
     fontFamily: 'open-sans-medium',
   },
 });
+
+OptionComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+};
 
 export default OptionComponent;

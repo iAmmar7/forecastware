@@ -2,6 +2,7 @@
 import Constants from 'expo-constants';
 
 export const API_URL = 'https://api.openweathermap.org';
+export const MAP_API_URL = 'https://tile.openweathermap.org';
 export const API_KEY = Constants.manifest.extra.API_KEY;
 
 export const APP_NAME = 'ForecastWare';

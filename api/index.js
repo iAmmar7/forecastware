@@ -4,6 +4,7 @@ import {
   FALLBACK_LATITUDE,
   FALLBACK_LONGITUDE,
   FALLBACK_CITY,
+  MAP_API_URL,
 } from '../utils/constants';
 import { isEmpty } from '../utils/helpers';
 
@@ -78,6 +79,18 @@ export const fetchLocations = async (query) => {
       limit: 5,
     });
     return locations;
+  } catch (error) {
+    console.error('Error', error);
+    return error;
+  }
+};
+
+export const fetchWeatherMap = async () => {
+  try {
+    const mapAPI = new API(MAP_API_URL);
+    const map = await mapAPI.get('/map', `clouds_new/1/1/1/`, {});
+
+    return map;
   } catch (error) {
     console.error('Error', error);
     return error;
