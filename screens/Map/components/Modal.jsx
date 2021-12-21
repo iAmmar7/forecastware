@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Portal, Dialog, RadioButton, Button, Text } from 'react-native-paper';
+import { Portal, Dialog, RadioButton, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
 import { useStyles } from 'forecastware/hooks';
@@ -27,10 +27,6 @@ function Modal(props) {
             ))}
           </RadioButton.Group>
         </Dialog.Content>
-
-        <Dialog.Actions>
-          <Button onPress={toggleModal}>Done</Button>
-        </Dialog.Actions>
       </Dialog>
     </Portal>
   );

@@ -33,6 +33,10 @@ function MapContainer(props) {
     setUrlTemplate(`https://tile.openweathermap.org/map/${value}/0/0/0.png?appid=${API_KEY}`);
   }, []);
 
+  const handleLocationChange = (loc) => {
+    setRegion((prevRegion) => ({ ...prevRegion, latitude: loc.lat, longitude: loc.lon }));
+  };
+
   return (
     <MapComponent
       currentLocation={currentLocation}
@@ -43,6 +47,7 @@ function MapContainer(props) {
       toggleOptions={toggleOptions}
       handleBack={handleBack}
       handleChangeLayerType={handleChangeLayerType}
+      handleLocationChange={handleLocationChange}
     />
   );
 }
