@@ -80,7 +80,7 @@ function OptionComponent(props) {
             style={styles.accordion}
             titleStyle={styles.accordionTitle}
             left={({ color }) => {
-              const isActive = color === '#EC6E4C';
+              const isActive = color === theme.colors.primary;
               return (
                 <MaterialCommunityIcons
                   name='theme-light-dark'
@@ -118,10 +118,12 @@ function OptionComponent(props) {
         />
         <List.Item
           title='Weather Radar'
-          left={() => <List.Icon icon='radar' size={22} color={theme.colors.text} />}
+          description='Coming soon...'
+          left={() => <List.Icon icon='radar' size={22} color={theme.colors.placeholder} />}
           style={styles.listItem}
-          titleStyle={styles.listItemTitle}
+          titleStyle={[styles.listItemTitle, styles.listItemTitleDisabled]}
           onPress={() => console.log('Radar')}
+          disabled
         />
       </List.Section>
     </Surface>
@@ -157,6 +159,9 @@ const createStyles = (theme) => ({
   },
   listItemTitle: {
     fontFamily: 'open-sans-medium',
+  },
+  listItemTitleDisabled: {
+    color: theme.colors.placeholder,
   },
 });
 
