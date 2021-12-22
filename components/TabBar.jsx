@@ -56,7 +56,7 @@ function TabBar(props) {
           Component={MaterialCommunityIcons}
           name='city-variant-outline'
           handleNavigate={() => navigation.navigate('City')}
-          hasScrolled={hasScrolled}
+          color={hasScrolled ? theme.colors.primary : theme.colors.text}
         />
         <Appbar.Content
           title={
@@ -102,7 +102,7 @@ function TabBar(props) {
           Component={Entypo}
           name='dots-two-vertical'
           handleNavigate={() => navigation.navigate('Option')}
-          hasScrolled={hasScrolled}
+          color={hasScrolled ? theme.colors.primary : theme.colors.text}
         />
       </Animatable.View>
     </Surface>

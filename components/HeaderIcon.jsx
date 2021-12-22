@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
 import { useStyles } from '../hooks';
 
 function HeaderIcon(props) {
-  const { Component, name, hasScrolled, handleNavigate } = props;
+  const { Component, name, isText, color, handleNavigate } = props;
   const { styles, theme } = useStyles(createStyles);
+  const [actionColor, setActionColor] = useState(color);
+
+  useEffect(() => {
+    setActionColor(color);
+  }, [color]);
+
+  const childRenderer = useMemo(() => {
+    if (isText) {
+      return <Text>{name}</Text>;
+    }
+    return <Component name={name} size={22} color={actionColor ?? theme.colors.primary} />;
+  }, [isText, actionColor]);
 
   return (
     <Button
@@ -16,11 +28,7 @@ function HeaderIcon(props) {
       theme={{ colors: { primary: theme.colors.placeholder } }}
       style={styles.btn}
     >
-      <Component
-        name={name}
-        size={22}
-        color={hasScrolled ? theme.colors.primary : theme.colors.text}
-      />
+      {childRenderer}
     </Button>
   );
 }
@@ -34,12 +42,14 @@ const createStyles = () => ({
 HeaderIcon.propTypes = {
   Component: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  hasScrolled: PropTypes.bool,
+  isText: PropTypes.bool,
+  color: PropTypes.string,
   handleNavigate: PropTypes.func.isRequired,
 };
 
 HeaderIcon.defaultProps = {
-  hasScrolled: false,
+  color: null,
+  isText: false,
 };
 
 export default HeaderIcon;
