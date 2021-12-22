@@ -1,80 +1,65 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import React, { useEffect, useMemo, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Appbar, Surface, Title } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from '../hooks';
+import { useStyles } from 'forecastware/hooks';
+import { isEmpty, isArray } from 'forecastware/utils/helpers';
 import HeaderIcon from './HeaderIcon';
 
 function Header(props) {
   const { options, navigation, back } = props;
-  const { headerTitle, leftIcon, rightIcon } = options;
-  const titleRef = useRef();
-  const routesRef = useRef();
-  const { styles, theme } = useStyles(createStyles);
-
-  const hasScrolled = useMemo(() => {
-    return options.hasScrolled;
-  }, [options]);
-
-  useEffect(() => {
-    if (hasScrolled) {
-      routesRef.current?.fadeOut(800);
-    } else {
-      titleRef.current?.fadeIn(800);
-      routesRef.current?.fadeIn(800);
-    }
-  }, [hasScrolled]);
+  const { headerTitle, leftIcon, rightIcon, isEditMode, editTite } = options;
+  const { styles } = useStyles(createStyles);
 
   return (
     <Surface>
-      <Animatable.View
-        transition={['paddingTop', 'paddingBottom']}
-        style={{
-          ...styles.header,
-          paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
-          paddingBottom: hasScrolled ? 0 : 10,
-          elevation: hasScrolled ? 1 : 0,
-          borderBottomColor: theme.colors.surface,
-        }}
-      >
-        {back && (
+      <Animatable.View transition={['paddingTop', 'paddingBottom']} style={styles.header}>
+        {isEditMode && <HeaderIcon isText name='Done' onPress={() => console.log('done')} />}
+        {back && !isEditMode && (
           <HeaderIcon
-            Component={MaterialIcons}
+            IconComponent={MaterialIcons}
             name='arrow-back'
-            handleNavigate={() => navigation.goBack()}
-            hasScrolled={hasScrolled}
+            onPress={() => navigation.goBack()}
           />
         )}
         {leftIcon && (
           <HeaderIcon
-            Component={leftIcon.Component}
+            IconComponent={leftIcon.Component}
             name={leftIcon.name}
-            handleNavigate={() => navigation.navigate(leftIcon.navigateTo)}
-            hasScrolled={hasScrolled}
+            onPress={() => navigation.navigate(leftIcon.navigateTo)}
           />
         )}
         <Appbar.Content
           title={
             <Surface style={styles.titleContainer}>
-              <Animatable.Text ref={titleRef}>
-                <Title>{headerTitle}</Title>
+              <Animatable.Text animation='fadeIn'>
+                <Title style={styles.title}>{isEditMode ? editTite : headerTitle}</Title>
               </Animatable.Text>
             </Surface>
           }
-          titleStyle={styles.titleStyles}
+          titleStyle={[styles.titleStyles, isEditMode && styles.editTitleStyle]}
         />
-        {rightIcon && (
+        {isEditMode && (
           <HeaderIcon
-            Component={rightIcon.Component}
-            name={rightIcon.name}
-            handleNavigate={() => navigation.navigate(rightIcon.navigateTo)}
-            hasScrolled={hasScrolled}
+            isText
+            name='Select All'
+            onPress={() => navigation.setOptions({ isEditMode: false })}
           />
         )}
+        {!isEmpty(rightIcon) &&
+          isArray(rightIcon) &&
+          !isEditMode &&
+          rightIcon.map((item) => (
+            <HeaderIcon
+              key={item.id}
+              IconComponent={item.Component}
+              name={item.name}
+              onPress={item.onClick}
+            />
+          ))}
       </Animatable.View>
     </Surface>
   );
@@ -85,12 +70,21 @@ const createStyles = () => ({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 4,
+    paddingTop: Constants.statusBarHeight,
+    height: Constants.statusBarHeight + 40,
   },
   titleContainer: {
     alignItems: 'center',
   },
+  title: {
+    fontSize: 16,
+    fontFamily: 'open-sans-bold',
+  },
   titleStyles: {
     marginRight: 'auto',
+  },
+  editTitleStyle: {
+    marginLeft: 'auto',
   },
 });
 

@@ -5,7 +5,7 @@ import { Button, Text } from 'react-native-paper';
 import { useStyles } from '../hooks';
 
 function HeaderIcon(props) {
-  const { Component, name, isText, color, handleNavigate } = props;
+  const { IconComponent, name, isText, color, onPress } = props;
   const { styles, theme } = useStyles(createStyles);
   const [actionColor, setActionColor] = useState(color);
 
@@ -15,39 +15,45 @@ function HeaderIcon(props) {
 
   const childRenderer = useMemo(() => {
     if (isText) {
-      return <Text>{name}</Text>;
+      return <Text style={styles.text}>{name}</Text>;
     }
-    return <Component name={name} size={22} color={actionColor ?? theme.colors.primary} />;
+    return <IconComponent name={name} size={20} color={actionColor ?? theme.colors.primary} />;
   }, [isText, actionColor]);
 
   return (
     <Button
       mode='text'
       compact
-      onPress={handleNavigate}
+      onPress={onPress}
       theme={{ colors: { primary: theme.colors.placeholder } }}
-      style={styles.btn}
+      style={[styles.button, !isText && styles.iconButton]}
+      uppercase={false}
     >
       {childRenderer}
     </Button>
   );
 }
 
-const createStyles = () => ({
-  btn: {
+const createStyles = (theme) => ({
+  button: {},
+  iconButton: {
     borderRadius: 50,
+  },
+  text: {
+    color: theme.colors.primary,
   },
 });
 
 HeaderIcon.propTypes = {
-  Component: PropTypes.func.isRequired,
+  IconComponent: PropTypes.func,
   name: PropTypes.string.isRequired,
   isText: PropTypes.bool,
   color: PropTypes.string,
-  handleNavigate: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 HeaderIcon.defaultProps = {
+  IconComponent: null,
   color: null,
   isText: false,
 };

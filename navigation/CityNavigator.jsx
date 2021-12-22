@@ -22,15 +22,28 @@ function CityNavigator() {
       <Stack.Screen
         name='City'
         component={CityManagementScreen}
-        options={{
-          ...TransitionPresets.SlideFromRightIOS,
-          header: Header,
-          headerTitle: 'City Management',
-          rightIcon: {
-            Component: MaterialCommunityIcons,
-            name: 'plus',
-            navigateTo: 'CitySearch',
-          },
+        options={(opts) => {
+          const { navigation } = opts;
+          return {
+            ...TransitionPresets.SlideFromRightIOS,
+            header: Header,
+            headerTitle: 'City Management',
+            editTite: 'Select Weather Card',
+            rightIcon: [
+              {
+                id: 1,
+                Component: MaterialCommunityIcons,
+                name: 'plus',
+                onClick: () => navigation.navigate('CitySearch'),
+              },
+              {
+                id: 2,
+                Component: MaterialCommunityIcons,
+                name: 'square-edit-outline',
+                onClick: () => navigation.setOptions({ isEditMode: true }),
+              },
+            ],
+          };
         }}
       />
       <Stack.Screen
