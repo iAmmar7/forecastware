@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import CitySearchComponent from './CitySearch.component';
 import { useLocationContext, useUserContext } from 'forecastware/hooks';
-import { fetchWeather } from 'forecastware/api';
+import { fetchWeather, fetchCurrentLocationWeather } from 'forecastware/api';
+import CitySearchComponent from './CitySearch.component';
 
 function CitySearchContainer(props) {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [{ unit }, { addLocation, removeLocation }] = [useUserContext(), useLocationContext()];
+  const [{ unit, currentLocation }, { addLocation, removeLocation }] = [
+    useUserContext(),
+    useLocationContext(),
+  ];
 
-  const handleAddLocation = async (location) => {
+  const handleAddLocation = async (location, isCurrent) => {
     setIsLoading(true);
-    const weather = await fetchWeather(location, unit);
-    await addLocation(weather);
+    const api = isCurrent ? fetchCurrentLocationWeather : fetchWeather;
+    const weather = await api(location, unit);
+    await addLocation(weather, isCurrent);
     setIsLoading(false);
     navigation.navigate('Home', { screen: location.name });
   };
@@ -29,6 +33,7 @@ function CitySearchContainer(props) {
     <CitySearchComponent
       navigation={navigation}
       loading={isLoading}
+      currentLocation={currentLocation}
       handleAddLocation={handleAddLocation}
       handleRemoveLocation={handleRemoveLocation}
     />

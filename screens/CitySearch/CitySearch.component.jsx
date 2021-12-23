@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface } from 'react-native-paper';
 
-import CityList from './components/CityList';
 import { Loader } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
 import { topCities, topWorldCities } from 'forecastware/utils/dummy-data';
+import CityList from './components/CityList';
+import { isEmpty } from '../../utils/helpers';
 
 function CitySearchComponent(props) {
-  const { loading, navigation, handleAddLocation, handleRemoveLocation } = props;
+  const { loading, currentLocation, navigation, handleAddLocation, handleRemoveLocation } = props;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -24,7 +25,14 @@ function CitySearchComponent(props) {
           <Surface style={styles.container}>
             <Subheading style={styles.subHeading}>Top cities</Subheading>
             <CityList
-              data={topCities}
+              data={[
+                !isEmpty(currentLocation) && {
+                  name: 'Position',
+                  lat: currentLocation?.coords?.latitude,
+                  lon: currentLocation?.coords?.longitude,
+                },
+                ...topCities,
+              ]}
               handleAddLocation={handleAddLocation}
               handleRemoveLocation={handleRemoveLocation}
             />
@@ -67,6 +75,7 @@ const createStyles = () => ({
 
 CitySearchComponent.propTypes = {
   loading: PropTypes.bool.isRequired,
+  currentLocation: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
   handleAddLocation: PropTypes.func.isRequired,
   handleRemoveLocation: PropTypes.func.isRequired,

@@ -9,21 +9,31 @@ function CityList(props) {
   const { styles } = useStyles(createStyles);
   const { locations } = useLocationContext();
 
+  const isCurrent = useCallback((location) => {
+    return location.name === 'Position';
+  }, []);
+
   const isLocationExist = useCallback(
-    (location) => locations.findIndex((loc) => loc.name === location.name),
+    (location) => {
+      if (isCurrent(location)) {
+        return locations.findIndex((loc) => loc.isCurrent);
+      }
+
+      return locations.findIndex((loc) => loc.name === location.name);
+    },
     [locations],
   );
 
   const handleLocation = useCallback(
-    (item) => () => {
-      const isExist = isLocationExist(item);
+    (location) => () => {
+      const isExist = isLocationExist(location);
       if (isExist > -1) {
         handleRemoveLocation(locations[isExist]);
         return;
       }
-      handleAddLocation(item);
+      handleAddLocation(location, isCurrent(location));
     },
-    [],
+    [locations],
   );
 
   return (
