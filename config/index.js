@@ -15,3 +15,4 @@ export {
   unregisterBackgroundNotification,
 } from './notification';
 export { startLocationTracking, stopLocationTracking } from './location';
+export { default as initAnimations } from './animations';

@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BatteryMonitor } from './components';
 import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
-import { initDB, initNotifications, initTasks } from './config';
+import { initDB, initNotifications, initTasks, initAnimations } from './config';
 import { themeNames } from './utils/constants';
 import AppNavigator from './navigation/AppNavigator';
 import combineProviders from './combineProviders';
@@ -27,6 +27,9 @@ initNotifications();
 
 // Initialize background tasks
 initTasks();
+
+// Initialize custom animations
+initAnimations();
 
 export default function App() {
   const [theme, setTheme] = useState(null);
