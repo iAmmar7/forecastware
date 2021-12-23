@@ -10,8 +10,13 @@ import { isEmpty, isArray } from 'forecastware/utils/helpers';
 import HeaderIcon from './HeaderIcon';
 
 function Header(props) {
-  const { options, navigation, back } = props;
-  const { headerTitle, leftIcon, rightIcon, isEditMode, editTite } = options;
+  const {
+    options,
+    navigation,
+    back,
+    route: { params: { isEditMode } = {} },
+  } = props;
+  const { headerTitle, leftIcon, rightIcon, editTite } = options;
   const { styles } = useStyles(createStyles);
 
   return (
@@ -46,7 +51,7 @@ function Header(props) {
           <HeaderIcon
             isText
             name='Select All'
-            onPress={() => navigation.setOptions({ isEditMode: false })}
+            onPress={() => navigation.setParams({ isEditMode: false })}
           />
         )}
         {!isEmpty(rightIcon) &&
@@ -90,6 +95,7 @@ const createStyles = () => ({
 
 Header.propTypes = {
   options: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
   back: PropTypes.bool.isRequired,
 };

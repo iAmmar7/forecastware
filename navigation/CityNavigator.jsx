@@ -40,7 +40,7 @@ function CityNavigator() {
                 id: 2,
                 Component: MaterialCommunityIcons,
                 name: 'square-edit-outline',
-                onClick: () => navigation.setOptions({ isEditMode: true }),
+                onClick: () => navigation.setParams({ isEditMode: true }),
               },
             ],
           };
