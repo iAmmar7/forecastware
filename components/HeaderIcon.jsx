@@ -18,7 +18,7 @@ function HeaderIcon(props) {
       return <Text style={styles.text}>{name}</Text>;
     }
     return <IconComponent name={name} size={20} color={actionColor ?? theme.colors.primary} />;
-  }, [isText, actionColor]);
+  }, [isText, actionColor, name]);
 
   return (
     <Button

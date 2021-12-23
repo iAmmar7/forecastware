@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Appbar, Surface, Title } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -14,15 +14,27 @@ function Header(props) {
     options,
     navigation,
     back,
-    route: { params: { isEditMode } = {} },
+    route: { params: { isEditMode, selectAll: selectAllParam } = {} },
   } = props;
   const { headerTitle, leftIcon, rightIcon, editTite } = options;
   const { styles } = useStyles(createStyles);
+  const [selectAll, setSelectAll] = useState(selectAllParam);
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectAll(!selectAll);
+    navigation.setParams({ selectAll: !selectAll });
+  }, [selectAll]);
 
   return (
     <Surface>
       <Animatable.View transition={['paddingTop', 'paddingBottom']} style={styles.header}>
-        {isEditMode && <HeaderIcon isText name='Done' onPress={() => console.log('done')} />}
+        {isEditMode && (
+          <HeaderIcon
+            isText
+            name='Done'
+            onPress={() => navigation.setParams({ isEditMode: false })}
+          />
+        )}
         {back && !isEditMode && (
           <HeaderIcon
             IconComponent={MaterialIcons}
@@ -50,8 +62,8 @@ function Header(props) {
         {isEditMode && (
           <HeaderIcon
             isText
-            name='Select All'
-            onPress={() => navigation.setParams({ isEditMode: false })}
+            name={selectAll ? 'Unselect All' : 'Select All'}
+            onPress={toggleSelectAll}
           />
         )}
         {!isEmpty(rightIcon) &&

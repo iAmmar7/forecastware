@@ -10,7 +10,7 @@ import { useStyles } from 'forecastware/hooks';
 import { temperatureUnits } from 'forecastware/utils/constants';
 
 function CityComponent(props) {
-  const { data, handleDrag, isEditMode } = props;
+  const { data, isEditMode, checked, handleDrag, handleCheckbox } = props;
   const { styles, theme } = useStyles(createStyles);
   const deleteRef = useRef();
 
@@ -79,13 +79,14 @@ function CityComponent(props) {
                     </Card>
                   </Animatable.View>
                   {isEditMode && (
-                    <Animatable.View animation='fadeIn' duration={500}>
-                      <Surface style={styles.checkbox}>
-                        <Checkbox
-                          status={item.checked ? 'checked' : 'unchecked'}
-                          onPress={() => {}}
-                        />
-                      </Surface>
+                    <Animatable.View animation='fadeIn' duration={500} style={styles.checkbox}>
+                      <Checkbox
+                        status={
+                          checked.find((check) => check === item.id) ? 'checked' : 'unchecked'
+                        }
+                        onPress={() => handleCheckbox(item.id)}
+                        theme={{ colors: { accent: theme.colors.primary } }}
+                      />
                     </Animatable.View>
                   )}
                 </Surface>
@@ -107,7 +108,6 @@ function CityComponent(props) {
               Delete
             </Button>
           </Animatable.View>
-          {/* )} */}
         </Portal>
       </Surface>
     </Portal.Host>
@@ -167,8 +167,10 @@ const createStyles = (theme) => ({
 
 CityComponent.propTypes = {
   data: PropTypes.array.isRequired,
-  handleDrag: PropTypes.func.isRequired,
+  checked: PropTypes.array.isRequired,
   isEditMode: PropTypes.bool,
+  handleDrag: PropTypes.func.isRequired,
+  handleCheckbox: PropTypes.func.isRequired,
 };
 
 CityComponent.defaultProps = {
