@@ -95,13 +95,7 @@ function CityComponent(props) {
           }}
         />
         <Portal>
-          {/* {isEditMode && ( */}
-          <Animatable.View
-            // animation={isEditMode ? slideUp : slideDown}
-            ref={deleteRef}
-            // duration={500}
-            style={{ ...styles.deleteButton }}
-          >
+          <Animatable.View ref={deleteRef} style={{ ...styles.deleteButton }}>
             <Button
               icon='delete'
               mode='contained'
