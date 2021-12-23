@@ -18,8 +18,8 @@ const unitToCode = {
 
 export const fetchCurrentLocationWeather = async (coords, unit) => {
   try {
-    let latitude = coords?.latitude;
-    let longitude = coords?.longitude;
+    let latitude = coords?.latitude || coords?.lat;
+    let longitude = coords?.longitude || coords?.lon;
 
     const location = await api.get('/geo/1.0/reverse', null, {
       lat: latitude,

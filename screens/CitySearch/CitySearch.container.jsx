@@ -19,7 +19,7 @@ function CitySearchContainer(props) {
     const weather = await api(location, unit);
     await addLocation(weather, isCurrent);
     setIsLoading(false);
-    navigation.navigate('Home', { screen: location.name });
+    navigation.navigate('Home', { screen: weather.name });
   };
 
   const handleRemoveLocation = async (location) => {
