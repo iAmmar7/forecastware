@@ -74,7 +74,7 @@ ForecastWareSnackbar.propTypes = {
 ForecastWareSnackbar.defaultProps = {
   message: null,
   severity: 'info',
-  duration: 10000,
+  duration: 1000,
   onDismiss: null,
 };
 

@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { Card, Surface, Text, Checkbox, Portal, Button, Snackbar } from 'react-native-paper';
+import { Card, Surface, Text, Checkbox, Portal, Button } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 // import { LinearGradient } from 'expo-linear-gradient';
 
-import { Loader } from 'forecastware/components';
+import { Loader, Snackbar } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
 import { isEmpty } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
@@ -110,20 +110,10 @@ function CityComponent(props) {
         <Portal>
           {loading && <Loader style={styles.loader} />}
           <Snackbar
-            visible={!isEmpty(error)}
-            duration={1000}
+            message={error?.message}
+            severity={error?.type}
             onDismiss={handleDismissError}
-            theme={{
-              colors: {
-                surface: '#FFFFFF',
-                onSurface: theme.colors.background,
-                ...(error?.type === 'error' && { onSurface: theme.colors.notification }),
-                ...(error?.type === 'info' && { onSurface: theme.colors.accent }),
-              },
-            }}
-          >
-            {error?.message}
-          </Snackbar>
+          />
           <Animatable.View ref={deleteRef} style={{ ...styles.deleteButton }}>
             <Button
               icon='delete'
