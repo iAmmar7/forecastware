@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
-import { DB_NAME } from '../utils/constants';
+import { DB_NAME } from 'forecastware/utils/constants';
+import { isEmpty } from 'forecastware/utils/helpers';
 
 const db = SQLite.openDatabase('forecastware.db');
 
@@ -114,8 +115,8 @@ export const deleteLocation = (id) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `DELETE FROM ${DB_NAME} WHERE id = ${id}`,
-        [],
+        `DELETE FROM ${DB_NAME} WHERE id = ?`,
+        [id],
         (_, result) => {
           resolve(result);
         },
@@ -152,6 +153,26 @@ export const fetchCurrentLocations = () => {
       tx.executeSql(
         `SELECT * FROM ${DB_NAME} WHERE isCurrent = 1`,
         [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        },
+      );
+    });
+  });
+  return promise;
+};
+
+export const deleteMultipleLocations = (ids) => {
+  if (isEmpty(ids)) return Promise.reject(new Error('IDs can not be empty'));
+  const stringifiedIds = ids.map(() => '?').join(',');
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `DELETE FROM ${DB_NAME} WHERE id IN (${stringifiedIds})`,
+        ids,
         (_, result) => {
           resolve(result);
         },

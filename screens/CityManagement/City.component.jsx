@@ -2,15 +2,27 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { Card, Surface, Text, Checkbox, Portal, Button } from 'react-native-paper';
+import { Card, Surface, Text, Checkbox, Portal, Button, Snackbar } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 // import { LinearGradient } from 'expo-linear-gradient';
 
+import { Loader } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
+import { isEmpty } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
 
 function CityComponent(props) {
-  const { data, isEditMode, checked, handleDrag, handleCheckbox } = props;
+  const {
+    loading,
+    data,
+    isEditMode,
+    checked,
+    error,
+    handleDismissError,
+    handleDrag,
+    handleCheckbox,
+    handleDelete,
+  } = props;
   const { styles, theme } = useStyles(createStyles);
   const deleteRef = useRef();
 
@@ -96,6 +108,22 @@ function CityComponent(props) {
           }}
         />
         <Portal>
+          {loading && <Loader style={styles.loader} />}
+          <Snackbar
+            visible={!isEmpty(error)}
+            duration={1000}
+            onDismiss={handleDismissError}
+            theme={{
+              colors: {
+                surface: '#FFFFFF',
+                onSurface: theme.colors.background,
+                ...(error?.type === 'error' && { onSurface: theme.colors.notification }),
+                ...(error?.type === 'info' && { onSurface: theme.colors.accent }),
+              },
+            }}
+          >
+            {error?.message}
+          </Snackbar>
           <Animatable.View ref={deleteRef} style={{ ...styles.deleteButton }}>
             <Button
               icon='delete'
@@ -103,7 +131,9 @@ function CityComponent(props) {
               uppercase={false}
               dark
               theme={{ colors: { primary: theme.colors.placeholder } }}
-              onPress={() => console.log('Pressed')}
+              style={{ opacity: 0.8 }}
+              onPress={handleDelete}
+              disabled={isEmpty(checked)}
             >
               Delete
             </Button>
@@ -163,17 +193,27 @@ const createStyles = (theme) => ({
     left: 0,
     right: 0,
   },
+  loader: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+  },
 });
 
 CityComponent.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   data: PropTypes.array.isRequired,
   checked: PropTypes.array.isRequired,
   isEditMode: PropTypes.bool,
+  handleDismissError: PropTypes.func.isRequired,
   handleDrag: PropTypes.func.isRequired,
   handleCheckbox: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 CityComponent.defaultProps = {
+  error: null,
   isEditMode: false,
 };
 

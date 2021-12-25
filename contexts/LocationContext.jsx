@@ -8,6 +8,7 @@ import {
   fetchAllLocations,
   deleteLocation,
   updateLocation as updateLocationDB,
+  deleteMultipleLocations,
 } from '../config/db';
 
 const LocationContext = createContext(null);
@@ -100,12 +101,30 @@ function LocationContextProvider({ children }) {
     [locations],
   );
 
+  const removeMultipleLocations = useCallback(
+    async (ids) => {
+      try {
+        const newLocations = locations.filter((loc) => !ids.includes(loc.id));
+
+        // Delete from the DB
+        await deleteMultipleLocations(ids);
+
+        // Update the context
+        setLocations(newLocations);
+      } catch (error) {
+        console.log('DB Error', error);
+      }
+    },
+    [locations],
+  );
+
   const values = useMemo(
     () => ({
       locations,
       addLocation,
       updateLocation,
       removeLocation,
+      removeMultipleLocations,
       fetchLocations,
     }),
     [locations],
