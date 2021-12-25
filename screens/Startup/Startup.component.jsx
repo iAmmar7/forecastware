@@ -22,8 +22,8 @@ function StartupComponent(props) {
   return (
     <Provider>
       <Portal>
-        <Modal visible={modalVisible} contentContainerStyle={styles.modal}>
-          <Surface>
+        <Modal visible={modalVisible} contentContainerStyle={styles.modalWrapper}>
+          <Surface style={styles.modalContainer}>
             <Text style={styles.modalText}>
               Hey! Would you mind giving ForecastWare few permissions?
             </Text>
@@ -133,13 +133,18 @@ const createStyles = (theme) => ({
     fontFamily: 'open-sans-medium',
     fontSize: 30,
   },
-  modal: {
-    backgroundColor: theme.colors.surface,
-    padding: 20,
+  modalWrapper: {
+    backgroundColor: theme.colors.card,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
     marginHorizontal: 20,
     borderRadius: 10,
   },
+  modalContainer: {
+    backgroundColor: theme.colors.card,
+  },
   modalText: {
+    color: theme.colors.text,
     fontSize: 16,
   },
   modalBtn: {
