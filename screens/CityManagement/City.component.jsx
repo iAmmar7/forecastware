@@ -137,6 +137,7 @@ function CityComponent(props) {
 const createStyles = (theme) => ({
   screen: {
     flex: 1,
+    paddingTop: 10,
   },
   cityContainer: {
     flexDirection: 'row',

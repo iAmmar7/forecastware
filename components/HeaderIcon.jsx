@@ -17,7 +17,7 @@ function HeaderIcon(props) {
     if (isText) {
       return <Text style={styles.text}>{name}</Text>;
     }
-    return <IconComponent name={name} size={20} color={actionColor ?? theme.colors.primary} />;
+    return <IconComponent name={name} size={22} color={actionColor ?? theme.colors.primary} />;
   }, [isText, actionColor, name]);
 
   return (
@@ -41,6 +41,8 @@ const createStyles = (theme) => ({
   },
   text: {
     color: theme.colors.primary,
+    fontSize: 14,
+    fontFamily: 'open-sans-medium',
   },
 });
 

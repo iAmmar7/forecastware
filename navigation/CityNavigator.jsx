@@ -9,7 +9,7 @@ import {
   OptionScreen,
   MapScreen,
 } from '../screens';
-import { Header, CitySearchHeader } from '../components';
+import { Header } from '../components';
 import LocationNavigator from './LocationNavigator';
 
 const Stack = createStackNavigator();
@@ -51,8 +51,9 @@ function CityNavigator() {
         component={CitySearchScreen}
         options={{
           ...TransitionPresets.ModalSlideFromBottomIOS,
-          header: CitySearchHeader,
+          header: Header,
           headerTitle: 'Add City',
+          cancel: true,
         }}
       />
       <Stack.Screen

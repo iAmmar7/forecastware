@@ -16,7 +16,7 @@ function Header(props) {
     back,
     route: { params: { isEditMode, selectAll: selectAllParam } = {} },
   } = props;
-  const { headerTitle, leftIcon, rightIcon, editTite } = options;
+  const { headerTitle, leftIcon, rightIcon, editTite, cancel } = options;
   const { styles } = useStyles(createStyles);
   const [selectAll, setSelectAll] = useState(selectAllParam);
 
@@ -26,58 +26,60 @@ function Header(props) {
   }, [selectAll]);
 
   return (
-    <Surface>
-      <Animatable.View transition={['paddingTop', 'paddingBottom']} style={styles.header}>
-        {isEditMode && (
-          <HeaderIcon
-            isText
-            name='Done'
-            onPress={() => navigation.setParams({ isEditMode: false })}
-          />
-        )}
-        {back && !isEditMode && (
-          <HeaderIcon
-            IconComponent={MaterialIcons}
-            name='arrow-back'
-            onPress={() => navigation.goBack()}
-          />
-        )}
-        {leftIcon && (
-          <HeaderIcon
-            IconComponent={leftIcon.Component}
-            name={leftIcon.name}
-            onPress={() => navigation.navigate(leftIcon.navigateTo)}
-          />
-        )}
-        <Appbar.Content
-          title={
-            <Surface style={styles.titleContainer}>
-              <Animatable.Text animation='fadeIn'>
-                <Title style={styles.title}>{isEditMode ? editTite : headerTitle}</Title>
-              </Animatable.Text>
-            </Surface>
-          }
-          titleStyle={[styles.titleStyles, isEditMode && styles.editTitleStyle]}
+    <Surface style={styles.header}>
+      {isEditMode && (
+        <HeaderIcon
+          isText
+          name='Done'
+          onPress={() => navigation.setParams({ isEditMode: false })}
         />
-        {isEditMode && (
+      )}
+      {cancel && !isEditMode && (
+        <HeaderIcon isText name='Cancel' onPress={() => navigation.goBack()} />
+      )}
+      {back && !isEditMode && !cancel && (
+        <HeaderIcon
+          IconComponent={MaterialIcons}
+          name='arrow-back'
+          onPress={() => navigation.goBack()}
+        />
+      )}
+      {leftIcon && (
+        <HeaderIcon
+          IconComponent={leftIcon.Component}
+          name={leftIcon.name}
+          onPress={() => navigation.navigate(leftIcon.navigateTo)}
+        />
+      )}
+      <Appbar.Content
+        title={
+          <Surface style={styles.titleContainer}>
+            <Animatable.Text animation='fadeIn'>
+              <Title style={styles.title}>{isEditMode ? editTite : headerTitle}</Title>
+            </Animatable.Text>
+          </Surface>
+        }
+        titleStyle={[(isEditMode || cancel) && styles.titleStyles]}
+      />
+      {isEditMode && (
+        <HeaderIcon
+          isText
+          name={selectAll ? 'Unselect All' : 'Select All'}
+          onPress={toggleSelectAll}
+        />
+      )}
+      {!isEmpty(rightIcon) &&
+        isArray(rightIcon) &&
+        !isEditMode &&
+        rightIcon.map((item) => (
           <HeaderIcon
-            isText
-            name={selectAll ? 'Unselect All' : 'Select All'}
-            onPress={toggleSelectAll}
+            key={item.id}
+            IconComponent={item.Component}
+            name={item.name}
+            onPress={item.onClick}
           />
-        )}
-        {!isEmpty(rightIcon) &&
-          isArray(rightIcon) &&
-          !isEditMode &&
-          rightIcon.map((item) => (
-            <HeaderIcon
-              key={item.id}
-              IconComponent={item.Component}
-              name={item.name}
-              onPress={item.onClick}
-            />
-          ))}
-      </Animatable.View>
+        ))}
+      {isEmpty(rightIcon) && cancel && <Surface style={{ width: '20%' }} />}
     </Surface>
   );
 }
@@ -87,8 +89,8 @@ const createStyles = () => ({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 4,
-    paddingTop: Constants.statusBarHeight,
-    height: Constants.statusBarHeight + 40,
+    paddingTop: Constants.statusBarHeight + 10,
+    height: Constants.statusBarHeight + 50,
   },
   titleContainer: {
     alignItems: 'center',
@@ -98,10 +100,7 @@ const createStyles = () => ({
     fontFamily: 'open-sans-bold',
   },
   titleStyles: {
-    marginRight: 'auto',
-  },
-  editTitleStyle: {
-    marginLeft: 'auto',
+    alignSelf: 'center',
   },
 });
 

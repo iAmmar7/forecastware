@@ -78,7 +78,7 @@ const createStyles = () => ({
   },
   overlay: {
     alignItems: 'center',
-    paddingTop: Constants.statusBarHeight + 5,
+    paddingTop: Constants.statusBarHeight + 10,
     backgroundColor: 'transparent',
   },
 });
