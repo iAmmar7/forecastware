@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
 import { useStyles } from 'forecastware/hooks';
+import { ScreenshotTaker } from 'forecastware/components';
 import Header from './components/Header';
 import Modal from './components/Modal';
 
@@ -23,6 +24,7 @@ function MapComponent(props) {
     optionsVisible,
     layerType,
     toggleOptions,
+    animationRef,
     handleBack,
     handleChangeLayerType,
     handleLocationChange,
@@ -35,11 +37,13 @@ function MapComponent(props) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.screen}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <MapView style={styles.map} region={region}>
-            <UrlTile urlTemplate={urlTemplate} flipY={false} zIndex={1} />
-          </MapView>
-        </TouchableWithoutFeedback>
+        <Animatable.View ref={animationRef}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <MapView style={styles.map} region={region}>
+              <UrlTile urlTemplate={urlTemplate} flipY={false} zIndex={1} />
+            </MapView>
+          </TouchableWithoutFeedback>
+        </Animatable.View>
         <Portal>
           <Surface style={styles.overlay}>
             <Animatable.View animation='pulse'>
@@ -58,6 +62,7 @@ function MapComponent(props) {
           </Surface>
         </Portal>
       </KeyboardAvoidingView>
+      <ScreenshotTaker animationRef={animationRef} />
     </Portal.Host>
   );
 }
@@ -83,6 +88,7 @@ MapComponent.propTypes = {
   urlTemplate: PropTypes.string.isRequired,
   layerType: PropTypes.string.isRequired,
   optionsVisible: PropTypes.bool.isRequired,
+  animationRef: PropTypes.object.isRequired,
   handleBack: PropTypes.func.isRequired,
   toggleOptions: PropTypes.func.isRequired,
   handleChangeLayerType: PropTypes.func.isRequired,

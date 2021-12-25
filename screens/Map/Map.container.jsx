@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useUserContext } from 'forecastware/hooks';
@@ -20,6 +20,7 @@ function MapContainer(props) {
   const [urlTemplate, setUrlTemplate] = useState(
     `https://tile.openweathermap.org/map/temp_new/0/0/0.png?appid=${API_KEY}`,
   );
+  const animationRef = useRef();
 
   const toggleOptions = () => setOptionsVisible((prev) => !prev);
 
@@ -45,6 +46,7 @@ function MapContainer(props) {
       urlTemplate={urlTemplate}
       optionsVisible={optionsVisible}
       toggleOptions={toggleOptions}
+      animationRef={animationRef}
       handleBack={handleBack}
       handleChangeLayerType={handleChangeLayerType}
       handleLocationChange={handleLocationChange}
