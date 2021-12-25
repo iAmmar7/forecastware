@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { FAB, Snackbar } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 
 import { useStyles } from 'forecastware/hooks';
-import { isEmpty } from 'forecastware/utils/helpers';
+import Snackbar from './Snackbar';
 
 function ScreenshotTaker(props) {
   const { animationRef } = props;
-  const { styles, theme } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const [message, setMessage] = useState(null);
 
   const flashAnimation = useCallback(() => animationRef.current.flash(200), [animationRef]);
@@ -53,20 +53,10 @@ function ScreenshotTaker(props) {
     <>
       <FAB style={styles.fab} small icon='camera' onPress={handleTakeScreenShot} />
       <Snackbar
-        visible={!isEmpty(message)}
-        duration={1000}
+        message={message?.text}
+        severity={message?.type}
         onDismiss={() => setMessage(null)}
-        theme={{
-          colors: {
-            surface: '#FFFFFF',
-            onSurface: theme.colors.background,
-            ...(message?.type === 'error' && { onSurface: theme.colors.notification }),
-            ...(message?.type === 'info' && { onSurface: theme.colors.accent }),
-          },
-        }}
-      >
-        {message?.text}
-      </Snackbar>
+      />
     </>
   );
 }
