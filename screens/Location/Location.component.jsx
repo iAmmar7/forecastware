@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SafeAreaView, ScrollView, RefreshControl } from 'react-native';
-import { FAB, Surface, Text, Snackbar } from 'react-native-paper';
-import ViewShot from 'react-native-view-shot';
+import { Surface, Text } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
-import { Loader } from 'forecastware/components';
+import { Loader, ScreenshotTaker } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
-import { isEmpty } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
 import HourlyWeatherList from './components/HourlyWeatherList';
 import WeeklyWeatherList from './components/WeeklyWeatherList';
@@ -16,18 +14,14 @@ import WeatherDetails from './components/WeatherDetails';
 function LocationComponent(props) {
   const {
     data,
-    viewShotRef,
     animationRef,
     scrollRef,
-    message,
     refreshing,
     handleRefresh,
-    handleSnackbarDismiss,
     handleExternalLink,
-    handleFAB,
     handleOnScroll,
   } = props;
-  const { styles, theme } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   const unitRenderer = () => {
     const symbol = data.unit.charAt(0);
@@ -44,64 +38,51 @@ function LocationComponent(props) {
   return (
     <SafeAreaView style={styles.screenWrapper}>
       <Animatable.View ref={animationRef}>
-        <ViewShot ref={viewShotRef}>
-          <ScrollView
-            style={styles.scrollView}
-            onScrollEndDrag={handleOnScroll}
-            scrollEventThrottle={100}
-            ref={scrollRef}
-            bounces
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-                progressBackgroundColor='white'
-                colors={['white']}
-                progressViewOffset={-1000}
-              />
-            }
-          >
-            <Surface style={styles.screen}>
-              <Surface style={styles.loaderContainer}>
-                {refreshing && <Loader style={styles.loader} label='Refreshing' />}
-              </Surface>
-              <Surface style={styles.summary}>
-                <Surface style={styles.temperatureContainer}>
-                  <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
-                  {unitRenderer()}
-                </Surface>
-                <Surface>
-                  <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
-                </Surface>
-              </Surface>
-              <HourlyWeatherList data={data?.hourly} unit={data.unit} />
-              <WeeklyWeatherList
-                data={data?.daily}
-                unit={data.unit}
-                handleExternalLink={handleExternalLink}
-              />
-              <WeatherDetails
-                data={data?.current}
-                unit={data.unit}
-                handleExternalLink={handleExternalLink}
-              />
+        <ScrollView
+          style={styles.scrollView}
+          onScrollEndDrag={handleOnScroll}
+          scrollEventThrottle={100}
+          ref={scrollRef}
+          bounces
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              progressBackgroundColor='white'
+              colors={['white']}
+              progressViewOffset={-1000}
+            />
+          }
+        >
+          <Surface style={styles.screen}>
+            <Surface style={styles.loaderContainer}>
+              {refreshing && <Loader style={styles.loader} label='Refreshing' />}
             </Surface>
-          </ScrollView>
-        </ViewShot>
+            <Surface style={styles.summary}>
+              <Surface style={styles.temperatureContainer}>
+                <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
+                {unitRenderer()}
+              </Surface>
+              <Surface>
+                <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
+              </Surface>
+            </Surface>
+            <HourlyWeatherList data={data?.hourly} unit={data.unit} />
+            <WeeklyWeatherList
+              data={data?.daily}
+              unit={data.unit}
+              handleExternalLink={handleExternalLink}
+            />
+            <WeatherDetails
+              data={data?.current}
+              unit={data.unit}
+              handleExternalLink={handleExternalLink}
+            />
+          </Surface>
+        </ScrollView>
       </Animatable.View>
-      <FAB style={styles.fab} small icon='camera' onPress={handleFAB} />
-      <Snackbar
-        visible={!isEmpty(message.type)}
-        duration={900}
-        onDismiss={handleSnackbarDismiss}
-        style={{
-          ...(message.type === 'error' && { backgroundColor: theme.colors.error }),
-          ...(message.type === 'info' && { backgroundColor: theme.colors.accent }),
-        }}
-      >
-        {message.text}
-      </Snackbar>
+      <ScreenshotTaker animationRef={animationRef} />
     </SafeAreaView>
   );
 }
@@ -165,15 +146,11 @@ const createStyles = (theme) => ({
 LocationComponent.propTypes = {
   data: PropTypes.object.isRequired,
   unit: PropTypes.string.isRequired,
-  viewShotRef: PropTypes.object.isRequired,
   animationRef: PropTypes.object.isRequired,
   scrollRef: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
   refreshing: PropTypes.bool.isRequired,
   handleRefresh: PropTypes.func.isRequired,
-  handleSnackbarDismiss: PropTypes.func.isRequired,
   handleExternalLink: PropTypes.func.isRequired,
-  handleFAB: PropTypes.func.isRequired,
   handleOnScroll: PropTypes.func.isRequired,
 };
 

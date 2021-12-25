@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
 import { DB_NAME } from 'forecastware/utils/constants';
-import { isEmpty } from 'forecastware/utils/helpers';
+import { isEmpty, isArray } from 'forecastware/utils/helpers';
 
 const db = SQLite.openDatabase('forecastware.db');
 
@@ -166,7 +166,8 @@ export const fetchCurrentLocations = () => {
 };
 
 export const deleteMultipleLocations = (ids) => {
-  if (isEmpty(ids)) return Promise.reject(new Error('IDs can not be empty'));
+  if (!isArray(ids) || isEmpty(ids))
+    return Promise.reject(new Error('IDs should be an array and it can not be empty'));
   const stringifiedIds = ids.map(() => '?').join(',');
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
