@@ -53,7 +53,9 @@ function CityNavigator() {
           ...TransitionPresets.ModalSlideFromBottomIOS,
           header: Header,
           headerTitle: 'Add City',
+          isTitleCenter: true,
           cancel: true,
+          search: true,
         }}
       />
       <Stack.Screen
