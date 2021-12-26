@@ -8,6 +8,7 @@ import * as Animatable from 'react-native-animatable';
 import { useStyles } from 'forecastware/hooks';
 import { isEmpty, isArray } from 'forecastware/utils/helpers';
 import HeaderIcon from './HeaderIcon';
+import SearchLocations from './SearchLocations';
 
 function Header(props) {
   const {
@@ -16,7 +17,7 @@ function Header(props) {
     back,
     route: { params: { isEditMode, selectAll: selectAllParam } = {} },
   } = props;
-  const { headerTitle, leftIcon, rightIcon, editTite, isTitleCenter, cancel } = options;
+  const { headerTitle, leftIcon, rightIcon, editTite, isTitleCenter, cancel, search } = options;
   const { styles } = useStyles(createStyles);
   const [selectAll, setSelectAll] = useState(selectAllParam);
 
@@ -26,7 +27,12 @@ function Header(props) {
   }, [selectAll]);
 
   return (
-    <Surface>
+    <Surface
+      style={{
+        ...styles.container,
+        height: search ? Constants.statusBarHeight + 80 : Constants.statusBarHeight + 54,
+      }}
+    >
       <Surface style={styles.header}>
         <Surface style={styles.leftContainer}>
           {isEditMode && (
@@ -81,17 +87,24 @@ function Header(props) {
           {isEmpty(rightIcon) && <Surface style={{ width: '20%' }} />}
         </Surface>
       </Surface>
+      {search && (
+        <Surface style={styles.searchContainer}>
+          <SearchLocations style={styles.overlay} navigation={navigation} options={options} />
+        </Surface>
+      )}
     </Surface>
   );
 }
 
 const createStyles = () => ({
+  container: {
+    paddingHorizontal: 4,
+    paddingTop: Constants.statusBarHeight,
+    justifyContent: 'flex-end',
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 4,
-    paddingTop: Constants.statusBarHeight + 10,
-    height: Constants.statusBarHeight + 50,
   },
   middleContainer: {
     marginLeft: 'auto',
@@ -108,13 +121,21 @@ const createStyles = () => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  searchContainer: {
+    marginHorizontal: 6,
+    height: 36,
+  },
+  overlay: {
+    marginHorizontal: 10,
+    top: Constants.statusBarHeight + 76,
+  },
 });
 
 Header.propTypes = {
   options: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-  back: PropTypes.bool.isRequired,
+  back: PropTypes.object.isRequired,
 };
 
 export default Header;

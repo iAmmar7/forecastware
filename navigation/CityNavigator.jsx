@@ -26,7 +26,7 @@ function CityNavigator() {
           const { navigation } = opts;
           return {
             ...TransitionPresets.SlideFromRightIOS,
-            header: Header,
+            header: (props) => <Header {...props} />,
             headerTitle: 'City Management',
             editTite: 'Select Weather Card',
             rightIcon: [

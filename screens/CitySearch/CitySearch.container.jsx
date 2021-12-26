@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Keyboard } from 'react-native';
 
 import { useLocationContext, useUserContext } from 'forecastware/hooks';
 import { fetchWeather, fetchCurrentLocationWeather } from 'forecastware/api';
@@ -13,7 +14,23 @@ function CitySearchContainer(props) {
     useLocationContext(),
   ];
 
+  useEffect(() => {
+    navigation.setOptions({ handleAddLocation, handleRemoveLocation });
+  }, []);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', () => {
+      navigation.setOptions({ dismissSearch: true });
+    });
+
+    // cleanup function
+    return () => {
+      Keyboard.removeAllListeners('keyboardDidHide');
+    };
+  }, []);
+
   const handleAddLocation = async (location, isCurrent) => {
+    handleDismissSearch();
     setIsLoading(true);
     const api = isCurrent ? fetchCurrentLocationWeather : fetchWeather;
     const weather = await api(location, unit);
@@ -29,6 +46,10 @@ function CitySearchContainer(props) {
     navigation.navigate('Home');
   };
 
+  const handleDismissSearch = () => {
+    Keyboard.dismiss();
+  };
+
   return (
     <CitySearchComponent
       navigation={navigation}
@@ -36,6 +57,7 @@ function CitySearchContainer(props) {
       currentLocation={currentLocation}
       handleAddLocation={handleAddLocation}
       handleRemoveLocation={handleRemoveLocation}
+      handleDismissSearch={handleDismissSearch}
     />
   );
 }

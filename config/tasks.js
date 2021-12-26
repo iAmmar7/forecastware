@@ -59,7 +59,8 @@ export const init = () => {
         location.coords,
         unitFromStorage || temperatureUnits.CELSIUS,
       );
-      if (isEmpty(weather)) throw new Error('Unable to fetch the weather!');
+      if (isEmpty(weather) || !weather?.current?.temp)
+        throw new Error('Unable to fetch the weather!');
 
       // Fetch current location data from the database
       const dbResponse = await fetchCurrentLocations();
@@ -69,7 +70,7 @@ export const init = () => {
 
       // Send a notification if the new temperature is not same as old
       const dbWeatherTemp = Math.round(dbLocationData.current.temp || 0);
-      const apiWeatherTemp = Math.round(weather.current.temp || 0);
+      const apiWeatherTemp = Math.round(weather?.current?.temp || 0);
       if (dbWeatherTemp !== apiWeatherTemp) {
         await Notifications.dismissAllNotificationsAsync();
         await scheduleNotification(
@@ -120,7 +121,7 @@ export const init = () => {
       await scheduleNotification(
         {
           title: APP_NAME,
-          body: `Temperature: ${Math.round(weather.current.temp)}${getTemperatureSymbol(
+          body: `Temperature: ${Math.round(weather?.current?.temp)}${getTemperatureSymbol(
             unitFromStorage,
           )}!, Humidity: ${weather.current.humidity}, Clouds: ${weather.current.clouds}`,
         },
