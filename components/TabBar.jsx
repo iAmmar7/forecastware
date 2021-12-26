@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Appbar, Text, Surface, Title } from 'react-native-paper';
+import { Text, Surface, Title } from 'react-native-paper';
 import { MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from '../hooks';
+import { take } from 'forecastware/utils/helpers';
+import { useStyles } from 'forecastware/hooks';
 import HeaderIcon from './HeaderIcon';
 
 function TabBar(props) {
@@ -17,6 +18,36 @@ function TabBar(props) {
   const titleRef = useRef();
   const routesRef = useRef();
   const { styles, theme } = useStyles(createStyles);
+  const [inViewRoutes, setInViewRoutes] = useState([]);
+
+  useEffect(() => {
+    if (hasScrolled) {
+      routesRef.current?.fadeOut(800);
+    } else {
+      titleRef.current?.fadeIn(800);
+      routesRef.current?.fadeIn(800);
+    }
+  }, [hasScrolled]);
+
+  useEffect(() => {
+    // Initial part
+    if (tabIndex < 3) {
+      const arr = take(routes, 5);
+      setInViewRoutes(arr);
+      return;
+    }
+    // End part
+    if (tabIndex >= routes.length - 2) {
+      const arr = take(routes, 5, routes.length - 5);
+      setInViewRoutes(arr);
+      return;
+    }
+    // Middle part
+    if (tabIndex >= 3) {
+      const arr = take(routes, 5, tabIndex - 2);
+      setInViewRoutes(arr);
+    }
+  }, [routes]);
 
   const routeDetails = useMemo(() => {
     const routeKey = routes[tabIndex].key;
@@ -31,15 +62,6 @@ function TabBar(props) {
   const hasScrolled = useMemo(() => {
     return routeDetails.options.hasScrolled;
   }, [routeDetails]);
-
-  useEffect(() => {
-    if (hasScrolled) {
-      routesRef.current?.fadeOut(800);
-    } else {
-      titleRef.current?.fadeIn(800);
-      routesRef.current?.fadeIn(800);
-    }
-  }, [hasScrolled]);
 
   return (
     <Surface>
@@ -58,46 +80,41 @@ function TabBar(props) {
           onPress={() => navigation.navigate('City')}
           color={hasScrolled ? theme.colors.primary : theme.colors.text}
         />
-        <Appbar.Content
-          title={
-            <Surface style={styles.titleContainer}>
-              <Animatable.Text ref={titleRef}>
-                <Title>{currentTabTitle}</Title>
-              </Animatable.Text>
-              {!hasScrolled && routes.length > 1 && (
-                <Animatable.View ref={routesRef}>
-                  <Surface style={styles.dotContainer}>
-                    {routes.map((route) => {
-                      return route?.params?.isCurrent ? (
-                        <MaterialIcons
-                          key={route.key}
-                          name='location-pin'
-                          size={12}
-                          color={
-                            route.name === routeNames[tabIndex]
-                              ? theme.colors.onSurface
-                              : theme.colors.placeholder
-                          }
-                        />
-                      ) : (
-                        <Text
-                          key={route.key}
-                          style={{
-                            ...styles.dot,
-                            ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
-                          }}
-                        >
-                          &#8226;
-                        </Text>
-                      );
-                    })}
-                  </Surface>
-                </Animatable.View>
-              )}
-            </Surface>
-          }
-          titleStyle={styles.titleStyles}
-        />
+        <Surface style={styles.titleContainer}>
+          <Animatable.Text ref={titleRef}>
+            <Title>{currentTabTitle}</Title>
+          </Animatable.Text>
+          {!hasScrolled && routes.length > 1 && (
+            <Animatable.View ref={routesRef}>
+              <Surface style={styles.dotContainer}>
+                {inViewRoutes.map((route) => {
+                  return route?.params?.isCurrent ? (
+                    <MaterialIcons
+                      key={route.key}
+                      name='location-pin'
+                      size={12}
+                      color={
+                        route.name === routeNames[tabIndex]
+                          ? theme.colors.onSurface
+                          : theme.colors.placeholder
+                      }
+                    />
+                  ) : (
+                    <Text
+                      key={route.key}
+                      style={{
+                        ...styles.dot,
+                        ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
+                      }}
+                    >
+                      &#8226;
+                    </Text>
+                  );
+                })}
+              </Surface>
+            </Animatable.View>
+          )}
+        </Surface>
         <HeaderIcon
           IconComponent={Entypo}
           name='dots-two-vertical'
@@ -114,6 +131,7 @@ const createStyles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 4,
+    justifyContent: 'space-between',
   },
   btn: {
     borderRadius: 50,
@@ -130,16 +148,17 @@ const createStyles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
-    overflow: 'hidden',
+    marginTop: -3,
   },
   dot: {
     paddingHorizontal: 2,
     paddingVertical: 0,
     color: theme.colors.placeholder,
     fontSize: 16,
+    opacity: 0.5,
   },
   blackDot: {
+    opacity: 1,
     color: theme.colors.onSurface,
   },
 });

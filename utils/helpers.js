@@ -55,3 +55,17 @@ export const toCapitalize = (str) => {
   if (typeof str !== 'string') return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const take = (array, howMany, initialIndex = 0) => {
+  if (isEmpty(array)) return array;
+  if (array.length < howMany) return array;
+
+  const newArray = array.reduce((acc, item, index) => {
+    if (acc.length < howMany && index >= initialIndex) {
+      return [...acc, item];
+    }
+    return acc;
+  }, []);
+
+  return newArray;
+};
