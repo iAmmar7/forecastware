@@ -126,16 +126,16 @@ const createStyles = (theme) => ({
   header: {
     width: '96%',
     elevation: 10,
-    paddingVertical: 10,
     borderRadius: 10,
   },
   searchBarContainer: {
     alignItems: 'center',
     flexDirection: 'row',
+    borderRadius: 10,
     width: '100%',
   },
   searchBar: {
-    height: 32,
+    height: 44,
     flex: 1,
     width: '90%',
     elevation: 0,
