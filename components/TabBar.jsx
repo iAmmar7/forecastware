@@ -85,11 +85,11 @@ function TabBar(props) {
           IconComponent={MaterialCommunityIcons}
           name='city-variant-outline'
           onPress={() => navigation.navigate('City')}
-          color={hasScrolled ? theme.colors.primary : 'rgb(28, 28, 30)'}
+          color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
         />
         <View style={styles.titleContainer}>
           <Animatable.Text ref={titleRef}>
-            <Title theme={{ colors: { text: 'rgb(28, 28, 30)' } }}>{currentTabTitle}</Title>
+            <Title theme={{ colors: { text: theme.colors.linearText } }}>{currentTabTitle}</Title>
           </Animatable.Text>
           {!hasScrolled && routes.length > 1 && (
             <Animatable.View ref={routesRef}>
@@ -102,8 +102,8 @@ function TabBar(props) {
                       size={12}
                       color={
                         route.name === routeNames[tabIndex]
-                          ? 'rgb(28, 28, 30)'
-                          : 'rgba(0, 0, 0, 0.54)'
+                          ? theme.colors.linearText
+                          : theme.colors.linearPlaceholder
                       }
                     />
                   ) : (
@@ -126,14 +126,14 @@ function TabBar(props) {
           IconComponent={Entypo}
           name='dots-two-vertical'
           onPress={() => navigation.navigate('Option')}
-          color={hasScrolled ? theme.colors.primary : 'rgb(28, 28, 30)'}
+          color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
         />
       </View>
     </Animatable.View>
   );
 }
 
-const createStyles = () => ({
+const createStyles = (theme) => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -160,13 +160,13 @@ const createStyles = () => ({
   dot: {
     paddingHorizontal: 2,
     paddingVertical: 0,
-    color: 'rgba(0, 0, 0, 0.54)',
+    color: theme.colors.linearPlaceholder,
     fontSize: 16,
     opacity: 0.5,
   },
   blackDot: {
     opacity: 1,
-    color: 'rgb(28, 28, 30)',
+    color: theme.colors.linearText,
   },
 });
 

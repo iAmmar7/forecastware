@@ -4,7 +4,7 @@ import { TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { Card, Surface, Text, Checkbox, Portal, Button } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-// import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { Loader, Snackbar } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
@@ -35,14 +35,14 @@ function CityComponent(props) {
     const symbol = weatherUnit.charAt(0);
     if (weatherUnit === temperatureUnits.KELVIN) {
       return (
-        <Text style={styles.temperature}>
+        <Text theme={{ colors: { text: theme.colors.linearText } }} style={styles.temperature}>
           {Math.round(temp || 0)}
           {symbol}
         </Text>
       );
     }
     return (
-      <Text style={styles.temperature}>
+      <Text theme={{ colors: { text: theme.colors.linearText } }} style={styles.temperature}>
         {Math.round(temp || 0)}&deg;{symbol}
       </Text>
     );
@@ -58,10 +58,6 @@ function CityComponent(props) {
           renderItem={({ item, drag, isActive }) => {
             return (
               <ScaleDecorator>
-                {/* <LinearGradient
-                colors={['#0288D1', '#81D4FA', '#B3E5FC', '#E1F5FE']}
-                style={styles.gradient}
-              > */}
                 <Surface style={styles.cityContainer}>
                   <Animatable.View
                     transition='width'
@@ -73,21 +69,33 @@ function CityComponent(props) {
                     }}
                   >
                     <Card style={styles.cityCard}>
-                      <TouchableOpacity
-                        onLongPress={drag}
-                        disabled={isActive}
-                        style={styles.rowItem}
-                      >
-                        <View style={styles.itemFlex}>
-                          <View>
-                            <Text style={styles.locationName}>{item.name}</Text>
+                      <LinearGradient colors={theme.colors[item.current.weather[0].main]}>
+                        <TouchableOpacity
+                          onLongPress={drag}
+                          disabled={isActive}
+                          style={styles.rowItem}
+                        >
+                          <View style={styles.itemFlex}>
+                            <View>
+                              <Text
+                                theme={{ colors: { text: theme.colors.linearText } }}
+                                style={styles.locationName}
+                              >
+                                {item.name}
+                              </Text>
+                            </View>
+                            <View>
+                              {unitRenderer(item.current.temp, item.unit)}
+                              <Text
+                                theme={{ colors: { text: theme.colors.linearText } }}
+                                style={styles.weather}
+                              >
+                                {item.current.weather[0].main}
+                              </Text>
+                            </View>
                           </View>
-                          <View>
-                            {unitRenderer(item.current.temp, item.unit)}
-                            <Text style={styles.weather}>{item.current.weather[0].main}</Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
+                        </TouchableOpacity>
+                      </LinearGradient>
                     </Card>
                   </Animatable.View>
                   {isEditMode && (
@@ -102,7 +110,6 @@ function CityComponent(props) {
                     </Animatable.View>
                   )}
                 </Surface>
-                {/* </LinearGradient> */}
               </ScaleDecorator>
             );
           }}

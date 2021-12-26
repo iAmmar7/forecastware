@@ -8,7 +8,9 @@ const colors = {
   Drizzle: ['#ffffff', '#B2DFDB', '#4DB6AC', '#26A69A'],
   Rain: ['#ffffff', '#90CAF9', '#42A5F5', '#2196F3', '#9E9E9E'],
   Snow: ['#ffffff', '#C5CAE9', '#9FA8DA', '#8C9EFF'],
-  Default: ['#ffffff', '#F5F5F5', '#EEEEEE', '#E0E0E0', '#BDBDBD'],
+  Default: ['#E0E0E0', '#9E9E9E', '#BDBDBD'],
+  linearText: 'rgb(28, 28, 30)',
+  linearPlaceholder: 'rgba(0, 0, 0, 0.54)',
 };
 
 export const darkColors = {

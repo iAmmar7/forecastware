@@ -36,13 +36,6 @@ function LocationComponent(props) {
     );
   };
 
-  console.log(
-    'data',
-    data?.current?.weather?.[0]?.main,
-    theme.colors,
-    theme.colors[data?.current?.weather?.[0]?.main],
-  );
-
   return (
     <SafeAreaView style={styles.screenWrapper}>
       <LinearGradient
@@ -52,7 +45,6 @@ function LocationComponent(props) {
             theme.colors.surface,
           ]
         }
-        // colors={['#880E4F', '#E91E63', '#EC407A']}
         style={styles.gradient}
       >
         <Animatable.View ref={animationRef}>
@@ -75,7 +67,9 @@ function LocationComponent(props) {
           >
             <View style={styles.screen}>
               <View style={styles.loaderContainer}>
-                {refreshing && <Loader style={styles.loader} label='Refreshing' />}
+                {refreshing && (
+                  <Loader style={styles.loader} textStyle={styles.textStyle} label='Refreshing' />
+                )}
               </View>
               <View style={styles.summary}>
                 <View style={styles.temperatureContainer}>
@@ -164,6 +158,9 @@ const createStyles = (theme) => ({
     position: 'absolute',
     width: '100%',
     height: 150,
+  },
+  textStyle: {
+    color: theme.colors.linearText,
   },
 });
 

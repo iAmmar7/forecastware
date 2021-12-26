@@ -13,10 +13,7 @@ function LocationNavigator() {
   const { locations } = useLocationContext();
 
   return (
-    <Tab.Navigator
-      initialLayout={{ width: Dimensions.get('window').width }}
-      tabBar={(props) => <TabBar {...props} />}
-    >
+    <Tab.Navigator initialLayout={{ width: Dimensions.get('window').width }} tabBar={TabBar}>
       {isEmpty(locations) ? (
         <Tab.Screen name='NoLocation' component={StartupScreen} options={{ headerShown: false }} />
       ) : (
