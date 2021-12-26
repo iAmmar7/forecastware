@@ -1,3 +1,4 @@
+// Lodash like utility functions
 export const isNull = (arg) => {
   return arg === null;
 };
@@ -29,6 +30,26 @@ export const isEmpty = (arg) => {
   return false;
 };
 
+export const toCapitalize = (str) => {
+  if (typeof str !== 'string') return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const take = (array, howMany, initialIndex = 0) => {
+  if (isEmpty(array)) return array;
+  if (array.length < howMany) return array;
+
+  const newArray = array.reduce((acc, item, index) => {
+    if (acc.length < howMany && index >= initialIndex) {
+      return [...acc, item];
+    }
+    return acc;
+  }, []);
+
+  return newArray;
+};
+
+// App related utility functions
 export const getWeatherIconUrl = (code, size = 2) => {
   return `http://openweathermap.org/img/wn/${code}@${size}x.png`;
 };
@@ -49,23 +70,4 @@ export const getTemperatureSymbol = (unit = 'Celsius') => {
     default:
       return '\u00B0C';
   }
-};
-
-export const toCapitalize = (str) => {
-  if (typeof str !== 'string') return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-export const take = (array, howMany, initialIndex = 0) => {
-  if (isEmpty(array)) return array;
-  if (array.length < howMany) return array;
-
-  const newArray = array.reduce((acc, item, index) => {
-    if (acc.length < howMany && index >= initialIndex) {
-      return [...acc, item];
-    }
-    return acc;
-  }, []);
-
-  return newArray;
 };
