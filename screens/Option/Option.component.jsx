@@ -2,7 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Surface, List, RadioButton, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
+import { Barometer } from 'forecastware/components';
 import { useStyles, useUserContext } from 'forecastware/hooks';
 import { temperatureUnits, themeNames } from 'forecastware/utils/constants';
 import { toCapitalize } from 'forecastware/utils/helpers';
@@ -126,6 +128,12 @@ function OptionComponent(props) {
           disabled
         />
       </List.Section>
+      <LinearGradient
+        colors={[theme.colors.surface, theme.colors.surface, 'grey']}
+        style={styles.barometer}
+      >
+        <Barometer />
+      </LinearGradient>
     </Surface>
   );
 }
@@ -162,6 +170,10 @@ const createStyles = (theme) => ({
   },
   listItemTitleDisabled: {
     color: theme.colors.placeholder,
+  },
+  barometer: {
+    marginTop: 'auto',
+    paddingBottom: 40,
   },
 });
 
