@@ -64,8 +64,8 @@ function TabBar(props) {
   }, [routeDetails]);
 
   return (
-    <Surface>
-      <Animatable.View
+    <Animatable.View>
+      <Surface
         transition={['paddingTop', 'paddingBottom']}
         style={{
           ...styles.header,
@@ -121,8 +121,8 @@ function TabBar(props) {
           onPress={() => navigation.navigate('Option')}
           color={hasScrolled ? theme.colors.primary : theme.colors.text}
         />
-      </Animatable.View>
-    </Surface>
+      </Surface>
+    </Animatable.View>
   );
 }
 
