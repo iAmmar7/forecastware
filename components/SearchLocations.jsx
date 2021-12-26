@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Surface, Searchbar, Card, Portal, List, Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import * as Animatable from 'react-native-animatable';
 
 import { useStyles, useDebounce } from 'forecastware/hooks';
 import { fetchLocations } from 'forecastware/api';
@@ -74,23 +75,30 @@ function SearchLocations(props) {
       <Portal>
         <Surface style={style}>
           {isSearching && (
-            <Card style={styles.loader}>
-              <Loader />
-            </Card>
+            <Animatable.View animation='bounceIn'>
+              <Card style={styles.loader}>
+                <Loader />
+              </Card>
+            </Animatable.View>
           )}
           {!isSearching && !isEmpty(locations) && !isEmpty(searchQuery) && (
-            <Card style={styles.listCard}>
-              <List.Section style={styles.listSection}>
-                {locations.map((loc, index) => (
-                  <List.Item
-                    key={`${loc.lat}-${loc.lon}`}
-                    title={<Text style={styles.listItemText}>{loc.name}</Text>}
-                    onPress={() => handleLocationClick(loc)}
-                    style={[styles.listItem, index + 1 === locations.length && styles.listItemLast]}
-                  />
-                ))}
-              </List.Section>
-            </Card>
+            <Animatable.View animation='bounceIn'>
+              <Card style={styles.listCard}>
+                <List.Section style={styles.listSection}>
+                  {locations.map((loc, index) => (
+                    <List.Item
+                      key={`${loc.lat}-${loc.lon}`}
+                      title={<Text style={styles.listItemText}>{loc.name}</Text>}
+                      onPress={() => handleLocationClick(loc)}
+                      style={[
+                        styles.listItem,
+                        index + 1 === locations.length && styles.listItemLast,
+                      ]}
+                    />
+                  ))}
+                </List.Section>
+              </Card>
+            </Animatable.View>
           )}
         </Surface>
       </Portal>
@@ -101,7 +109,6 @@ function SearchLocations(props) {
 const createStyles = (theme) => ({
   searchBar: {
     height: 32,
-    // elevation: 0,
     backgroundColor: theme.dark ? theme.colors.surface : theme.colors.background,
     elevation: 1,
   },
