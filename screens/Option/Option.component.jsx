@@ -129,7 +129,11 @@ function OptionComponent(props) {
         />
       </List.Section>
       <LinearGradient
-        colors={[theme.colors.surface, theme.colors.surface, 'grey']}
+        colors={
+          theme.dark
+            ? [theme.colors.background, theme.colors.background]
+            : [theme.colors.surface, theme.colors.surface, 'grey']
+        }
         style={styles.barometer}
       >
         <Barometer />
@@ -173,7 +177,7 @@ const createStyles = (theme) => ({
   },
   barometer: {
     marginTop: 'auto',
-    paddingBottom: 40,
+    paddingVertical: 40,
   },
 });
 
