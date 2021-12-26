@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Surface, Title } from 'react-native-paper';
+import { Text, Title } from 'react-native-paper';
 import { MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
 import { take } from 'forecastware/utils/helpers';
 import { useStyles } from 'forecastware/hooks';
+import { View } from 'react-native';
 import HeaderIcon from './HeaderIcon';
 
 function TabBar(props) {
@@ -63,30 +64,36 @@ function TabBar(props) {
     return routeDetails.options.hasScrolled;
   }, [routeDetails]);
 
+  const color = useMemo(() => {
+    const name = routeDetails.options?.name;
+    return theme.colors?.[name]?.[0] || theme.colors.surface;
+  }, [routeDetails]);
+
   return (
     <Animatable.View>
-      <Surface
+      <View
         transition={['paddingTop', 'paddingBottom']}
         style={{
           ...styles.header,
           paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
           paddingBottom: hasScrolled ? 0 : 10,
           elevation: hasScrolled ? 1 : 0,
+          backgroundColor: color,
         }}
       >
         <HeaderIcon
           IconComponent={MaterialCommunityIcons}
           name='city-variant-outline'
           onPress={() => navigation.navigate('City')}
-          color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          color={hasScrolled ? theme.colors.primary : 'rgb(28, 28, 30)'}
         />
-        <Surface style={styles.titleContainer}>
+        <View style={styles.titleContainer}>
           <Animatable.Text ref={titleRef}>
-            <Title>{currentTabTitle}</Title>
+            <Title theme={{ colors: { text: 'rgb(28, 28, 30)' } }}>{currentTabTitle}</Title>
           </Animatable.Text>
           {!hasScrolled && routes.length > 1 && (
             <Animatable.View ref={routesRef}>
-              <Surface style={styles.dotContainer}>
+              <View style={styles.dotContainer}>
                 {inViewRoutes.map((route) => {
                   return route?.params?.isCurrent ? (
                     <MaterialIcons
@@ -95,8 +102,8 @@ function TabBar(props) {
                       size={12}
                       color={
                         route.name === routeNames[tabIndex]
-                          ? theme.colors.onSurface
-                          : theme.colors.placeholder
+                          ? 'rgb(28, 28, 30)'
+                          : 'rgba(0, 0, 0, 0.54)'
                       }
                     />
                   ) : (
@@ -111,22 +118,22 @@ function TabBar(props) {
                     </Text>
                   );
                 })}
-              </Surface>
+              </View>
             </Animatable.View>
           )}
-        </Surface>
+        </View>
         <HeaderIcon
           IconComponent={Entypo}
           name='dots-two-vertical'
           onPress={() => navigation.navigate('Option')}
-          color={hasScrolled ? theme.colors.primary : theme.colors.text}
+          color={hasScrolled ? theme.colors.primary : 'rgb(28, 28, 30)'}
         />
-      </Surface>
+      </View>
     </Animatable.View>
   );
 }
 
-const createStyles = (theme) => ({
+const createStyles = () => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -153,13 +160,13 @@ const createStyles = (theme) => ({
   dot: {
     paddingHorizontal: 2,
     paddingVertical: 0,
-    color: theme.colors.placeholder,
+    color: 'rgba(0, 0, 0, 0.54)',
     fontSize: 16,
     opacity: 0.5,
   },
   blackDot: {
     opacity: 1,
-    color: theme.colors.onSurface,
+    color: 'rgb(28, 28, 30)',
   },
 });
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SafeAreaView, ScrollView, RefreshControl } from 'react-native';
-import { Surface, Text } from 'react-native-paper';
+import { SafeAreaView, ScrollView, RefreshControl, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { Loader, ScreenshotTaker } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
 import { temperatureUnits } from 'forecastware/utils/constants';
+import WeatherText from './components/WeatherText';
 import HourlyWeatherList from './components/HourlyWeatherList';
 import WeeklyWeatherList from './components/WeeklyWeatherList';
 import WeatherDetails from './components/WeatherDetails';
@@ -21,68 +22,90 @@ function LocationComponent(props) {
     handleExternalLink,
     handleOnScroll,
   } = props;
-  const { styles } = useStyles(createStyles);
+  const { styles, theme } = useStyles(createStyles);
 
   const unitRenderer = () => {
     const symbol = data.unit.charAt(0);
     return (
-      <Surface style={styles.unit}>
+      <View style={styles.unit}>
         {data.unit === temperatureUnits.KELVIN ? null : (
-          <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
+          <WeatherText style={{ ...styles.unitText, ...styles.degree }}>&deg;</WeatherText>
         )}
-        <Text style={styles.unitText}>{symbol}</Text>
-      </Surface>
+        <WeatherText style={styles.unitText}>{symbol}</WeatherText>
+      </View>
     );
   };
 
+  console.log(
+    'data',
+    data?.current?.weather?.[0]?.main,
+    theme.colors,
+    theme.colors[data?.current?.weather?.[0]?.main],
+  );
+
   return (
     <SafeAreaView style={styles.screenWrapper}>
-      <Animatable.View ref={animationRef}>
-        <ScrollView
-          style={styles.scrollView}
-          onScrollEndDrag={handleOnScroll}
-          scrollEventThrottle={100}
-          ref={scrollRef}
-          bounces
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-              progressBackgroundColor='white'
-              colors={['white']}
-              progressViewOffset={-1000}
-            />
-          }
-        >
-          <Surface style={styles.screen}>
-            <Surface style={styles.loaderContainer}>
-              {refreshing && <Loader style={styles.loader} label='Refreshing' />}
-            </Surface>
-            <Surface style={styles.summary}>
-              <Surface style={styles.temperatureContainer}>
-                <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
-                {unitRenderer()}
-              </Surface>
-              <Surface>
-                <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
-              </Surface>
-            </Surface>
-            <HourlyWeatherList data={data?.hourly} unit={data.unit} />
-            <WeeklyWeatherList
-              data={data?.daily}
-              unit={data.unit}
-              handleExternalLink={handleExternalLink}
-            />
-            <WeatherDetails
-              data={data?.current}
-              unit={data.unit}
-              handleExternalLink={handleExternalLink}
-            />
-          </Surface>
-        </ScrollView>
-      </Animatable.View>
-      <ScreenshotTaker animationRef={animationRef} />
+      <LinearGradient
+        colors={
+          theme.colors[data?.current?.weather?.[0]?.main] || [
+            theme.colors.surface,
+            theme.colors.surface,
+          ]
+        }
+        // colors={['#880E4F', '#E91E63', '#EC407A']}
+        style={styles.gradient}
+      >
+        <Animatable.View ref={animationRef}>
+          <ScrollView
+            style={styles.scrollView}
+            onScrollEndDrag={handleOnScroll}
+            scrollEventThrottle={100}
+            ref={scrollRef}
+            bounces
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                progressBackgroundColor='white'
+                colors={['white']}
+                progressViewOffset={-1000}
+              />
+            }
+          >
+            <View style={styles.screen}>
+              <View style={styles.loaderContainer}>
+                {refreshing && <Loader style={styles.loader} label='Refreshing' />}
+              </View>
+              <View style={styles.summary}>
+                <View style={styles.temperatureContainer}>
+                  <WeatherText style={styles.temperature}>
+                    {Math.round(data?.current?.temp || 0)}
+                  </WeatherText>
+                  {unitRenderer()}
+                </View>
+                <View>
+                  <WeatherText style={styles.weather}>
+                    {data?.current?.weather?.[0]?.main}
+                  </WeatherText>
+                </View>
+              </View>
+              <HourlyWeatherList data={data?.hourly} unit={data.unit} />
+              <WeeklyWeatherList
+                data={data?.daily}
+                unit={data.unit}
+                handleExternalLink={handleExternalLink}
+              />
+              <WeatherDetails
+                data={data?.current}
+                unit={data.unit}
+                handleExternalLink={handleExternalLink}
+              />
+            </View>
+          </ScrollView>
+        </Animatable.View>
+        <ScreenshotTaker animationRef={animationRef} />
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -137,6 +160,7 @@ const createStyles = (theme) => ({
     height: 200,
   },
   loader: {
+    backgroundColor: 'transparent',
     position: 'absolute',
     width: '100%',
     height: 150,

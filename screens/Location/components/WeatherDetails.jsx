@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Surface, Text, TouchableRipple } from 'react-native-paper';
+import { TouchableRipple } from 'react-native-paper';
+import { View } from 'react-native';
 
 import { useStyles } from 'forecastware/hooks';
 import { getUVIndex } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
+import WeatherText from './WeatherText';
 
 function WeatherDetails(props) {
   const { data, unit, handleExternalLink } = props;
@@ -13,75 +15,83 @@ function WeatherDetails(props) {
   const unitRenderer = useCallback(() => {
     const symbol = unit.charAt(0);
     if (unit === temperatureUnits.KELVIN) {
-      return <Text style={styles.itemValueSub}>{symbol}</Text>;
+      return <WeatherText style={styles.itemValueSub}>{symbol}</WeatherText>;
     }
-    return <Text style={styles.itemValueSub}>&deg;{symbol}</Text>;
+    return <WeatherText style={styles.itemValueSub}>&deg;{symbol}</WeatherText>;
   }, [unit]);
 
   return (
-    <Surface style={styles.container}>
-      <Text style={styles.title}>Weather Details</Text>
-      <Surface style={styles.flexWrapper}>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.itemValue}>
-            <Text style={styles.itemValueMain}>{Math.round(data?.feels_like || 0)}</Text>
+    <View style={styles.container}>
+      <WeatherText style={styles.title}>Weather Details</WeatherText>
+      <View style={styles.flexWrapper}>
+        <View style={styles.flexItem}>
+          <View style={styles.itemValue}>
+            <WeatherText style={styles.itemValueMain}>
+              {Math.round(data?.feels_like || 0)}
+            </WeatherText>
             {unitRenderer()}
-          </Surface>
-          <Text style={styles.itemLabel}>Temperature Felt</Text>
-        </Surface>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.flexItemRight}>
-            <Surface style={styles.itemValue}>
-              <Text style={styles.itemValueMain}>
+          </View>
+          <WeatherText secondary>Temperature Felt</WeatherText>
+        </View>
+        <View style={styles.flexItem}>
+          <View style={styles.flexItemRight}>
+            <View style={styles.itemValue}>
+              <WeatherText style={styles.itemValueMain}>
                 {Math.round((data?.visibility || 0) / 1000 || 0)}
-              </Text>
-              <Text style={styles.itemValueSub}>km</Text>
-            </Surface>
-            <Text style={styles.itemLabel}>Visibility</Text>
-          </Surface>
-        </Surface>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.itemValue}>
-            <Text style={styles.itemValueMain}>{Math.round(data?.pressure || 0)}</Text>
-            <Text style={styles.itemValueSub}>hPa</Text>
-          </Surface>
-          <Text style={styles.itemLabel}>Air Pressure</Text>
-        </Surface>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.flexItemRight}>
-            <Surface style={styles.itemValue}>
-              <Text style={styles.itemValueMain}>{getUVIndex(data?.uvi)}</Text>
-            </Surface>
-            <Text style={styles.itemLabel}>UV</Text>
-          </Surface>
-        </Surface>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.itemValue}>
-            <Text style={styles.itemValueMain}>{Math.round(data?.humidity || 0)}</Text>
-            <Text style={styles.itemValueSub}>%</Text>
-          </Surface>
-          <Text style={styles.itemLabel}>Humidity</Text>
-        </Surface>
-        <Surface style={styles.flexItem}>
-          <Surface style={styles.flexItemRight}>
-            <Surface style={styles.itemValue}>
-              <Text style={styles.itemValueMain}>{data?.wind_speed}</Text>
-              <Text style={styles.itemValueSub}>m/s</Text>
-            </Surface>
-            <Text style={styles.itemLabel}>Wind Speed</Text>
-          </Surface>
-        </Surface>
-      </Surface>
-      <Surface style={styles.linkContainer}>
+              </WeatherText>
+              <WeatherText style={styles.itemValueSub}>km</WeatherText>
+            </View>
+            <WeatherText secondary>Visibility</WeatherText>
+          </View>
+        </View>
+        <View style={styles.flexItem}>
+          <View style={styles.itemValue}>
+            <WeatherText style={styles.itemValueMain}>
+              {Math.round(data?.pressure || 0)}
+            </WeatherText>
+            <WeatherText style={styles.itemValueSub}>hPa</WeatherText>
+          </View>
+          <WeatherText secondary>Air Pressure</WeatherText>
+        </View>
+        <View style={styles.flexItem}>
+          <View style={styles.flexItemRight}>
+            <View style={styles.itemValue}>
+              <WeatherText style={styles.itemValueMain}>{getUVIndex(data?.uvi)}</WeatherText>
+            </View>
+            <WeatherText secondary>UV</WeatherText>
+          </View>
+        </View>
+        <View style={styles.flexItem}>
+          <View style={styles.itemValue}>
+            <WeatherText style={styles.itemValueMain}>
+              {Math.round(data?.humidity || 0)}
+            </WeatherText>
+            <WeatherText style={styles.itemValueSub}>%</WeatherText>
+          </View>
+          <WeatherText secondary>Humidity</WeatherText>
+        </View>
+        <View style={styles.flexItem}>
+          <View style={styles.flexItemRight}>
+            <View style={styles.itemValue}>
+              <WeatherText style={styles.itemValueMain}>{data?.wind_speed}</WeatherText>
+              <WeatherText style={styles.itemValueSub}>m/s</WeatherText>
+            </View>
+            <WeatherText secondary>Wind Speed</WeatherText>
+          </View>
+        </View>
+      </View>
+      <View style={styles.linkContainer}>
         <TouchableRipple style={styles.link} onPress={handleExternalLink}>
-          <Text style={styles.linkText}>The Weather Channel</Text>
+          <WeatherText secondary style={styles.linkText}>
+            The Weather Channel
+          </WeatherText>
         </TouchableRipple>
-      </Surface>
-    </Surface>
+      </View>
+    </View>
   );
 }
 
-const createStyles = (theme) => ({
+const createStyles = () => ({
   container: {
     paddingHorizontal: 18,
     marginBottom: 30,
@@ -117,9 +127,6 @@ const createStyles = (theme) => ({
   itemValueSub: {
     paddingBottom: 2,
   },
-  itemLabel: {
-    color: theme.colors.placeholder,
-  },
   linkContainer: {
     alignItems: 'center',
   },
@@ -129,7 +136,6 @@ const createStyles = (theme) => ({
   },
   linkText: {
     fontFamily: 'open-sans-bold',
-    color: theme.colors.placeholder,
   },
 });
 
