@@ -70,65 +70,63 @@ function TabBar(props) {
   }, [routeDetails]);
 
   return (
-    <Animatable.View>
-      <View
-        transition={['paddingTop', 'paddingBottom']}
-        style={{
-          ...styles.header,
-          paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
-          paddingBottom: hasScrolled ? 0 : 10,
-          elevation: hasScrolled ? 1 : 0,
-          backgroundColor: color,
-        }}
-      >
-        <HeaderIcon
-          IconComponent={MaterialCommunityIcons}
-          name='city-variant-outline'
-          onPress={() => navigation.navigate('City')}
-          color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
-        />
-        <View style={styles.titleContainer}>
-          <Animatable.Text ref={titleRef}>
-            <Title theme={{ colors: { text: theme.colors.linearText } }}>{currentTabTitle}</Title>
-          </Animatable.Text>
-          {!hasScrolled && routes.length > 1 && (
-            <Animatable.View ref={routesRef}>
-              <View style={styles.dotContainer}>
-                {inViewRoutes.map((route) => {
-                  return route?.params?.isCurrent ? (
-                    <MaterialIcons
-                      key={route.key}
-                      name='location-pin'
-                      size={12}
-                      color={
-                        route.name === routeNames[tabIndex]
-                          ? theme.colors.linearText
-                          : theme.colors.linearPlaceholder
-                      }
-                    />
-                  ) : (
-                    <Text
-                      key={route.key}
-                      style={{
-                        ...styles.dot,
-                        ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
-                      }}
-                    >
-                      &#8226;
-                    </Text>
-                  );
-                })}
-              </View>
-            </Animatable.View>
-          )}
-        </View>
-        <HeaderIcon
-          IconComponent={Entypo}
-          name='dots-two-vertical'
-          onPress={() => navigation.navigate('Option')}
-          color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
-        />
+    <Animatable.View
+      transition={['paddingTop', 'paddingBottom']}
+      style={{
+        ...styles.header,
+        paddingTop: hasScrolled ? Constants.statusBarHeight : Constants.statusBarHeight + 10,
+        paddingBottom: hasScrolled ? 0 : 10,
+        elevation: hasScrolled ? 1 : 0,
+        backgroundColor: color,
+      }}
+    >
+      <HeaderIcon
+        IconComponent={MaterialCommunityIcons}
+        name='city-variant-outline'
+        onPress={() => navigation.navigate('City')}
+        color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
+      />
+      <View style={styles.titleContainer}>
+        <Animatable.Text ref={titleRef}>
+          <Title theme={{ colors: { text: theme.colors.linearText } }}>{currentTabTitle}</Title>
+        </Animatable.Text>
+        {!hasScrolled && routes.length > 1 && (
+          <Animatable.View ref={routesRef}>
+            <View style={styles.dotContainer}>
+              {inViewRoutes.map((route) => {
+                return route?.params?.isCurrent ? (
+                  <MaterialIcons
+                    key={route.key}
+                    name='location-pin'
+                    size={12}
+                    color={
+                      route.name === routeNames[tabIndex]
+                        ? theme.colors.linearText
+                        : theme.colors.linearPlaceholder
+                    }
+                  />
+                ) : (
+                  <Text
+                    key={route.key}
+                    style={{
+                      ...styles.dot,
+                      ...(route.name === routeNames[tabIndex] && { ...styles.blackDot }),
+                    }}
+                  >
+                    &#8226;
+                  </Text>
+                );
+              })}
+            </View>
+          </Animatable.View>
+        )}
       </View>
+      <HeaderIcon
+        IconComponent={Entypo}
+        name='dots-two-vertical'
+        onPress={() => navigation.navigate('Option')}
+        color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
+      />
     </Animatable.View>
   );
 }
@@ -160,13 +158,14 @@ const createStyles = (theme) => ({
   dot: {
     paddingHorizontal: 2,
     paddingVertical: 0,
-    color: theme.colors.linearPlaceholder,
     fontSize: 16,
+    color: theme.colors.linearPlaceholder,
     opacity: 0.5,
   },
   blackDot: {
     opacity: 1,
     color: theme.colors.linearText,
+    fontFamily: 'open-sans-bold',
   },
 });
 
