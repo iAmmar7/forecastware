@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { Loader, Snackbar } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
-import { isEmpty } from 'forecastware/utils/helpers';
+import { isEmpty, take } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
 
 function CityComponent(props) {
@@ -35,14 +35,14 @@ function CityComponent(props) {
     const symbol = weatherUnit.charAt(0);
     if (weatherUnit === temperatureUnits.KELVIN) {
       return (
-        <Text theme={{ colors: { text: theme.colors.linearText } }} style={styles.temperature}>
+        <Text style={styles.temperature}>
           {Math.round(temp || 0)}
           {symbol}
         </Text>
       );
     }
     return (
-      <Text theme={{ colors: { text: theme.colors.linearText } }} style={styles.temperature}>
+      <Text style={styles.temperature}>
         {Math.round(temp || 0)}&deg;{symbol}
       </Text>
     );
@@ -69,7 +69,9 @@ function CityComponent(props) {
                     }}
                   >
                     <Card style={styles.cityCard}>
-                      <LinearGradient colors={theme.colors[item.current.weather[0].main]}>
+                      <LinearGradient
+                        colors={take(theme.colors[item.current.weather[0].main], 3, 1)}
+                      >
                         <TouchableOpacity
                           onLongPress={drag}
                           disabled={isActive}
@@ -77,21 +79,11 @@ function CityComponent(props) {
                         >
                           <View style={styles.itemFlex}>
                             <View>
-                              <Text
-                                theme={{ colors: { text: theme.colors.linearText } }}
-                                style={styles.locationName}
-                              >
-                                {item.name}
-                              </Text>
+                              <Text style={styles.locationName}>{item.name}</Text>
                             </View>
                             <View>
                               {unitRenderer(item.current.temp, item.unit)}
-                              <Text
-                                theme={{ colors: { text: theme.colors.linearText } }}
-                                style={styles.weather}
-                              >
-                                {item.current.weather[0].main}
-                              </Text>
+                              <Text style={styles.weather}>{item.current.weather[0].main}</Text>
                             </View>
                           </View>
                         </TouchableOpacity>

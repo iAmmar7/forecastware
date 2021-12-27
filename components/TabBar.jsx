@@ -84,11 +84,11 @@ function TabBar(props) {
         IconComponent={MaterialCommunityIcons}
         name='city-variant-outline'
         onPress={() => navigation.navigate('City')}
-        color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
+        color={hasScrolled ? theme.colors.primary : theme.colors.text}
       />
       <View style={styles.titleContainer}>
         <Animatable.Text ref={titleRef}>
-          <Title theme={{ colors: { text: theme.colors.linearText } }}>{currentTabTitle}</Title>
+          <Title>{currentTabTitle}</Title>
         </Animatable.Text>
         {!hasScrolled && routes.length > 1 && (
           <Animatable.View ref={routesRef}>
@@ -101,8 +101,8 @@ function TabBar(props) {
                     size={12}
                     color={
                       route.name === routeNames[tabIndex]
-                        ? theme.colors.linearText
-                        : theme.colors.linearPlaceholder
+                        ? theme.colors.text
+                        : theme.colors.placeholder
                     }
                   />
                 ) : (
@@ -125,13 +125,13 @@ function TabBar(props) {
         IconComponent={Entypo}
         name='dots-two-vertical'
         onPress={() => navigation.navigate('Option')}
-        color={hasScrolled ? theme.colors.primary : theme.colors.linearText}
+        color={hasScrolled ? theme.colors.primary : theme.colors.text}
       />
     </Animatable.View>
   );
 }
 
-const createStyles = (theme) => ({
+const createStyles = () => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -159,12 +159,12 @@ const createStyles = (theme) => ({
     paddingHorizontal: 2,
     paddingVertical: 0,
     fontSize: 16,
-    color: theme.colors.linearPlaceholder,
+    // color: theme.colors.linearPlaceholder,
     opacity: 0.5,
   },
   blackDot: {
     opacity: 1,
-    color: theme.colors.linearText,
+    // color: theme.colors.linearText,
     fontFamily: 'open-sans-bold',
   },
 });

@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableRipple } from 'react-native-paper';
 import { View } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 
 import { useStyles } from 'forecastware/hooks';
 import { getUVIndex } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
-import WeatherText from './WeatherText';
 
 function WeatherDetails(props) {
   const { data, unit, handleExternalLink } = props;
@@ -15,83 +14,75 @@ function WeatherDetails(props) {
   const unitRenderer = useCallback(() => {
     const symbol = unit.charAt(0);
     if (unit === temperatureUnits.KELVIN) {
-      return <WeatherText style={styles.itemValueSub}>{symbol}</WeatherText>;
+      return <Text style={styles.itemValueSub}>{symbol}</Text>;
     }
-    return <WeatherText style={styles.itemValueSub}>&deg;{symbol}</WeatherText>;
+    return <Text style={styles.itemValueSub}>&deg;{symbol}</Text>;
   }, [unit]);
 
   return (
     <View style={styles.container}>
-      <WeatherText style={styles.title}>Weather Details</WeatherText>
+      <Text style={styles.title}>Weather Details</Text>
       <View style={styles.flexWrapper}>
         <View style={styles.flexItem}>
           <View style={styles.itemValue}>
-            <WeatherText style={styles.itemValueMain}>
-              {Math.round(data?.feels_like || 0)}
-            </WeatherText>
+            <Text style={styles.itemValueMain}>{Math.round(data?.feels_like || 0)}</Text>
             {unitRenderer()}
           </View>
-          <WeatherText secondary>Temperature Felt</WeatherText>
+          <Text style={styles.itemLabel}>Temperature Felt</Text>
         </View>
         <View style={styles.flexItem}>
           <View style={styles.flexItemRight}>
             <View style={styles.itemValue}>
-              <WeatherText style={styles.itemValueMain}>
+              <Text style={styles.itemValueMain}>
                 {Math.round((data?.visibility || 0) / 1000 || 0)}
-              </WeatherText>
-              <WeatherText style={styles.itemValueSub}>km</WeatherText>
+              </Text>
+              <Text style={styles.itemValueSub}>km</Text>
             </View>
-            <WeatherText secondary>Visibility</WeatherText>
+            <Text style={styles.itemLabel}>Visibility</Text>
           </View>
         </View>
         <View style={styles.flexItem}>
           <View style={styles.itemValue}>
-            <WeatherText style={styles.itemValueMain}>
-              {Math.round(data?.pressure || 0)}
-            </WeatherText>
-            <WeatherText style={styles.itemValueSub}>hPa</WeatherText>
+            <Text style={styles.itemValueMain}>{Math.round(data?.pressure || 0)}</Text>
+            <Text style={styles.itemValueSub}>hPa</Text>
           </View>
-          <WeatherText secondary>Air Pressure</WeatherText>
+          <Text style={styles.itemLabel}>Air Pressure</Text>
         </View>
         <View style={styles.flexItem}>
           <View style={styles.flexItemRight}>
             <View style={styles.itemValue}>
-              <WeatherText style={styles.itemValueMain}>{getUVIndex(data?.uvi)}</WeatherText>
+              <Text style={styles.itemValueMain}>{getUVIndex(data?.uvi)}</Text>
             </View>
-            <WeatherText secondary>UV</WeatherText>
+            <Text style={styles.itemLabel}>UV</Text>
           </View>
         </View>
         <View style={styles.flexItem}>
           <View style={styles.itemValue}>
-            <WeatherText style={styles.itemValueMain}>
-              {Math.round(data?.humidity || 0)}
-            </WeatherText>
-            <WeatherText style={styles.itemValueSub}>%</WeatherText>
+            <Text style={styles.itemValueMain}>{Math.round(data?.humidity || 0)}</Text>
+            <Text style={styles.itemValueSub}>%</Text>
           </View>
-          <WeatherText secondary>Humidity</WeatherText>
+          <Text style={styles.itemLabel}>Humidity</Text>
         </View>
         <View style={styles.flexItem}>
           <View style={styles.flexItemRight}>
             <View style={styles.itemValue}>
-              <WeatherText style={styles.itemValueMain}>{data?.wind_speed}</WeatherText>
-              <WeatherText style={styles.itemValueSub}>m/s</WeatherText>
+              <Text style={styles.itemValueMain}>{data?.wind_speed}</Text>
+              <Text style={styles.itemValueSub}>m/s</Text>
             </View>
-            <WeatherText secondary>Wind Speed</WeatherText>
+            <Text style={styles.itemLabel}>Wind Speed</Text>
           </View>
         </View>
       </View>
       <View style={styles.linkContainer}>
         <TouchableRipple style={styles.link} onPress={handleExternalLink}>
-          <WeatherText secondary style={styles.linkText}>
-            The Weather Channel
-          </WeatherText>
+          <Text style={styles.linkText}>The Weather Channel</Text>
         </TouchableRipple>
       </View>
     </View>
   );
 }
 
-const createStyles = () => ({
+const createStyles = (theme) => ({
   container: {
     paddingHorizontal: 18,
     marginBottom: 30,
@@ -127,6 +118,9 @@ const createStyles = () => ({
   itemValueSub: {
     paddingBottom: 2,
   },
+  itemLabel: {
+    color: theme.colors.placeholder,
+  },
   linkContainer: {
     alignItems: 'center',
   },
@@ -136,6 +130,7 @@ const createStyles = () => ({
   },
   linkText: {
     fontFamily: 'open-sans-bold',
+    color: theme.colors.placeholder,
   },
 });
 

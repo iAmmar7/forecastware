@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { SafeAreaView, ScrollView, RefreshControl, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Text } from 'react-native-paper';
 
 import { Loader, ScreenshotTaker } from 'forecastware/components';
 import { useStyles } from 'forecastware/hooks';
 import { temperatureUnits } from 'forecastware/utils/constants';
-import WeatherText from './components/WeatherText';
 import HourlyWeatherList from './components/HourlyWeatherList';
 import WeeklyWeatherList from './components/WeeklyWeatherList';
 import WeatherDetails from './components/WeatherDetails';
@@ -29,9 +29,9 @@ function LocationComponent(props) {
     return (
       <View style={styles.unit}>
         {data.unit === temperatureUnits.KELVIN ? null : (
-          <WeatherText style={{ ...styles.unitText, ...styles.degree }}>&deg;</WeatherText>
+          <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
         )}
-        <WeatherText style={styles.unitText}>{symbol}</WeatherText>
+        <Text style={styles.unitText}>{symbol}</Text>
       </View>
     );
   };
@@ -73,15 +73,11 @@ function LocationComponent(props) {
               </View>
               <View style={styles.summary}>
                 <View style={styles.temperatureContainer}>
-                  <WeatherText style={styles.temperature}>
-                    {Math.round(data?.current?.temp || 0)}
-                  </WeatherText>
+                  <Text style={styles.temperature}>{Math.round(data?.current?.temp || 0)}</Text>
                   {unitRenderer()}
                 </View>
                 <View>
-                  <WeatherText style={styles.weather}>
-                    {data?.current?.weather?.[0]?.main}
-                  </WeatherText>
+                  <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
                 </View>
               </View>
               <HourlyWeatherList data={data?.hourly} unit={data.unit} />
@@ -160,7 +156,7 @@ const createStyles = (theme) => ({
     height: 150,
   },
   textStyle: {
-    color: theme.colors.linearText,
+    color: theme.colors.text,
   },
 });
 

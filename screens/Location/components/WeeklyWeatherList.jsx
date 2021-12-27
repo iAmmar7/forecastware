@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
 import { useStyles } from 'forecastware/hooks';
 import { getWeatherIconUrl } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
-import WeatherText from './WeatherText';
 
 function WeeklyWeatherList(props) {
   const { data, unit, handleExternalLink } = props;
@@ -19,17 +18,17 @@ function WeeklyWeatherList(props) {
       const symbol = unit.charAt(0);
       if (unit === temperatureUnits.KELVIN) {
         return (
-          <WeatherText secondary style={styles.dailyItem70}>
+          <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
             {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}
             {symbol}
-          </WeatherText>
+          </Text>
         );
       }
       return (
-        <WeatherText secondary style={styles.dailyItem70}>
+        <Text style={{ ...styles.weatherText, ...styles.dailyItem70 }}>
           {Math.round(temp?.max || 0)}/{Math.round(temp?.min || 0)}&deg;
           {symbol}
-        </WeatherText>
+        </Text>
       );
     },
     [unit],
@@ -37,15 +36,15 @@ function WeeklyWeatherList(props) {
 
   return (
     <View style={styles.dailyListContainer}>
-      <WeatherText style={styles.dailyListTitle}>Weekly Weather Report</WeatherText>
+      <Text style={styles.dailyListTitle}>Weekly Weather Report</Text>
       {data.map((item) => (
         <View key={item.dt} style={styles.dailyListItem}>
-          <WeatherText secondary style={styles.dailyItem50}>
+          <Text style={{ ...styles.weatherText, ...styles.dailyItem50 }}>
             {dayjs(new Date(item.dt * 1000)).format('MMM D')}
-          </WeatherText>
-          <WeatherText secondary style={styles.dailyItem50}>
+          </Text>
+          <Text style={{ ...styles.weatherText, ...styles.dailyItem50 }}>
             {dayjs(new Date(item.dt * 1000)).format('ddd')}
-          </WeatherText>
+          </Text>
           <View style={{ ...styles.dailyStatus, ...styles.dailyItem70 }}>
             <Image
               style={styles.weatherListIcon}
@@ -53,7 +52,7 @@ function WeeklyWeatherList(props) {
                 uri: getWeatherIconUrl(item?.weather?.[0]?.icon),
               }}
             />
-            <WeatherText secondary>{item?.weather?.[0]?.main}</WeatherText>
+            <Text style={styles.weatherText}>{item?.weather?.[0]?.main}</Text>
           </View>
           {unitRenderer(item?.temp)}
         </View>
@@ -61,7 +60,7 @@ function WeeklyWeatherList(props) {
       <View style={styles.linkContainer}>
         <TouchableRipple style={styles.link} onPress={handleExternalLink}>
           <>
-            <WeatherText style={styles.linkText}>15 day weather forecast</WeatherText>
+            <Text style={styles.linkText}>15 day weather forecast</Text>
             <AntDesign name='right' size={14} style={styles.linkIcon} />
           </>
         </TouchableRipple>
@@ -87,6 +86,9 @@ const createStyles = (theme) => ({
   weatherListIcon: {
     width: 30,
     height: 30,
+  },
+  weatherText: {
+    color: theme.colors.placeholder,
   },
   dailyItem50: {
     width: 50,

@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, Image, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import dayjs from 'dayjs';
 
 import { useStyles } from 'forecastware/hooks';
 import { getWeatherIconUrl } from 'forecastware/utils/helpers';
 import { temperatureUnits } from 'forecastware/utils/constants';
-import WeatherText from './WeatherText';
 
 function HourlyWeatherList(props) {
   const { data, unit } = props;
@@ -17,16 +17,16 @@ function HourlyWeatherList(props) {
       const symbol = unit.charAt(0);
       if (unit === temperatureUnits.KELVIN) {
         return (
-          <WeatherText secondary style={styles.hourlyStatus}>
+          <Text style={{ ...styles.weatherText, ...styles.hourlyStatus }}>
             {Math.round(temp || 0)}
             {symbol}
-          </WeatherText>
+          </Text>
         );
       }
       return (
-        <WeatherText secondary style={styles.hourlyStatus}>
+        <Text style={{ ...styles.weatherText, ...styles.hourlyStatus }}>
           {Math.round(temp || 0)}&deg;{symbol}
-        </WeatherText>
+        </Text>
       );
     },
     [unit],
@@ -42,14 +42,16 @@ function HourlyWeatherList(props) {
         keyExtractor={(item) => item.dt.toString()}
         renderItem={({ item }) => (
           <View style={styles.hourlyListItem}>
-            <WeatherText secondary>{dayjs(new Date(item.dt * 1000)).format('h:mmA')}</WeatherText>
+            <Text style={styles.weatherText}>
+              {dayjs(new Date(item.dt * 1000)).format('h:mmA')}
+            </Text>
             <Image
               style={styles.weatherListIcon}
               source={{
                 uri: getWeatherIconUrl(item?.weather?.[0]?.icon),
               }}
             />
-            <WeatherText secondary>{item?.weather?.[0]?.main}</WeatherText>
+            <Text style={styles.weatherText}>{item?.weather?.[0]?.main}</Text>
             {unitRenderer(item.temp)}
           </View>
         )}
@@ -58,7 +60,7 @@ function HourlyWeatherList(props) {
   );
 }
 
-const createStyles = () => ({
+const createStyles = (theme) => ({
   hourlyListContainer: {
     paddingVertical: 18,
   },
@@ -73,6 +75,9 @@ const createStyles = () => ({
   weatherListIcon: {
     width: 30,
     height: 30,
+  },
+  weatherText: {
+    color: theme.colors.placeholder,
   },
   hourlyStatus: {
     paddingTop: 6,
