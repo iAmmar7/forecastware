@@ -13,12 +13,13 @@ function LocationNavigator() {
   const { locations } = useLocationContext();
 
   return (
-    <Tab.Navigator
-      initialLayout={{ width: Dimensions.get('window').width }}
-      tabBar={(props) => <TabBar {...props} />}
-    >
+    <Tab.Navigator initialLayout={{ width: Dimensions.get('window').width }} tabBar={TabBar}>
       {isEmpty(locations) ? (
-        <Tab.Screen name='NoLocation' component={StartupScreen} options={{ headerShown: false }} />
+        <Tab.Screen
+          name='NoLocation'
+          component={StartupScreen}
+          options={{ tabBarVisible: false }}
+        />
       ) : (
         locations.map((loc) => (
           <Tab.Screen
@@ -29,7 +30,10 @@ function LocationNavigator() {
               locId: loc.id,
               isCurrent: loc.isCurrent,
             }}
-            options={{ headerTitle: loc.name, name: loc.current?.weather?.[0]?.main }}
+            options={{
+              headerTitle: loc.name,
+              name: loc.current?.weather?.[0]?.main,
+            }}
           />
         ))
       )}

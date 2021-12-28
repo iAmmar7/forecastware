@@ -47,13 +47,12 @@ function StartupComponent(props) {
             <Surface style={styles.content}>
               <Surface style={styles.logoContainer}>
                 <Animatable.Image
-                  animation='slideInRight'
+                  animation='pulse'
                   delay={100}
                   iterationCount='infinite'
-                  direction='alternate'
                   useNativeDriver
                   source={require('forecastware/assets/logo.png')}
-                  style={{ width: 66, height: 66 }}
+                  style={{ width: 70, height: 70 }}
                 />
               </Surface>
               <Surface style={styles.headline}>
@@ -113,7 +112,6 @@ const createStyles = (theme) => ({
   },
   logoContainer: {
     backgroundColor: theme.colors.surface,
-    width: '42%',
   },
   secondContainer: {
     flex: 1,

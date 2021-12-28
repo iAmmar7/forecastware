@@ -25,10 +25,10 @@ function LocationComponent(props) {
   const { styles, theme } = useStyles(createStyles);
 
   const unitRenderer = () => {
-    const symbol = data.unit.charAt(0);
+    const symbol = data?.unit?.charAt(0);
     return (
       <View style={styles.unit}>
-        {data.unit === temperatureUnits.KELVIN ? null : (
+        {data?.unit === temperatureUnits.KELVIN ? null : (
           <Text style={{ ...styles.unitText, ...styles.degree }}>&deg;</Text>
         )}
         <Text style={styles.unitText}>{symbol}</Text>
@@ -80,15 +80,15 @@ function LocationComponent(props) {
                   <Text style={styles.weather}>{data?.current?.weather?.[0]?.main}</Text>
                 </View>
               </View>
-              <HourlyWeatherList data={data?.hourly} unit={data.unit} />
+              <HourlyWeatherList data={data?.hourly} unit={data?.unit} />
               <WeeklyWeatherList
                 data={data?.daily}
-                unit={data.unit}
+                unit={data?.unit}
                 handleExternalLink={handleExternalLink}
               />
               <WeatherDetails
                 data={data?.current}
-                unit={data.unit}
+                unit={data?.unit}
                 handleExternalLink={handleExternalLink}
               />
             </View>
