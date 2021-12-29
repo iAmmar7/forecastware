@@ -35,7 +35,6 @@ export default {
     versionCode: 1,
   },
   androidStatusBar: {
-    backgroundColor: '#F5F5F5',
     translucent: true,
   },
   extra: {
