@@ -1,32 +1,10 @@
 {
   "expo": {
     "name": "ForecastWare",
+    "description": "A weather forecast application",
     "slug": "forecastware",
+    "privacy": "public",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "userInterfaceStyle": "automatic",
-    "ios": {
-      "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
-    },
-    "android": {
-      "userInterfaceStyle": "automatic"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": [
       [
         "expo-media-library",
