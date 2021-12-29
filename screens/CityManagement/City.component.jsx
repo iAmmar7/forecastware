@@ -133,7 +133,7 @@ function CityComponent(props) {
   );
 }
 
-const createStyles = (theme) => ({
+const createStyles = () => ({
   screen: {
     flex: 1,
     paddingTop: 10,
@@ -143,6 +143,7 @@ const createStyles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
+    borderRadius: 10,
   },
   checkbox: {
     width: '10%',
@@ -152,8 +153,7 @@ const createStyles = (theme) => ({
     marginVertical: 10,
     flex: 1,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: theme.colors.background,
+    overflow: 'hidden',
   },
   rowItem: {
     justifyContent: 'center',

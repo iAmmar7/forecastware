@@ -148,7 +148,7 @@ const createStyles = (theme) => ({
   },
   accordion: {
     paddingHorizontal: 8,
-    backgroundColor: theme.dark ? theme.colors.background : theme.colors.surface,
+    backgroundColor: theme.dark ? theme.colors.surface : theme.colors.surface,
   },
   accordionIcon: {
     paddingHorizontal: 14,

@@ -9,11 +9,11 @@ import {
 } from 'react-native-paper';
 
 import fonts from './fonts';
-import colors, { darkColors, lightColors } from './colors';
+import colors, { darkColors } from './colors';
 
 const defaultTheme = {
   fonts: configureFonts(fonts),
-  // mode: 'exact',
+  mode: 'exact',
 };
 
 const CombinedDefaultTheme = {
@@ -23,7 +23,6 @@ const CombinedDefaultTheme = {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
     ...colors,
-    ...lightColors,
   },
   ...defaultTheme,
 };
