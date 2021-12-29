@@ -74,7 +74,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar barStyle='auto' />
+      <StatusBar style={theme.dark ? 'light' : 'dark'} />
       <BatteryMonitor />
       <Providers>
         <AppNavigator />
