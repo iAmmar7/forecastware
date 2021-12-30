@@ -1,0 +1,53 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended", "plugin:import/recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 100,
+        "tabWidth": 2,
+        "jsxSingleQuote": true,
+        "trailingComma": "all",
+        "semi": true,
+        "singleQuote": true
+      }
+    ],
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "react/style-prop-object": "off",
+    "no-console": "off",
+    "global-require": "off",
+    "react/function-component-definition": ["error", {}],
+    "no-use-before-define": ["off", { "functions": true, "classes": true, "variables": true }],
+    "react/forbid-prop-types": ["error", { "forbid": [] }],
+    "func-names": "off",
+    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
+    "react/jsx-props-no-spreading": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": ["forecastware"]
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["."]
+      }
+    }
+  }
+}
