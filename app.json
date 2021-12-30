@@ -31,9 +31,6 @@
       "package": "com.iammar7.forecastware",
       "versionCode": 1
     },
-    "androidStatusBar": {
-      "translucent": true
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
