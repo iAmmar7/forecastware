@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';

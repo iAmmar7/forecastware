@@ -36,6 +36,7 @@
     "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
     "react/jsx-props-no-spreading": "off",
     "import/no-extraneous-dependencies": "off",
+    "react/jsx-filename-extension": "off",
     "import/no-unresolved": [
       2,
       {
