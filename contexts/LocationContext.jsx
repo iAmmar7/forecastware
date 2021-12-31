@@ -1,8 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, createContext, useMemo } from 'react';
+import React, { useState, useCallback, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { useCallback } from 'react/cjs/react.development';
 import {
   insertLocation,
   fetchAllLocations,
