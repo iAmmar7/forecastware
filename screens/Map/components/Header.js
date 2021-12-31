@@ -5,10 +5,10 @@ import { Surface, Searchbar, List, Text, TouchableRipple } from 'react-native-pa
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 
-import { Loader } from 'forecastware/components';
-import { useStyles, useDebounce } from 'forecastware/hooks';
-import { isEmpty } from 'forecastware/utils/helpers';
-import { fetchLocations } from 'forecastware/api';
+import { Loader } from '../../../components';
+import { useStyles, useDebounce } from '../../../hooks';
+import { isEmpty } from '../../../utils/helpers';
+import { fetchLocations } from '../../../api';
 
 function Header(props) {
   const { handleLeftIconClick, handleRightIconClick, handleSelectLocation } = props;

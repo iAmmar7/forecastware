@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
-import { useUserContext, useLocationContext } from 'forecastware/hooks';
-import { fetchCurrentLocationWeather } from 'forecastware/api';
-import { startLocationTracking, registerBackgroundNotification } from 'forecastware/config';
-import { isArray, isEmpty } from 'forecastware/utils/helpers';
+import { useUserContext, useLocationContext } from '../../hooks';
+import { fetchCurrentLocationWeather } from '../../api';
+import { startLocationTracking, registerBackgroundNotification } from '../../config';
+import { isArray, isEmpty } from '../../utils/helpers';
 import StartupComponent from './Startup.component';
 
 function StartupContainer(props) {

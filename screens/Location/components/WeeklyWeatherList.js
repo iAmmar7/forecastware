@@ -5,9 +5,9 @@ import { Text, TouchableRipple } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
-import { useStyles } from 'forecastware/hooks';
-import { getWeatherIconUrl } from 'forecastware/utils/helpers';
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { useStyles } from '../../../hooks';
+import { getWeatherIconUrl } from '../../../utils/helpers';
+import { temperatureUnits } from '../../../utils/constants';
 
 function WeeklyWeatherList(props) {
   const { data, unit, handleExternalLink } = props;

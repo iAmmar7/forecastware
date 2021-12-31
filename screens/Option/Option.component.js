@@ -5,10 +5,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 
-import { Barometer } from 'forecastware/components';
-import { useStyles, useUserContext } from 'forecastware/hooks';
-import { temperatureUnits, themeNames } from 'forecastware/utils/constants';
-import { toCapitalize } from 'forecastware/utils/helpers';
+import { Barometer } from '../../components';
+import { useStyles, useUserContext } from '../../hooks';
+import { temperatureUnits, themeNames } from '../../utils/constants';
+import { toCapitalize } from '../../utils/helpers';
 
 const unitIcon = {
   [temperatureUnits.CELSIUS]: 'temperature-celsius',

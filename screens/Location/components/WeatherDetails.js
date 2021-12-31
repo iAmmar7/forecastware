@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 
-import { useStyles } from 'forecastware/hooks';
-import { getUVIndex } from 'forecastware/utils/helpers';
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { useStyles } from '../../../hooks';
+import { getUVIndex } from '../../../utils/helpers';
+import { temperatureUnits } from '../../../utils/constants';
 
 function WeatherDetails(props) {
   const { data, unit, handleExternalLink } = props;

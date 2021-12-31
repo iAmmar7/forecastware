@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Text, Title } from 'react-native-paper';
 import { MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
-import { take } from 'forecastware/utils/helpers';
-import { useStyles } from 'forecastware/hooks';
-import { View } from 'react-native';
+import { take } from '../utils/helpers';
+import { useStyles } from '../hooks';
 import HeaderIcon from './HeaderIcon';
 
 function TabBar(props) {

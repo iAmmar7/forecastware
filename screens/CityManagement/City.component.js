@@ -6,10 +6,10 @@ import { Card, Surface, Text, Checkbox, Portal, Button } from 'react-native-pape
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { Loader, Snackbar } from 'forecastware/components';
-import { useStyles } from 'forecastware/hooks';
-import { isEmpty, take } from 'forecastware/utils/helpers';
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { Loader, Snackbar } from '../../components';
+import { useStyles } from '../../hooks';
+import { isEmpty, take } from '../../utils/helpers';
+import { temperatureUnits } from '../../utils/constants';
 
 function CityComponent(props) {
   const {

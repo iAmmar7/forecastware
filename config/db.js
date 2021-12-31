@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
-import { DB_NAME } from 'forecastware/utils/constants';
-import { isEmpty, isArray } from 'forecastware/utils/helpers';
+import { DB_NAME } from '../utils/constants';
+import { isEmpty, isArray } from '../utils/helpers';
 
 const db = SQLite.openDatabase('forecastware.db');
 

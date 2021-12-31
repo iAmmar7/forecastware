@@ -4,9 +4,9 @@ import { FlatList, Image, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import dayjs from 'dayjs';
 
-import { useStyles } from 'forecastware/hooks';
-import { getWeatherIconUrl } from 'forecastware/utils/helpers';
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { useStyles } from '../../../hooks';
+import { getWeatherIconUrl } from '../../../utils/helpers';
+import { temperatureUnits } from '../../../utils/constants';
 
 function HourlyWeatherList(props) {
   const { data, unit } = props;

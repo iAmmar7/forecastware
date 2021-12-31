@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Keyboard } from 'react-native';
 
-import { useLocationContext, useUserContext } from 'forecastware/hooks';
-import { fetchWeather, fetchCurrentLocationWeather } from 'forecastware/api';
+import { useLocationContext, useUserContext } from '../../hooks';
+import { fetchWeather, fetchCurrentLocationWeather } from '../../api';
 import CitySearchComponent from './CitySearch.component';
 
 function CitySearchContainer(props) {

@@ -4,7 +4,7 @@ import { FAB } from 'react-native-paper';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 
-import { useStyles } from 'forecastware/hooks';
+import { useStyles } from '../hooks';
 import Snackbar from './Snackbar';
 
 function ScreenshotTaker(props) {

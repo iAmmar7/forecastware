@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { Portal, Dialog, RadioButton, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
-import { useStyles } from 'forecastware/hooks';
-import { mapLayerOptions } from 'forecastware/utils/constants';
+import { useStyles } from '../../../hooks';
+import { mapLayerOptions } from '../../../utils/constants';
 
 function Modal(props) {
   const { visible, selected, handleChangeOptions, toggleModal } = props;

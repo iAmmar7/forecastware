@@ -4,9 +4,9 @@ import { Surface, Searchbar, Card, Portal, List, Text } from 'react-native-paper
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles, useDebounce } from 'forecastware/hooks';
-import { fetchLocations } from 'forecastware/api';
-import { isEmpty } from 'forecastware/utils/helpers';
+import { useStyles, useDebounce } from '../hooks';
+import { fetchLocations } from '../api';
+import { isEmpty } from '../utils/helpers';
 import Loader from './Loader';
 
 function SearchLocations(props) {

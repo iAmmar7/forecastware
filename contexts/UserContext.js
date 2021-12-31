@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { temperatureUnits } from '../utils/constants';
 
 const UserContext = createContext(null);
 

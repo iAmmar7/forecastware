@@ -2,8 +2,8 @@ import React, { useRef, useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import * as WebBrowser from 'expo-web-browser';
 
-import { useLocationContext, useUserContext } from 'forecastware/hooks';
-import { fetchWeather } from 'forecastware/api';
+import { useLocationContext, useUserContext } from '../../hooks';
+import { fetchWeather } from '../../api';
 import LocationComponent from './Location.component';
 
 function LocationContainer(props) {

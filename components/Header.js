@@ -5,8 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from 'forecastware/hooks';
-import { isEmpty, isArray } from 'forecastware/utils/helpers';
+import { useStyles } from '../hooks';
+import { isEmpty, isArray } from '../utils/helpers';
 import HeaderIcon from './HeaderIcon';
 import SearchLocations from './SearchLocations';
 

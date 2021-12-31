@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Surface, Text, TouchableRipple } from 'react-native-paper';
 
-import { useStyles, useLocationContext } from 'forecastware/hooks';
+import { useStyles, useLocationContext } from '../../../hooks';
 
 function CityList(props) {
   const { data, handleRemoveLocation, handleAddLocation } = props;

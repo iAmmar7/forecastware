@@ -12,8 +12,8 @@ import MapView, { UrlTile } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from 'forecastware/hooks';
-import { ScreenshotTaker } from 'forecastware/components';
+import { useStyles } from '../../hooks';
+import { ScreenshotTaker } from '../../components';
 import Header from './components/Header';
 import Modal from './components/Modal';
 

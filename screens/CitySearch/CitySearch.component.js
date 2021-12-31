@@ -4,9 +4,9 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Subheading, Surface } from 'react-native-paper';
 
-import { Loader } from 'forecastware/components';
-import { useStyles } from 'forecastware/hooks';
-import { topCities, topWorldCities } from 'forecastware/utils/dummy-data';
+import { Loader } from '../../components';
+import { useStyles } from '../../hooks';
+import { topCities, topWorldCities } from '../../utils/dummy-data';
 import CityList from './components/CityList';
 import { isEmpty } from '../../utils/helpers';
 

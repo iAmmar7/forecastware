@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useLocationContext, useUserContext } from 'forecastware/hooks';
+import { useLocationContext, useUserContext } from '../../hooks';
 import CityComponent from './City.component';
 
 function CityContainer(props) {

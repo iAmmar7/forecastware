@@ -5,9 +5,9 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-paper';
 
-import { Loader, ScreenshotTaker } from 'forecastware/components';
-import { useStyles } from 'forecastware/hooks';
-import { temperatureUnits } from 'forecastware/utils/constants';
+import { Loader, ScreenshotTaker } from '../../components';
+import { useStyles } from '../../hooks';
+import { temperatureUnits } from '../../utils/constants';
 import HourlyWeatherList from './components/HourlyWeatherList';
 import WeeklyWeatherList from './components/WeeklyWeatherList';
 import WeatherDetails from './components/WeatherDetails';

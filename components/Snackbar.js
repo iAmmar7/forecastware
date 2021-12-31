@@ -4,8 +4,8 @@ import { View, Text, Dimensions } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-import { useStyles } from 'forecastware/hooks';
-import { isEmpty } from 'forecastware/utils/helpers';
+import { useStyles } from '../hooks';
+import { isEmpty } from '../utils/helpers';
 
 function ForecastWareSnackbar(props) {
   const { message, severity, duration, onDismiss } = props;

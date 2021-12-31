@@ -4,7 +4,7 @@ import { Surface, Text } from 'react-native-paper';
 import { Barometer } from 'expo-sensors';
 import * as Animatable from 'react-native-animatable';
 
-import { useStyles } from 'forecastware/hooks';
+import { useStyles } from '../hooks';
 
 function ForecastWareBarometer() {
   const [data, setData] = useState({});
