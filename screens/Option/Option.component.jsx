@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Surface, List, RadioButton, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
 import { Barometer } from 'forecastware/components';
 import { useStyles, useUserContext } from 'forecastware/hooks';
@@ -20,6 +21,7 @@ function OptionComponent(props) {
   const { styles, theme } = useStyles(createStyles);
   const { unit, setTemperatureUnit, toggleTheme } = useUserContext();
   const [stateUnit, setStateUnit] = useState(unit);
+  const unitRef = useRef();
 
   useEffect(() => {
     if (stateUnit !== unit) {
@@ -32,6 +34,7 @@ function OptionComponent(props) {
   }, [theme]);
 
   const handleTemperatureChange = (value) => {
+    unitRef.current?.fadeIn(400);
     setStateUnit(value);
   };
 
@@ -53,12 +56,14 @@ function OptionComponent(props) {
             left={({ color }) => {
               const isActive = color === '#EC6E4C';
               return (
-                <MaterialCommunityIcons
-                  name={unitIcon[unit]}
-                  size={22}
-                  style={styles.accordionIcon}
-                  color={isActive ? color : theme.colors.text}
-                />
+                <Animatable.View ref={unitRef}>
+                  <MaterialCommunityIcons
+                    name={unitIcon[unit]}
+                    size={22}
+                    style={styles.accordionIcon}
+                    color={isActive ? color : theme.colors.text}
+                  />
+                </Animatable.View>
               );
             }}
           >
