@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useUserContext } from '../../hooks';
 import { API_KEY, FALLBACK_LONGITUDE, FALLBACK_LATITUDE } from '../../utils/constants';
-import { useCallback } from 'react/cjs/react.development';
 import MapComponent from './Map.component';
 
 function MapContainer(props) {
