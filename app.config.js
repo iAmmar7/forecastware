@@ -28,6 +28,18 @@ export default {
     favicon: './assets/favicon.png',
   },
   plugins: ['sentry-expo'],
+  hooks: {
+    postPublish: [
+      {
+        file: 'sentry-expo/upload-sourcemaps',
+        config: {
+          organization: 'ammar-bn',
+          project: 'forecastware',
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+      },
+    ],
+  },
   extra: {
     API_URL: process.env.API_URL,
     API_KEY: process.env.API_KEY,
