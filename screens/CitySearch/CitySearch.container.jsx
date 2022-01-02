@@ -35,8 +35,10 @@ function CitySearchContainer(props) {
     const api = isCurrent ? fetchCurrentLocationWeather : fetchWeather;
     const weather = await api(location, unit);
     await addLocation(weather, isCurrent);
-    setIsLoading(false);
-    navigation.navigate('Home', { screen: weather.name });
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.navigate('Home', { screen: weather.name });
+    }, 10);
   };
 
   const handleRemoveLocation = async (location) => {
