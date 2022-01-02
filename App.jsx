@@ -7,7 +7,7 @@ import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from 'sentry-expo';
 
 import { BatteryMonitor } from './components';
 import { UserContextProvider, LocationContextProvider } from './contexts';
@@ -17,7 +17,7 @@ import { themeNames, SENTRY_DSN } from './utils/constants';
 import AppNavigator from './navigation/AppNavigator';
 import combineProviders from './combineProviders';
 
-const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
 
 // Good for performance @https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
 enableScreens();
@@ -27,13 +27,13 @@ Sentry.init({
   dsn: SENTRY_DSN,
   enableNative: false,
   enableInExpoDevelopment: true,
-  debug: process.env.NODE_ENV === 'development',
   environment: process.env.NODE_ENV,
-  tracesSampleRate: 0.5,
   integrations: [
-    new Sentry.ReactNativeTracing({
-      tracingOrigins: ['localhost', 'com.iammar7.forecastware', /^\//],
+    new Sentry.Native.ReactNativeTracing({
       routingInstrumentation,
+    }),
+    new Sentry.Native.Integrations.ReactNativeErrorHandlers({
+      onunhandledrejection: false,
     }),
   ],
 });
@@ -112,4 +112,4 @@ function App() {
   );
 }
 
-export default Sentry.wrap(App);
+export default Sentry.Native.wrap(App);
