@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useColorScheme } from 'react-native';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 
 import { BatteryMonitor } from './components';
 import { UserContextProvider, LocationContextProvider } from './contexts';
@@ -17,17 +17,25 @@ import { themeNames, SENTRY_DSN } from './utils/constants';
 import AppNavigator from './navigation/AppNavigator';
 import combineProviders from './combineProviders';
 
-// Good for performance @ https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens<
+const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+
+// Good for performance @https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens
 enableScreens();
 
 // Initialize sentry debugging
 Sentry.init({
   dsn: SENTRY_DSN,
+  enableNative: false,
   enableInExpoDevelopment: true,
   debug: process.env.NODE_ENV === 'development',
   environment: process.env.NODE_ENV,
-  enableAutoSessionTracking: true,
-  sessionTrackingIntervalMillis: 10000,
+  tracesSampleRate: 0.5,
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      tracingOrigins: ['localhost', 'com.iammar7.forecastware', /^\//],
+      routingInstrumentation,
+    }),
+  ],
 });
 
 // Initialize the Database
@@ -42,7 +50,8 @@ initTasks();
 // Initialize custom animations
 initAnimations();
 
-export default function App() {
+function App() {
+  const navigation = useRef();
   const [theme, setTheme] = useState(null);
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -76,7 +85,16 @@ export default function App() {
         { name: PaperProvider, props: { theme } },
         { name: UserContextProvider, props: { toggleTheme } },
         { name: LocationContextProvider },
-        { name: NavigationContainer, props: { theme } },
+        {
+          name: NavigationContainer,
+          props: {
+            theme,
+            ref: navigation,
+            onReady: () => {
+              routingInstrumentation.registerNavigationContainer(navigation);
+            },
+          },
+        },
       ]),
     [theme],
   );
@@ -93,3 +111,5 @@ export default function App() {
     </>
   );
 }
+
+export default Sentry.wrap(App);
