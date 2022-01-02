@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export default {
   name: 'ForecastWare',
-  version: '1.0.1',
+  version: '1.0.2',
   description: 'A weather forecast application',
   slug: 'forecastware',
   privacy: 'public',
@@ -18,12 +18,12 @@ export default {
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  assetBundlePatterns: ['**/*'],
+  assetBundlePatterns: ['assets/**/*'],
   ios: {
     supportsTablet: true,
     userInterfaceStyle: 'automatic',
     bundleIdentifier: 'com.iammar7.forecastware',
-    buildNumber: '1.0.1',
+    buildNumber: '1.0.2',
   },
   android: {
     adaptiveIcon: {
@@ -32,10 +32,23 @@ export default {
     },
     userInterfaceStyle: 'automatic',
     package: 'com.iammar7.forecastware',
-    versionCode: 2,
+    versionCode: 3,
   },
   androidStatusBar: {
     translucent: true,
+  },
+  plugins: ['sentry-expo'],
+  hooks: {
+    postPublish: [
+      {
+        file: 'sentry-expo/upload-sourcemaps',
+        config: {
+          organization: 'ammar-bn',
+          project: 'forecastware',
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+      },
+    ],
   },
   extra: {
     API_URL: process.env.API_URL,

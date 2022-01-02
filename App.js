@@ -7,17 +7,28 @@ import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from 'sentry-expo';
 
 import { BatteryMonitor } from './components';
 import { UserContextProvider, LocationContextProvider } from './contexts';
 import { CombinedDarkTheme, CombinedDefaultTheme } from './theme';
 import { initDB, initNotifications, initTasks, initAnimations } from './config';
-import { themeNames } from './utils/constants';
+import { themeNames, SENTRY_DSN } from './utils/constants';
 import AppNavigator from './navigation/AppNavigator';
 import combineProviders from './combineProviders';
 
 // Good for performance @ https://reactnavigation.org/docs/community-libraries-and-navigators/#react-native-screens<
 enableScreens();
+
+// Initialize sentry debugging
+Sentry.init({
+  dsn: SENTRY_DSN,
+  enableInExpoDevelopment: true,
+  debug: process.env.NODE_ENV === 'development',
+  environment: process.env.NODE_ENV,
+  enableAutoSessionTracking: true,
+  sessionTrackingIntervalMillis: 10000,
+});
 
 // Initialize the Database
 initDB();
