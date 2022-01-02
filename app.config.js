@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export default {
   name: 'ForecastWare',
-  version: '1.0.2',
+  version: '1.0.5',
   description: 'A weather forecast application',
   slug: 'forecastware',
   privacy: 'public',
@@ -23,7 +23,7 @@ export default {
     supportsTablet: true,
     userInterfaceStyle: 'automatic',
     bundleIdentifier: 'com.iammar7.forecastware',
-    buildNumber: '1.0.2',
+    buildNumber: '1.0.5',
   },
   android: {
     adaptiveIcon: {
@@ -32,7 +32,8 @@ export default {
     },
     userInterfaceStyle: 'automatic',
     package: 'com.iammar7.forecastware',
-    versionCode: 3,
+    versionCode: 6,
+    permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_BACKGROUND_LOCATION', 'WRITE_EXTERNAL_STORAGE'],
   },
   androidStatusBar: {
     translucent: true,
