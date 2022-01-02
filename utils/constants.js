@@ -18,6 +18,12 @@ export const MINIMUM_BATTERY_LIMIT = 20;
 export const NOTIFICATION_JOB = 'notification-job';
 export const NOTIFICATION_INTERVAL = 60 * 15;
 
+export const SENTRY_AUTH_TOKEN = Constants.manifest.extra.SENTRY_AUTH_TOKEN;
+export const SENTRY_DSN =
+  'https://16c4199f7ed446eb8d6b3d71a91c047c@o1103197.ingest.sentry.io/6129866';
+export const SENTRY_PROJECT = 'forecastware';
+export const SENTRY_ORGANIZATION = 'ammar-bn';
+
 export const temperatureUnits = {
   CELSIUS: 'Celsius',
   FAHRENHEIT: 'Fahrenheit',

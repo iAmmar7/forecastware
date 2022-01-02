@@ -89,10 +89,10 @@ export const init = () => {
 
       console.log(`${new Date().toISOString()}: Location job completed!`);
 
-      return BackgroundFetch.Result.NewData;
+      return BackgroundFetch.BackgroundFetchResult.NewData;
     } catch (err) {
       console.error(`${new Date().toISOString()}: Error in location job `, err);
-      return BackgroundFetch.Result.Failed;
+      return BackgroundFetch.BackgroundFetchResult.Failed;
     }
   });
 
@@ -130,10 +130,10 @@ export const init = () => {
 
       console.log(`${new Date().toISOString()}: Notification job completed!`);
 
-      return BackgroundFetch.Result.NoData;
+      return BackgroundFetch.BackgroundFetchResult.NoData;
     } catch (error) {
       console.error(`${new Date().toISOString()}: Error in notification job `, error);
-      return BackgroundFetch.Result.Failed;
+      return BackgroundFetch.BackgroundFetchResult.Failed;
     }
   });
 };

@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "ForecastWare",
-    "description": "A weather forecast application",
     "slug": "forecastware",
-    "privacy": "public",
     "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,36 +13,21 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "assets/*"
-    ],
+    "assetBundlePatterns": [],
     "ios": {
-      "supportsTablet": true,
-      "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "com.iammar7.forecastware",
-      "buildNumber": "1.0.0"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/playstore.png",
-        "backgroundColor": "#ffffff"
-      },
-      "userInterfaceStyle": "automatic",
-      "package": "com.iammar7.forecastware",
-      "versionCode": 1
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Allow ForecastWare to access your photos.",
-          "savePhotosPermission": "Allow ForecastWare to save screenshot.",
-          "isAccessMediaLocationEnabled": true
-        }
-      ]
+      "sentry-expo"
     ]
   }
 }

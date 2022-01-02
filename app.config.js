@@ -2,14 +2,10 @@ import 'dotenv/config';
 
 export default {
   name: 'ForecastWare',
-  version: '1.0.0',
-  description: 'A weather forecast application',
   slug: 'forecastware',
-  privacy: 'public',
+  version: '1.0.0',
   orientation: 'portrait',
-  icon: './assets/appstore.png',
-  githubUrl: 'https://github.com/iAmmar7/forecastware',
-  userInterfaceStyle: 'automatic',
+  icon: './assets/icon.png',
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
@@ -18,24 +14,31 @@ export default {
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  assetBundlePatterns: ['assets/*'],
+  assetBundlePatterns: [],
   ios: {
     supportsTablet: true,
-    userInterfaceStyle: 'automatic',
-    bundleIdentifier: 'com.iammar7.forecastware',
-    buildNumber: '1.0.0',
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/playstore.png',
-      backgroundColor: '#ffffff',
+      foregroundImage: './assets/adaptive-icon.png',
+      backgroundColor: '#FFFFFF',
     },
-    userInterfaceStyle: 'automatic',
-    package: 'com.iammar7.forecastware',
-    versionCode: 1,
   },
-  androidStatusBar: {
-    translucent: true,
+  web: {
+    favicon: './assets/favicon.png',
+  },
+  plugins: ['sentry-expo'],
+  hooks: {
+    postPublish: [
+      {
+        file: 'sentry-expo/upload-sourcemaps',
+        config: {
+          organization: 'ammar-bn',
+          project: 'forecastware',
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+      },
+    ],
   },
   extra: {
     API_URL: process.env.API_URL,
