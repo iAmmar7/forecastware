@@ -2,10 +2,14 @@ import 'dotenv/config';
 
 export default {
   name: 'ForecastWare',
+  version: '1.0.2',
+  description: 'A weather forecast application',
   slug: 'forecastware',
-  version: '1.0.0',
+  privacy: 'public',
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: './assets/appstore.png',
+  githubUrl: 'https://github.com/iAmmar7/forecastware',
+  userInterfaceStyle: 'automatic',
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
@@ -14,18 +18,24 @@ export default {
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  assetBundlePatterns: [],
+  assetBundlePatterns: ['assets/**/*'],
   ios: {
     supportsTablet: true,
+    userInterfaceStyle: 'automatic',
+    bundleIdentifier: 'com.iammar7.forecastware',
+    buildNumber: '1.0.2',
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#FFFFFF',
+      foregroundImage: './assets/playstore.png',
+      backgroundColor: '#ffffff',
     },
+    userInterfaceStyle: 'automatic',
+    package: 'com.iammar7.forecastware',
+    versionCode: 3,
   },
-  web: {
-    favicon: './assets/favicon.png',
+  androidStatusBar: {
+    translucent: true,
   },
   plugins: ['sentry-expo'],
   hooks: {
