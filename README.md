@@ -11,11 +11,12 @@ Weather forecast cross-platform mobile application based on React Native with Ex
 - **SQLite** to store multiple locations data.
 - Mobile **battery level monitor**. The app will display a pop-up and close if the battery level goes down to 20%.
 - **Screenshot taker** icon on different screens.
-- **Weather map** with different layouts for precipitation, clouds, pressure, temperature, and wind.
+- **Weather map** using Google Maps with different layouts for precipitation, clouds, pressure, temperature, and wind.
+- **Barometer** service to display the device's surrounding atmospheric pressure.
 - In app web **browser** using expo-web for external links.
 - **Sentry** integration for crash report and performance monitoring.
 - **Snack** integration for testing on different platforms.
-- **Search locations** feature.
+- **Search locations** feature both for map and weather.
 - Combined **custom theme** using React Native Paper and React Native Navigation.
 - **Dark mode** feature using Material Design practices.
 - The design of this app is inspired by **Android Weather Application**.
