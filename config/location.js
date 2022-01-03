@@ -11,7 +11,7 @@ export const startLocationTracking = async () => {
     Location.startLocationUpdatesAsync(LOCATION_JOB, {
       accuracy: Location.Accuracy.Balanced,
       // timeInterval: 10000,
-      distanceInterval: LOCATION_JOB_INTERVAL,
+      deferredUpdatesDistance: LOCATION_JOB_INTERVAL,
       deferredUpdatesInterval: 10000,
 
       // Not running in background without foregroundService

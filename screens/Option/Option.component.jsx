@@ -16,6 +16,8 @@ const unitIcon = {
   [temperatureUnits.KELVIN]: 'temperature-kelvin',
 };
 
+const inProduction = process.env.NODE_ENV !== 'development';
+
 function OptionComponent(props) {
   const { navigation } = props;
   const { styles, theme } = useStyles(createStyles);
@@ -118,10 +120,18 @@ function OptionComponent(props) {
         <List.Subheader>More</List.Subheader>
         <List.Item
           title='Weather Map'
-          left={() => <List.Icon icon='map-outline' size={22} color={theme.colors.text} />}
+          description={inProduction ? 'Only available in development mode!' : null}
+          left={() => (
+            <List.Icon
+              icon='map-outline'
+              size={22}
+              color={inProduction ? theme.colors.placeholder : theme.colors.text}
+            />
+          )}
           style={styles.listItem}
-          titleStyle={styles.listItemTitle}
+          titleStyle={[styles.listItemTitle, inProduction && styles.listItemTitleDisabled]}
           onPress={() => navigation.navigate('Map')}
+          disabled={inProduction}
         />
         <List.Item
           title='Weather Radar'
