@@ -1,6 +1,14 @@
 # forecastware
 :boom: Weather forecast cross-platform mobile application based on React Native with Expo Managed workflow :boom:
 
+
+## Snack
+The below Snack is for portfolio purposes only.
+
+https://snack.expo.dev/@iammar7/forecastware_v44
+
+:fire: Dark mode is preferable for **iOS**. :fire:
+
 ## Few cool features
 - Device's **current location** :pushpin:
 - Location tracker using device's **background location** service :pushpin:
@@ -49,11 +57,3 @@
   SENTRY_AUTH_TOKEN={YOUR_SENTRY_AUTH_TOKEN} (only needed for sentry branch)
   ```
 - yarn start
-
-
-## Snack
-The below Snack is for portfolio purposes only.
-
-https://snack.expo.dev/@iammar7/forecastware_v44
-
-:fire: Dark mode is preferable for **iOS**. :fire:
